@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14838.16" systemVersion="19A471t" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="NO" userDefinedModelVersionIdentifier="">
+    <entity name="ChatList" representedClassName=".ChatList" syncable="YES">
+        <attribute name="channelName" optional="YES" attributeType="String"/>
+        <attribute name="channelType" optional="YES" attributeType="String"/>
+        <attribute name="chatid" optional="YES" attributeType="String"/>
+        <attribute name="created_at" optional="YES" attributeType="String"/>
+        <attribute name="last_message" optional="YES" attributeType="String"/>
+        <attribute name="updated_at" optional="YES" attributeType="String"/>
+        <attribute name="userIds" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="ChatMessages" representedClassName=".ChatMessages" syncable="YES">
+        <attribute name="chat_id" optional="YES" attributeType="String"/>
+        <attribute name="created_at" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="is_read" optional="YES" attributeType="String"/>
+        <attribute name="message" optional="YES" attributeType="String"/>
+        <attribute name="receiver" optional="YES" attributeType="String"/>
+        <attribute name="sender" optional="YES" attributeType="String"/>
+        <attribute name="updated_at" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="LoginUser" representedClassName=".LoginUser" syncable="YES">
+        <attribute name="email" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="photo" optional="YES" attributeType="String"/>
+    </entity>
+    <elements>
+        <element name="ChatList" positionX="-63" positionY="-18" width="128" height="148"/>
+        <element name="ChatMessages" positionX="-54" positionY="-9" width="128" height="163"/>
+        <element name="LoginUser" positionX="-54" positionY="36" width="128" height="103"/>
+    </elements>
+</model>
