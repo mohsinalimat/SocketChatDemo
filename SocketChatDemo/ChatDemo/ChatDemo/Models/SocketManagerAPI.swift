@@ -100,6 +100,11 @@ class SocketManagerAPI: NSObject {
         socket.on("channelList/\(UserDefaults.standard.userID!)") {data, ack in
             print(data)
             
+            guard let customData = data as? [[String:Any]] else { return }
+            
+            if let channelList = self.insertChannelList(arrayData: customData) {
+                
+            }
             ack.with("Got your currentAmount", "dude")
         }
     }
