@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class ChatListCell: UITableViewCell {
     
@@ -36,8 +37,30 @@ class ChatListViewController: UIViewController, UITableViewDelegate, UITableView
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         appdelegate.objAPI.chnlDelegate = self
-        getChatList()
         
+        
+        self.checkDataAvailable()
+        
+    }
+    func checkDataAvailable(){
+        do{
+            let context = appdelegate.persistentContainer.viewContext
+            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ChatList")
+            if let dataArray = try context.fetch(fetchRequest) as? [ChatList]{
+                print(dataArray)
+                
+                
+                if dataArray.count == 0{
+                    getChatList()
+                }else{
+                    self.chatListArray = dataArray
+                    self.chatListTable.reloadData()
+                }
+            }
+            
+            }catch let error{
+                print(error.localizedDescription)
+        }
     }
     
     func getChatList() -> Void {
