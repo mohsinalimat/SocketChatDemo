@@ -110,7 +110,7 @@ class ChatListViewController: UIViewController, UITableViewDelegate, UITableView
     }
 }
 extension ChatListViewController : ReceiveChannel{
-    func receiveChnl(channel: [ChatList]) {
+    func receiveChnl() {
         getChatList()
     }
 }

@@ -17,7 +17,7 @@ protocol ReceiveMessage {
     func receiveMsg(msg : ChatMessages)
 }
 protocol ReceiveChannel {
-    func receiveChnl(channel : [ChatList])
+    func receiveChnl()
 }
 
 class SocketManagerAPI: NSObject {
@@ -77,6 +77,7 @@ class SocketManagerAPI: NSObject {
                 decoder.userInfo[context] = managedObjectContext
             }
             let objUser = try decoder.decode([ChatList].self, from: arrayData.toData())
+            appdelegate.saveContext()
             return objUser
         } catch {
             print("nodata found")
@@ -106,35 +107,39 @@ class SocketManagerAPI: NSObject {
             print(data)
             
             guard let customData = data as? [[String:Any]] else { return }
-            if let channelList = self.insertChannelList(arrayData: customData) {
-                let updated = self.checkChannelAvailable(channelList)
+            let obj = customData[0]["isNew"] as! String
+            if obj == "0" {
+                if self.insertChannelList(arrayData: customData) != nil {
+                    self.chnlDelegate?.receiveChnl()
+                }
+            }else{
+                let updated = self.checkChannelAvailable(customData)
                 if updated {
-                    self.chnlDelegate?.receiveChnl(channel: channelList)
+                    self.chnlDelegate?.receiveChnl()
                 }
             }
             ack.with("Got your currentAmount", "dude")
         }
     }
     
-    func checkChannelAvailable(_ arrayData : [ChatList]) -> Bool {
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+    func checkChannelAvailable(_ arrayData : [[String:Any]]) -> Bool {
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "ChatList")
-        fetchRequest.predicate = NSPredicate(format: "chatid = '\(arrayData[0].chatid ?? "")'")
+        fetchRequest.predicate = NSPredicate(format: "chatid = '\(arrayData[0]["chatid"] ?? "")'")
         
         do {
-            guard let result = try? appDelegate.persistentContainer.viewContext.fetch(fetchRequest)  as? [ChatList] else { return false }
+            guard let result = try? appdelegate.persistentContainer.viewContext.fetch(fetchRequest)  as? [ChatList] else { return false }
             if result.count > 0 {
                 let objResult = result[0]
                 let updatedData = arrayData[0]
-                objResult.userIds = updatedData.userIds
-                objResult.last_message = updatedData.last_message
-                objResult.created_at = updatedData.created_at
-                objResult.chatid = updatedData.chatid
-                objResult.updated_at = updatedData.updated_at
-                objResult.channelType = updatedData.channelType
-                objResult.channelName = updatedData.channelName
+                objResult.userIds = updatedData["userIds"] as? String
+                objResult.last_message = updatedData["last_message"] as? String
+                objResult.created_at = updatedData["created_at"] as? String
+                objResult.chatid = updatedData["chatid"] as? String
+                objResult.updated_at = updatedData["updated_at"] as? String
+                objResult.channelType = updatedData["channelType"] as? String
+                objResult.channelName = updatedData["channelName"] as? String
             }
-            try appDelegate.persistentContainer.viewContext.save()
+            appdelegate.saveContext()
             return true
         } catch {
             print("error executing fetch request: \(error.localizedDescription)")
