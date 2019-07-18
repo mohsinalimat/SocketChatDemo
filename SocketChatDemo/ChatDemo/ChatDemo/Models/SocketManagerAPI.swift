@@ -126,9 +126,7 @@ class SocketManagerAPI: NSObject {
                 let updatedData = arrayData[0]
                 objResult.userIds = updatedData["userIds"] as? String
                 objResult.last_message = updatedData["last_message"] as? String
-                objResult.created_at = updatedData["created_at"] as? String
                 objResult.chatid = updatedData["chatid"] as? String
-                objResult.updated_at = updatedData["updated_at"] as? String
                 objResult.channelType = updatedData["channelType"] as? String
                 objResult.channelName = updatedData["channelName"] as? String
                 appdelegate.saveContext()
