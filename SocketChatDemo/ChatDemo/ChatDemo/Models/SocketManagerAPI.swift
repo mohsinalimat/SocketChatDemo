@@ -8,7 +8,7 @@
 
 import UIKit
 import SocketIO
-
+import CoreData
 
 typealias completionHandler = ([String:Any]?, String?) -> Void
 typealias completionHandlerArray = ([[String:Any]]?, String?) -> Void
@@ -56,7 +56,7 @@ class SocketManagerAPI: NSObject {
         socket.emitWithAck("UserList").timingOut(after: 0) { (data) in
             print("got data \(data)")
             guard let data = data[0] as? [[String:Any]] else { ackCallBack(nil,"data Not availabel"); return }
-//            guard let data1 = data.toJSON() as? [[String:Any]] else { ackCallBack(nil,"data Not availabel"); return }
+            //            guard let data1 = data.toJSON() as? [[String:Any]] else { ackCallBack(nil,"data Not availabel"); return }
             ackCallBack(data,nil)
         }
     }
@@ -77,15 +77,17 @@ class SocketManagerAPI: NSObject {
                 decoder.userInfo[context] = managedObjectContext
             }
             let objUser = try decoder.decode([ChatList].self, from: arrayData.toData())
-
-            try managedObjectContext.save()
             return objUser
         } catch {
             print("nodata found")
             return nil
         }
-
+        
     }
+    
+    
+    
+    
     
     func getMessages() -> Void {
         socket.on("receiveMessage/\(UserDefaults.standard.userID!)") {data, ack in
@@ -104,28 +106,56 @@ class SocketManagerAPI: NSObject {
             print(data)
             
             guard let customData = data as? [[String:Any]] else { return }
-            
             if let channelList = self.insertChannelList(arrayData: customData) {
-                self.chnlDelegate?.receiveChnl(channel: channelList)
+                let updated = self.checkChannelAvailable(channelList)
+                if updated {
+                    self.chnlDelegate?.receiveChnl(channel: channelList)
+                }
             }
             ack.with("Got your currentAmount", "dude")
+        }
+    }
+    
+    func checkChannelAvailable(_ arrayData : [ChatList]) -> Bool {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "ChatList")
+        fetchRequest.predicate = NSPredicate(format: "chatid = '\(arrayData[0].chatid ?? "")'")
+        
+        do {
+            guard let result = try? appDelegate.persistentContainer.viewContext.fetch(fetchRequest)  as? [ChatList] else { return false }
+            if result.count > 0 {
+                let objResult = result[0]
+                let updatedData = arrayData[0]
+                objResult.userIds = updatedData.userIds
+                objResult.last_message = updatedData.last_message
+                objResult.created_at = updatedData.created_at
+                objResult.chatid = updatedData.chatid
+                objResult.updated_at = updatedData.updated_at
+                objResult.channelType = updatedData.channelType
+                objResult.channelName = updatedData.channelName
+            }
+            try appDelegate.persistentContainer.viewContext.save()
+            return true
+        } catch {
+            print("error executing fetch request: \(error.localizedDescription)")
+            return false
         }
     }
     
     
     func insertMessage(dict : [String:Any]) -> ChatMessages?{
         do{
-        let managedObjectContext = appdelegate.persistentContainer.viewContext
-        let decoder = JSONDecoder()
-        if let context = CodingUserInfoKey.managedObjectContext {
-            decoder.userInfo[context] = managedObjectContext
-        }
-        
-        let objUser = try decoder.decode(ChatMessages.self, from: dict.toData())
-        try managedObjectContext.save()
-        
-        return objUser
-        
+            let managedObjectContext = appdelegate.persistentContainer.viewContext
+            let decoder = JSONDecoder()
+            if let context = CodingUserInfoKey.managedObjectContext {
+                decoder.userInfo[context] = managedObjectContext
+            }
+            
+            let objUser = try decoder.decode(ChatMessages.self, from: dict.toData())
+            try managedObjectContext.save()
+            
+            return objUser
+            
         } catch {
             print(error.localizedDescription)
             return nil
@@ -153,12 +183,12 @@ class SocketManagerAPI: NSObject {
         socket.emitWithAck("SignUp",data).timingOut(after: 0) { (data) in
             print("got data \(data)")
             guard let data = data[0] as? [String:Any] else { completion(nil,"data Not availabel"); return }
-//            guard let data1 = data.toJSON() as? [[String:Any]] else { completion(nil,"data Not availabel"); return }
-//            if data1.count > 0 {
-                completion(data,nil)
-//            }else{
-//                completion(nil,"invalid Credentials")
-//            }
+            //            guard let data1 = data.toJSON() as? [[String:Any]] else { completion(nil,"data Not availabel"); return }
+            //            if data1.count > 0 {
+            completion(data,nil)
+            //            }else{
+            //                completion(nil,"invalid Credentials")
+            //            }
         }
     }
     

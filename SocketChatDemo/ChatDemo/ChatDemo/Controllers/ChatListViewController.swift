@@ -37,7 +37,6 @@ class ChatListViewController: UIViewController, UITableViewDelegate, UITableView
         super.viewWillAppear(animated)
         appdelegate.objAPI.chnlDelegate = self
         getChatList()
-        
     }
     
     func getChatList() -> Void {
@@ -91,11 +90,6 @@ class ChatListViewController: UIViewController, UITableViewDelegate, UITableView
 }
 extension ChatListViewController : ReceiveChannel{
     func receiveChnl(channel: [ChatList]) {
-        if self.chatListArray != nil {
-            self.chatListArray! += channel
-        }else{
-            self.chatListArray = channel
-        }
-        self.chatListTable.reloadData()
+        getChatList()
     }
 }
