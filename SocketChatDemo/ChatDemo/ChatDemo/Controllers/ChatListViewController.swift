@@ -91,7 +91,11 @@ class ChatListViewController: UIViewController, UITableViewDelegate, UITableView
 }
 extension ChatListViewController : ReceiveChannel{
     func receiveChnl(channel: [ChatList]) {
-        self.chatListArray! += channel
+        if self.chatListArray != nil {
+            self.chatListArray! += channel
+        }else{
+            self.chatListArray = channel
+        }
         self.chatListTable.reloadData()
     }
 }
