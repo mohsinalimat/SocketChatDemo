@@ -69,20 +69,25 @@ class SocketManagerAPI: NSObject {
             ackCallBack(data,nil)
         }
     }
-    
-    func insertChannelList(arrayData : [[String:Any]]) -> Void{
+    func insertChannelList(arrayData : [[String:Any]]) -> [ChatList]?{
         do {
             let managedObjectContext = appdelegate.persistentContainer.viewContext
             let decoder = JSONDecoder()
             if let context = CodingUserInfoKey.managedObjectContext {
                 decoder.userInfo[context] = managedObjectContext
             }
-            _ = try decoder.decode([ChatList].self, from: arrayData.toData())
+            let objUser = try decoder.decode([ChatList].self, from: arrayData.toData())
             appdelegate.saveContext()
+            return objUser
         } catch {
             print("nodata found")
+            return nil
         }
     }
+    
+    
+    
+    
     
     func getMessages() -> Void {
         socket.on("receiveMessage/\(UserDefaults.standard.userID!)") {data, ack in
@@ -98,7 +103,10 @@ class SocketManagerAPI: NSObject {
     
     func getChannel() -> Void {
         socket.on("channelList/\(UserDefaults.standard.userID!)") {data, ack in
+            print(data)
+            
             guard let customData = data as? [[String:Any]] else { return }
+            let obj = customData[0]["isNew"] as! String
             
             let updated = self.checkChannelAvailable(customData)
             if updated {
