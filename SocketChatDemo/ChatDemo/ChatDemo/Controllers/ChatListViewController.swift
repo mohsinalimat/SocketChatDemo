@@ -36,17 +36,17 @@ class ChatListViewController: UIViewController, UITableViewDelegate, UITableView
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        self.chatListArray?.removeAll()
         appdelegate.objAPI.chnlDelegate = self
         self.checkDataAvailable()
     }
+    
     func checkDataAvailable(){
         do{
             let context = appdelegate.persistentContainer.viewContext
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ChatList")
             if let dataArray = try context.fetch(fetchRequest) as? [ChatList]{
                 print(dataArray)
-                
-                
                 if dataArray.count == 0{
                     getChatList()
                 }else{
@@ -55,8 +55,8 @@ class ChatListViewController: UIViewController, UITableViewDelegate, UITableView
                 }
             }
             
-            }catch let error{
-                print(error.localizedDescription)
+        }catch let error{
+            print(error.localizedDescription)
         }
     }
     

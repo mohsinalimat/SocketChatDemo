@@ -56,6 +56,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             if let error = error as NSError? {
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
+            print(" ------ 🛤 ------> \(container.persistentStoreCoordinator.persistentStores.first?.url?.absoluteString ?? "Null") <------ 🛤 ------")
         })
         return container
     }()

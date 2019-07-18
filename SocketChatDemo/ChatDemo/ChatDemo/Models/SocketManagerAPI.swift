@@ -69,26 +69,20 @@ class SocketManagerAPI: NSObject {
             ackCallBack(data,nil)
         }
     }
-    func insertChannelList(arrayData : [[String:Any]]) -> [ChatList]?{
+    
+    func insertChannelList(arrayData : [[String:Any]]) -> Void{
         do {
             let managedObjectContext = appdelegate.persistentContainer.viewContext
             let decoder = JSONDecoder()
             if let context = CodingUserInfoKey.managedObjectContext {
                 decoder.userInfo[context] = managedObjectContext
             }
-            let objUser = try decoder.decode([ChatList].self, from: arrayData.toData())
+            _ = try decoder.decode([ChatList].self, from: arrayData.toData())
             appdelegate.saveContext()
-            return objUser
         } catch {
             print("nodata found")
-            return nil
         }
-        
     }
-    
-    
-    
-    
     
     func getMessages() -> Void {
         socket.on("receiveMessage/\(UserDefaults.standard.userID!)") {data, ack in
@@ -104,20 +98,11 @@ class SocketManagerAPI: NSObject {
     
     func getChannel() -> Void {
         socket.on("channelList/\(UserDefaults.standard.userID!)") {data, ack in
-            print(data)
-            
             guard let customData = data as? [[String:Any]] else { return }
-            let obj = customData[0]["isNew"] as! String
-            if obj == "0" {
-                let updated = self.checkChannelAvailable(customData)
-                if updated {
-                    self.chnlDelegate?.receiveChnl()
-                }
-            }else{
-                if self.insertChannelList(arrayData: customData) != nil {
-                    self.chnlDelegate?.receiveChnl()
-                }
-                
+            
+            let updated = self.checkChannelAvailable(customData)
+            if updated {
+                self.chnlDelegate?.receiveChnl()
             }
             ack.with("Got your currentAmount", "dude")
         }
@@ -139,8 +124,10 @@ class SocketManagerAPI: NSObject {
                 objResult.updated_at = updatedData["updated_at"] as? String
                 objResult.channelType = updatedData["channelType"] as? String
                 objResult.channelName = updatedData["channelName"] as? String
+                appdelegate.saveContext()
+            }else{
+                self.insertChannelList(arrayData: arrayData)
             }
-            appdelegate.saveContext()
             return true
         } catch {
             print("error executing fetch request: \(error.localizedDescription)")
