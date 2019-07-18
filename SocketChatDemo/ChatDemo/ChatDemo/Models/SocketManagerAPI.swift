@@ -109,14 +109,15 @@ class SocketManagerAPI: NSObject {
             guard let customData = data as? [[String:Any]] else { return }
             let obj = customData[0]["isNew"] as! String
             if obj == "0" {
-                if self.insertChannelList(arrayData: customData) != nil {
-                    self.chnlDelegate?.receiveChnl()
-                }
-            }else{
                 let updated = self.checkChannelAvailable(customData)
                 if updated {
                     self.chnlDelegate?.receiveChnl()
                 }
+            }else{
+                if self.insertChannelList(arrayData: customData) != nil {
+                    self.chnlDelegate?.receiveChnl()
+                }
+                
             }
             ack.with("Got your currentAmount", "dude")
         }
