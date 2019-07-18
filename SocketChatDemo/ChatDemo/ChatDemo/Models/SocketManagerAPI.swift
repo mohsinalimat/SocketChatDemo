@@ -106,7 +106,6 @@ class SocketManagerAPI: NSObject {
             print(data)
             
             guard let customData = data as? [[String:Any]] else { return }
-            let obj = customData[0]["isNew"] as! String
             
             let updated = self.checkChannelAvailable(customData)
             if updated {
