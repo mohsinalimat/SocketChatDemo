@@ -24,6 +24,7 @@
 		C978E05622DB6CD400AA978D /* LoginUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C978E05522DB6CD400AA978D /* LoginUser.swift */; };
 		C978E05822DB7D2B00AA978D /* ChatList.swift in Sources */ = {isa = PBXBuildFile; fileRef = C978E05722DB7D2B00AA978D /* ChatList.swift */; };
 		ED9EA0F922DDD309001BDA5E /* UserListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED9EA0F822DDD309001BDA5E /* UserListViewController.swift */; };
+		EDA24FC722E0ACD40034DD03 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA24FC622E0ACD40034DD03 /* Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,6 +48,7 @@
 		C978E05522DB6CD400AA978D /* LoginUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginUser.swift; sourceTree = "<group>"; };
 		C978E05722DB7D2B00AA978D /* ChatList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatList.swift; sourceTree = "<group>"; };
 		ED9EA0F822DDD309001BDA5E /* UserListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListViewController.swift; sourceTree = "<group>"; };
+		EDA24FC622E0ACD40034DD03 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		F5295EFA3550916D1161E39A /* Pods-ChatDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatDemo.debug.xcconfig"; path = "Target Support Files/Pods-ChatDemo/Pods-ChatDemo.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -120,6 +122,7 @@
 				C94B242C22DB39F500DB0D78 /* ChatMessages.swift */,
 				C978E05522DB6CD400AA978D /* LoginUser.swift */,
 				C978E05722DB7D2B00AA978D /* ChatList.swift */,
+				EDA24FC622E0ACD40034DD03 /* Extensions.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -265,6 +268,7 @@
 				C94B241622DB1A3B00DB0D78 /* SceneDelegate.swift in Sources */,
 				C978E05622DB6CD400AA978D /* LoginUser.swift in Sources */,
 				C94B242B22DB1E0B00DB0D78 /* SocketManagerAPI.swift in Sources */,
+				EDA24FC722E0ACD40034DD03 /* Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
