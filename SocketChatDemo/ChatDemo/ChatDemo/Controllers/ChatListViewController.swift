@@ -22,9 +22,12 @@ class ChatListCell: UITableViewCell {
 
 
 class ChatListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    
     @IBOutlet var chatListTable: UITableView!
     
     var chatListArray : [ChatList]?
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -32,7 +35,9 @@ class ChatListViewController: UIViewController, UITableViewDelegate, UITableView
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        appdelegate.objAPI.chnlDelegate = self
         getChatList()
+        
     }
     
     func getChatList() -> Void {
@@ -82,5 +87,11 @@ class ChatListViewController: UIViewController, UITableViewDelegate, UITableView
             
             destination.chatObj = sender as? ChatList
         }
+    }
+}
+extension ChatListViewController : ReceiveChannel{
+    func receiveChnl(channel: [ChatList]) {
+        self.chatListArray! += channel
+        self.chatListTable.reloadData()
     }
 }

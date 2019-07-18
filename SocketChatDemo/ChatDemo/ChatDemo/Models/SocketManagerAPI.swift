@@ -16,7 +16,9 @@ typealias completionHandlerArray = ([[String:Any]]?, String?) -> Void
 protocol ReceiveMessage {
     func receiveMsg(msg : ChatMessages)
 }
-
+protocol ReceiveChannel {
+    func receiveChnl(channel : [ChatList])
+}
 
 class SocketManagerAPI: NSObject {
     
@@ -24,6 +26,7 @@ class SocketManagerAPI: NSObject {
     let socket : SocketIOClient!
     
     var delegate : ReceiveMessage?
+    var chnlDelegate : ReceiveChannel?
     
     static var shared : SocketManagerAPI {
         return SocketManagerAPI()
@@ -103,7 +106,7 @@ class SocketManagerAPI: NSObject {
             guard let customData = data as? [[String:Any]] else { return }
             
             if let channelList = self.insertChannelList(arrayData: customData) {
-                
+                self.chnlDelegate?.receiveChnl(channel: channelList)
             }
             ack.with("Got your currentAmount", "dude")
         }
