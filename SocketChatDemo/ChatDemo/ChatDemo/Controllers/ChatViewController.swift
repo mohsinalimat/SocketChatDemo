@@ -14,6 +14,8 @@ import CoreData
 class ChatSenderCell : UITableViewCell {
     
     @IBOutlet var lblChatSenderMsg: UILabel!
+    @IBOutlet weak var lblTime: UILabel!
+    @IBOutlet weak var imgStatus: UIImageView!
     
     
     override func awakeFromNib() {
@@ -25,6 +27,7 @@ class ChatReceiverCell: UITableViewCell {
     
     @IBOutlet var lblChatReceiverMsg: UILabel!
     
+    @IBOutlet weak var lblTime: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
