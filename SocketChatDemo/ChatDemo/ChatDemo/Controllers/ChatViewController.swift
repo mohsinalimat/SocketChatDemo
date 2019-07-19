@@ -172,7 +172,7 @@ extension ChatViewController : ReceiveMessage{
         self.chatMsgsArray.append(msg)
         self.tableView.reloadData()
         self.tableView.scrollToBottom(index: self.chatMsgsArray.count - 1)
-        let dict = ["is_read":"2","id":msg.id!,"sender":msg.sender!] as [String:Any]
+        let dict = ["is_read":"3","id":msg.id!,"sender":msg.sender!] as [String:Any]
         appdelegate.objAPI.emitStatus(dict) { (emitData, error) in
             
         }
@@ -211,7 +211,7 @@ extension ChatViewController : UITableViewDataSource,UITableViewDelegate{
                 break
             case "3":
                 senderCell.imgStatus.image = #imageLiteral(resourceName: "tick_blue")
-                senderCell.imgStatus.tintColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
+                senderCell.imgStatus.tintColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
                 break
             default:
                 senderCell.imgStatus.image = nil

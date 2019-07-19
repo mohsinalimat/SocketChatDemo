@@ -92,10 +92,10 @@ class SocketManagerAPI: NSObject {
     func getChangeStatus(){
         socket.on("ChangeStatus/\(UserDefaults.standard.userID!)") {data, ack in
             if let getData = data[0] as? [String:Any]{
-                    self.delegate?.updateStatus(data: getData)
-                }
+                self.delegate?.updateStatus(data: getData)
             }
         }
+    }
     
     
     
@@ -106,13 +106,11 @@ class SocketManagerAPI: NSObject {
             
             if let getData = data[0] as? [String:Any]{
                 if let msg =  self.insertMessage(dict: getData){
-                    
-                    
-                    self.delegate?.receiveMsg(msg: msg)
                     let dict = ["is_read":"2","id":msg.id!,"sender":msg.sender!] as [String:Any]
                     self.emitStatus(dict) { (dict, error) in
-                            
+                        
                     }
+                    self.delegate?.receiveMsg(msg: msg)
                 }
             }
         }
