@@ -215,23 +215,23 @@ extension ChatViewController : UITextViewDelegate{
             textView.text = "Type a message"
             textView.textColor = UIColor.lightGray
         }else{
-            
-            
-            var receiverArray = chatObj?.userIds?.components(separatedBy: ",")
-            
-            if let currentIndex = receiverArray?.firstIndex(where: {$0.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) == UserDefaults.standard.userID!}){
-                receiverArray?.remove(at: currentIndex)
-            }
-
-            
-            
-            let param = ["sender": UserDefaults.standard.userID!, "receiver": receiverArray!.joined(separator: ",")]
-            
-            appdelegate.objAPI.updateTyping(param)
             textView.text = ""
         }
-
     }
+    
+    
+    
+    func textViewDidChange(_ textView: UITextView) {
+        var receiverArray = chatObj?.userIds?.components(separatedBy: ",")
+        
+        if let currentIndex = receiverArray?.firstIndex(where: {$0.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) == UserDefaults.standard.userID!}){
+            receiverArray?.remove(at: currentIndex)
+        }
+        let param = ["sender": UserDefaults.standard.userID!, "receiver": receiverArray!.joined(separator: ",")]
+        appdelegate.objAPI.updateTyping(param)
+    }
+    
+    
 }
 extension UITableView{
     func scrollToBottom(index : Int){
