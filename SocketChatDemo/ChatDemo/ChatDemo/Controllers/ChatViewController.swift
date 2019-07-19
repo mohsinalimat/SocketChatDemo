@@ -172,6 +172,11 @@ extension ChatViewController : ReceiveMessage{
         self.chatMsgsArray.append(msg)
         self.tableView.reloadData()
         self.tableView.scrollToBottom(index: self.chatMsgsArray.count - 1)
+        let dict = ["is_read":"3","id":msg.id]
+        appdelegate.objAPI.emitStatus(dict as [String : Any]) { (emitData, error) in
+            self.updateStatus(data: emitData!)
+        }
+
     }
 }
 
