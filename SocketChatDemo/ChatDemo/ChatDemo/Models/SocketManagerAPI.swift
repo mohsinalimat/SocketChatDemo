@@ -53,6 +53,7 @@ class SocketManagerAPI: NSObject {
             self.getMessages()
             self.getChannel()
             self.getTypingMessage()
+            self.getChangeStatus()
         }
     }
     
@@ -108,8 +109,8 @@ class SocketManagerAPI: NSObject {
                     
                     
                     self.delegate?.receiveMsg(msg: msg)
-                    let dict = ["is_read":"2","id":msg.id]
-                    self.emitStatus(dict as [String : Any]) { (dict, error) in
+                    let dict = ["is_read":"2","id":msg.id!,"sender":msg.sender!] as [String:Any]
+                    self.emitStatus(dict) { (dict, error) in
                             
                     }
                 }
