@@ -51,6 +51,7 @@ class SocketManagerAPI: NSObject {
         if UserDefaults.standard.userID != nil {
             self.getMessages()
             self.getChannel()
+            self.getTypingMessage()
         }
     }
     
@@ -116,6 +117,7 @@ class SocketManagerAPI: NSObject {
             ack.with("Got your currentAmount", "dude")
         }
     }
+    
     func getTypingMessage() -> Void{
         socket.on("getTyping/\(UserDefaults.standard.userID!)") {data, ack in
             print(data)
