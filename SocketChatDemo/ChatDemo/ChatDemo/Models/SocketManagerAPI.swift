@@ -88,6 +88,13 @@ class SocketManagerAPI: NSObject {
             return nil
         }
     }
+    func getChangeStatus(){
+        socket.on("ChangeStatus/\(UserDefaults.standard.userID!)") {data, ack in
+            if let getData = data[0] as? [String:Any]{
+                    self.delegate?.updateStatus(data: getData)
+                }
+            }
+        }
     
     
     
