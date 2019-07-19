@@ -101,9 +101,9 @@ class SocketManagerAPI: NSObject {
                     
                     
                     self.delegate?.receiveMsg(msg: msg)
-                        let dict = ["is_read":"2","id":msg.id]
-                        self.emitStatus(dict as [String : Any]) { (dict, error) in
-                            self.delegate?.updateStatus(data: dict!)
+                    let dict = ["is_read":"2","id":msg.id]
+                    self.emitStatus(dict as [String : Any]) { (dict, error) in
+                            
                     }
                 }
             }
