@@ -16,6 +16,7 @@ typealias completionHandlerArray = ([[String:Any]]?, String?) -> Void
 protocol ReceiveMessage {
     func receiveMsg(msg : ChatMessages)
     func typingMsg(data : [String:Any])
+    func updateStatus(data : [String:Any])
 }
 protocol ReceiveChannel {
     func receiveChnl()
@@ -94,13 +95,62 @@ class SocketManagerAPI: NSObject {
     
     func getMessages() -> Void {
         socket.on("receiveMessage/\(UserDefaults.standard.userID!)") {data, ack in
-            print(data)
+            
             if let getData = data[0] as? [String:Any]{
                 if let msg =  self.insertMessage(dict: getData){
+                    
+                    
                     self.delegate?.receiveMsg(msg: msg)
+                    
+                    if self.delegate == nil{
+                        let dict = ["is_read":"2","id":msg.id]
+                        self.emitStatus(dict) { (dict, error) in
+                            
+                            print(dict)
+                        }
+                    }else{
+                        let dict = ["is_read":"3","id":msg.id]
+                        self.emitStatus(dict) { (emitData, error) in
+                        
+                            self.delegate?.updateStatus(data: emitData!)
+                            
+                            print(dict)
+                        }
+                    }
                 }
             }
-            ack.with("Got your currentAmount", "dude")
+            
+        }
+    }
+    
+    func emitStatus(_ params : [String:Any], ackCallBack:@escaping completionHandler) -> Void {
+        socket.emitWithAck("ChangeStatus", params).timingOut(after: 0) { data in
+            guard let data = data[0] as? [String:String] else { ackCallBack(nil,"data Not availabel"); return }
+            
+            let status = self.updateMessageStatus(data)
+            
+            if status{
+                ackCallBack(data,nil)
+            }
+        }
+    }
+    func updateMessageStatus(_ arrayData : [String:Any]) -> Bool {
+       
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "ChatMessages")
+        fetchRequest.predicate = NSPredicate(format: "id = '\(arrayData["id"] ?? "")'")
+        
+        do {
+            guard let result = try? appdelegate.persistentContainer.viewContext.fetch(fetchRequest)  as? [ChatMessages] else { return false }
+            if result.count > 0 {
+                let objResult = result[0]
+                
+                objResult.is_read = arrayData["is_read"] as? String
+                appdelegate.saveContext()
+            }
+            return true
+        } catch {
+            print("error executing fetch request: \(error.localizedDescription)")
+            return false
         }
     }
     
