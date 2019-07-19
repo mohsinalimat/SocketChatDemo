@@ -81,6 +81,7 @@ class ChatViewController: UIViewController {
             guard let result = try managedObjectContext.fetch(fetchRequest) as? [ChatMessages] else { return }
             self.chatMsgsArray = result
             self.tableView.reloadData()
+            self.tableView.scrollToBottom(index: self.chatMsgsArray.count - 1)
             
         } catch {
             print("error executing fetch request: \(error.localizedDescription)")
@@ -130,6 +131,10 @@ class ChatViewController: UIViewController {
                     if let objMsg = appdelegate.objAPI.insertMessage(dict: responseData){
                         self.chatMsgsArray.append(objMsg)
                         self.tableView.reloadData()
+                        
+                        self.tableView.scrollToBottom(index: self.chatMsgsArray.count - 1)
+                        
+                        
                         self.textViewSenderChat.text = ""
                     }
                 }
@@ -143,6 +148,7 @@ extension ChatViewController : ReceiveMessage{
     func receiveMsg(msg: ChatMessages) {
         self.chatMsgsArray.append(msg)
         self.tableView.reloadData()
+        self.tableView.scrollToBottom(index: self.chatMsgsArray.count - 1)
     }
 }
 
@@ -180,5 +186,13 @@ extension ChatViewController : UITextViewDelegate{
             textView.text = ""
         }
 
+    }
+}
+extension UITableView{
+    func scrollToBottom(index : Int){
+        DispatchQueue.main.async {
+            let indexPath = IndexPath(row: index, section: 0)
+            self.scrollToRow(at: indexPath, at: .bottom, animated: true)
+        }
     }
 }
