@@ -105,16 +105,7 @@ class SocketManagerAPI: NSObject {
                     if self.delegate == nil{
                         let dict = ["is_read":"2","id":msg.id]
                         self.emitStatus(dict as [String : Any]) { (dict, error) in
-                            
-                            
-                        }
-                    }else{
-                        let dict = ["is_read":"3","id":msg.id]
-                        self.emitStatus(dict as [String : Any]) { (emitData, error) in
-                        
-                            self.delegate?.updateStatus(data: emitData!)
-                            
-                            
+                            self.delegate?.updateStatus(data: dict!)
                         }
                     }
                 }
