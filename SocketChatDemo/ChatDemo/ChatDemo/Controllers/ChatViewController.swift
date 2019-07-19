@@ -123,8 +123,8 @@ class ChatViewController: UIViewController {
         
         
         
-        let params = ["channelType" : "0","message":self.textViewSenderChat.text!,"status":"0","chat_id":chatObj!.chatid! , "sender": UserDefaults.standard.userID! , "receiver" : receiverArray!.joined(separator: ",")] as [String : Any]
-        print(params)
+        let params = ["channelType" : "0","message":self.textViewSenderChat.text!,"is_read":"0","chat_id":chatObj!.chatid! , "sender": UserDefaults.standard.userID! , "receiver" : receiverArray!.joined(separator: ",") , "created_at" : getCurrentDateTime(),"updated_at" : getCurrentDateTime() , "id" : "\(Date().millisecondsSince1970)\(chatObj!.chatid!)" ] as [String : Any]
+        
         
         appdelegate.objAPI.sendMessage(params) { (response, error) in
             if let error = error {
@@ -148,6 +148,10 @@ class ChatViewController: UIViewController {
 
 }
 extension ChatViewController : ReceiveMessage{
+    func typingMsg(data: [String : Any]) {
+        self.navigationItem.title = "Typing..."
+    }
+    
     func receiveMsg(msg: ChatMessages) {
         self.chatMsgsArray.append(msg)
         self.tableView.reloadData()
@@ -169,10 +173,35 @@ extension ChatViewController : UITableViewDataSource,UITableViewDelegate{
         if UserDefaults.standard.userID! == chatObj.sender{
             let senderCell = tableView.dequeueReusableCell(withIdentifier: "ChatSenderCell", for: indexPath) as! ChatSenderCell
             senderCell.lblChatSenderMsg.text = chatObj.message
+            senderCell.lblTime.text = chatObj.created_at?.getLocalTime()
+            
+            
+            switch chatObj.is_read {
+            case "0":
+                senderCell.imgStatus.image = nil
+                break
+            case "1":
+                senderCell.imgStatus.image = #imageLiteral(resourceName: "single_tick")
+                senderCell.imgStatus.tintColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+                break
+            case "2":
+                senderCell.imgStatus.image = #imageLiteral(resourceName: "tick_grey")
+                senderCell.imgStatus.tintColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+                break
+            case "3":
+                senderCell.imgStatus.image = #imageLiteral(resourceName: "tick_blue")
+                senderCell.imgStatus.tintColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
+                break
+            default:
+                senderCell.imgStatus.image = nil
+                break
+            }
+            
             return senderCell
         }else{
             let receiverCell = tableView.dequeueReusableCell(withIdentifier: "ChatReceiverCell", for: indexPath) as! ChatReceiverCell
             receiverCell.lblChatReceiverMsg.text = chatObj.message
+            receiverCell.lblTime.text = chatObj.created_at?.getLocalTime()
             return receiverCell
         }
         
@@ -186,6 +215,19 @@ extension ChatViewController : UITextViewDelegate{
             textView.text = "Type a message"
             textView.textColor = UIColor.lightGray
         }else{
+            
+            
+            var receiverArray = chatObj?.userIds?.components(separatedBy: ",")
+            
+            if let currentIndex = receiverArray?.firstIndex(where: {$0.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) == UserDefaults.standard.userID!}){
+                receiverArray?.remove(at: currentIndex)
+            }
+
+            
+            
+            let param = ["sender": UserDefaults.standard.userID!, "receiver": receiverArray!.joined(separator: ",")]
+            
+            appdelegate.objAPI.updateTyping(param)
             textView.text = ""
         }
 
@@ -194,8 +236,18 @@ extension ChatViewController : UITextViewDelegate{
 extension UITableView{
     func scrollToBottom(index : Int){
         DispatchQueue.main.async {
-            let indexPath = IndexPath(row: index, section: 0)
-            self.scrollToRow(at: indexPath, at: .bottom, animated: true)
+            if index > 0{
+                let indexPath = IndexPath(row: index, section: 0)
+                self.scrollToRow(at: indexPath, at: .bottom, animated: true)
+            }
         }
     }
 }
+func getCurrentDateTime() -> String{
+    
+    let dateFormatter : DateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+    let date = Date()
+    return dateFormatter.string(from: date)
+}
+

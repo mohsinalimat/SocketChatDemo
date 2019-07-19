@@ -15,10 +15,12 @@ typealias completionHandlerArray = ([[String:Any]]?, String?) -> Void
 
 protocol ReceiveMessage {
     func receiveMsg(msg : ChatMessages)
+    func typingMsg(data : [String:Any])
 }
 protocol ReceiveChannel {
     func receiveChnl()
 }
+
 
 class SocketManagerAPI: NSObject {
     
@@ -114,6 +116,18 @@ class SocketManagerAPI: NSObject {
             ack.with("Got your currentAmount", "dude")
         }
     }
+    func getTypingMessage() -> Void{
+        socket.on("getTyping/\(UserDefaults.standard.userID!)") {data, ack in
+            print(data)
+            
+            guard let customData = data as? [[String:Any]] else { return }
+            self.delegate?.typingMsg(data: customData[0])
+            ack.with("Got your currentAmount", "dude")
+        }
+    }
+    
+    
+    
     
     func checkChannelAvailable(_ arrayData : [[String:Any]]) -> Bool {
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "ChatList")
@@ -197,6 +211,11 @@ class SocketManagerAPI: NSObject {
             ackCallBack(data,nil)
         }
     }
+    func updateTyping(_ params : [String:Any]) -> Void {
+        socket.emit("UserTyping", params)
+    }
+    
+    
     func getChatID(_ params : [String:Any], ackCallBack:@escaping completionHandler) -> Void {
         socket.emitWithAck("GetChatId", params).timingOut(after: 0) { data in
             print("got message")

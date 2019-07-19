@@ -19,6 +19,7 @@ class ChatMessages: NSManagedObject, Codable {
         case updated_at = "updated_at"
         case receiver = "receiver"
         case created_at = "created_at"
+        
     }
     
     // MARK: - Core Data Managed Object

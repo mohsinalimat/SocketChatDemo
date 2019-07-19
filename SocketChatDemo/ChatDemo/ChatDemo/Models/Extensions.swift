@@ -87,3 +87,30 @@ extension UIView {
         }
     }
 }
+extension String{
+    func getLocalTime() -> String? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        
+        
+        let timeUTC = dateFormatter.date(from: self)
+        dateFormatter.dateFormat = "h:mm a"
+        
+        if timeUTC != nil {
+            dateFormatter.timeZone = NSTimeZone.local
+            
+            let localTime = dateFormatter.string(from: timeUTC!)
+            return localTime
+        }
+        return nil
+    }
+}
+extension Date {
+    var millisecondsSince1970:Int64 {
+        return Int64((self.timeIntervalSince1970 * 1000.0).rounded())
+    }
+    
+    init(milliseconds:Int64) {
+        self = Date(timeIntervalSince1970: TimeInterval(milliseconds) / 1000)
+    }
+}
