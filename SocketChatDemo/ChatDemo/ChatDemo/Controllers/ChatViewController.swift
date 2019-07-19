@@ -66,6 +66,8 @@ class ChatViewController: UIViewController {
     func setUpUI(){
         self.tableView.tableFooterView = UIView.init()
         
+        self.navigationItem.title = chatObj?.channelName
+        
         self.loadCurrentConversationMessages()
         
         
@@ -148,8 +150,22 @@ class ChatViewController: UIViewController {
 
 }
 extension ChatViewController : ReceiveMessage{
+    func updateStatus(data: [String : Any]) {
+        if let index = self.chatMsgsArray.firstIndex(where: {$0.id == data["id"] as? String}){
+            let obj = self.chatMsgsArray[index]
+            obj.is_read = data["is_read"] as? String
+            self.chatMsgsArray[index] = obj
+            self.tableView.reloadData()
+            
+        }
+    }
+
+    
     func typingMsg(data: [String : Any]) {
         self.navigationItem.title = "Typing..."
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            self.navigationItem.title = self.chatObj?.channelName
+        }
     }
     
     func receiveMsg(msg: ChatMessages) {
