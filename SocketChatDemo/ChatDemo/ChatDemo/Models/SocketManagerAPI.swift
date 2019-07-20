@@ -12,6 +12,7 @@ import CoreData
 
 typealias completionHandler = ([String:Any]?, String?) -> Void
 typealias completionHandlerArray = ([[String:Any]]?, String?) -> Void
+typealias completionHandlerBool = (Bool?, String?) -> Void
 
 protocol ReceiveMessage {
     func receiveMsg(msg : ChatMessages)
@@ -25,7 +26,7 @@ protocol ReceiveChannel {
 
 class SocketManagerAPI: NSObject {
     
-    let manager = SocketManager(socketURL: URL(string: "http://192.168.1.105:3000")!, config: [.log(true), .compress, .connectParams(["user_id":"2"])])
+    let manager = SocketManager(socketURL: URL(string: "http://192.168.1.5:3000")!, config: [.log(true), .compress, .connectParams(["user_id":"2"])])
     let socket : SocketIOClient!
     
     var delegate : ReceiveMessage?
@@ -39,17 +40,28 @@ class SocketManagerAPI: NSObject {
         self.socket = manager.defaultSocket
     }
     
-    func connectSocket() -> Void {
+    func connectSocket(completion:completionHandlerBool? = nil) -> Void {
         socket.on(clientEvent: .connect) { data, ack in
             print("---------->> socket connected <<---------------")
-            self.socket.removeAllHandlers()
-            
+            self.getData()
+            if let completion = completion {
+                completion(true,nil)
+            }
         }
         socket.connect()
     }
     
+    func socketDisconnect(completion:@escaping completionHandlerBool) -> Void {
+        socket.on(clientEvent: .disconnect) { (data, ack) in
+            print("---------->> socket disconnected <<---------------")
+            completion(true,nil)
+        }
+        socket.disconnect()
+    }
+    
     func getData() -> Void {
         if UserDefaults.standard.userID != nil {
+            self.socket.removeAllHandlers()
             self.getMessages()
             self.getChannel()
             self.getTypingMessage()
@@ -113,6 +125,7 @@ class SocketManagerAPI: NSObject {
                     self.delegate?.receiveMsg(msg: msg)
                 }
             }
+            ack.with("got it")
         }
     }
     
@@ -255,6 +268,7 @@ class SocketManagerAPI: NSObject {
             guard let data = data[0] as? [String:String] else { ackCallBack(nil,"data Not availabel"); return }
             ackCallBack(data,nil)
         }
+        print(socket.sid)
     }
     func updateTyping(_ params : [String:Any]) -> Void {
         socket.emit("UserTyping", params)

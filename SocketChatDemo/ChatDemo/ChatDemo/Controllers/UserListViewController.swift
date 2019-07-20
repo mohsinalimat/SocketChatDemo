@@ -13,7 +13,6 @@ class UserListViewController: UIViewController, UITableViewDelegate, UITableView
     
     @IBOutlet var chatListTable: UITableView!
     
-    
     var userList : [LoginUser]?
     
     override func viewDidLoad() {
@@ -34,15 +33,9 @@ class UserListViewController: UIViewController, UITableViewDelegate, UITableView
                             decoder.userInfo[context] = managedObjectContext
                         }
                         var objUser = try decoder.decode([LoginUser].self, from: objresponse.toData())
-                        
-                        
-                        
                         if let index = objUser.firstIndex(where: {$0.id == UserDefaults.standard.userID!}){
                             objUser.remove(at: index)
                         }
-                        
-                        
-                        
                         self.userList = objUser
                         self.chatListTable.reloadData()
                         print("data saved")

@@ -40,6 +40,7 @@ class ChatReceiverCell: UITableViewCell {
 class ChatViewController: UIViewController {
 
      
+    @IBOutlet weak var constraintsBottom: NSLayoutConstraint!
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var textViewSenderChat: UITextView!
@@ -54,15 +55,41 @@ class ChatViewController: UIViewController {
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         appdelegate.objAPI.delegate = self
         
     }
+    
+    @objc func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            if #available(iOS 11.0, *) {
+                let window = UIApplication.shared.keyWindow
+                _ = window?.safeAreaInsets.top
+                guard let bottomPadding = window?.safeAreaInsets.bottom else { return }
+                constraintsBottom.constant += keyboardSize.height - bottomPadding
+            }else{
+                constraintsBottom.constant += keyboardSize.height
+            }
+            
+        }
+    }
+    
+    @objc func keyboardWillHide(notification: NSNotification) {
+        if constraintsBottom.constant > 0 {
+            constraintsBottom.constant = 0
+        }
+    }
+
+    
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: self)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: self)
         appdelegate.objAPI.delegate = nil
     }
+    
     func setUpUI(){
         self.tableView.tableFooterView = UIView.init()
         
@@ -109,9 +136,7 @@ class ChatViewController: UIViewController {
                 self.navigationController?.popToViewController(i, animated: true)
                 break
             }
-            
         }
-        
     }
     
     
@@ -249,7 +274,9 @@ extension ChatViewController : UITextViewDelegate{
             receiverArray?.remove(at: currentIndex)
         }
         let param = ["sender": UserDefaults.standard.userID!, "receiver": receiverArray!.joined(separator: ",")]
-        appdelegate.objAPI.updateTyping(param)
+        if textView.text.trimmingCharacters(in: .whitespacesAndNewlines) != "" {
+            appdelegate.objAPI.updateTyping(param)
+        }
     }
     
     

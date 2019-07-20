@@ -12,7 +12,6 @@
 		416D80925B7F6123B62DB7EB /* Pods_ChatDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94C06C6368888785CDECF94D /* Pods_ChatDemo.framework */; };
 		C94B241422DB1A3B00DB0D78 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94B241322DB1A3B00DB0D78 /* AppDelegate.swift */; };
 		C94B241622DB1A3B00DB0D78 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94B241522DB1A3B00DB0D78 /* SceneDelegate.swift */; };
-		C94B241822DB1A3B00DB0D78 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94B241722DB1A3B00DB0D78 /* ViewController.swift */; };
 		C94B241B22DB1A3B00DB0D78 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C94B241922DB1A3B00DB0D78 /* Main.storyboard */; };
 		C94B241E22DB1A3B00DB0D78 /* ChatDemo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C94B241C22DB1A3B00DB0D78 /* ChatDemo.xcdatamodeld */; };
 		C94B242022DB1A3F00DB0D78 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C94B241F22DB1A3F00DB0D78 /* Assets.xcassets */; };
@@ -35,7 +34,6 @@
 		C94B241022DB1A3B00DB0D78 /* ChatDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChatDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C94B241322DB1A3B00DB0D78 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C94B241522DB1A3B00DB0D78 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		C94B241722DB1A3B00DB0D78 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		C94B241A22DB1A3B00DB0D78 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		C94B241D22DB1A3B00DB0D78 /* ChatDemo.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ChatDemo.xcdatamodel; sourceTree = "<group>"; };
 		C94B241F22DB1A3F00DB0D78 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -130,7 +128,6 @@
 		C978E05422DB6C7900AA978D /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				C94B241722DB1A3B00DB0D78 /* ViewController.swift */,
 				C978E04F22DB5A2800AA978D /* LoginViewController.swift */,
 				C978E05122DB5A9100AA978D /* ChatListViewController.swift */,
 				ED9EA0F822DDD309001BDA5E /* UserListViewController.swift */,
@@ -257,7 +254,6 @@
 			files = (
 				C978E05022DB5A2800AA978D /* LoginViewController.swift in Sources */,
 				ED9EA0F922DDD309001BDA5E /* UserListViewController.swift in Sources */,
-				C94B241822DB1A3B00DB0D78 /* ViewController.swift in Sources */,
 				C978E05222DB5A9100AA978D /* ChatListViewController.swift in Sources */,
 				C94B242D22DB39F500DB0D78 /* ChatMessages.swift in Sources */,
 				C94B241422DB1A3B00DB0D78 /* AppDelegate.swift in Sources */,
@@ -413,7 +409,9 @@
 			baseConfigurationReference = F5295EFA3550916D1161E39A /* Pods-ChatDemo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = TUBBTSR2F6;
 				INFOPLIST_FILE = ChatDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -421,6 +419,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.vishal.ChatDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = Dev_All;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -431,7 +430,9 @@
 			baseConfigurationReference = 8CA54405A6282C94D9152363 /* Pods-ChatDemo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = TUBBTSR2F6;
 				INFOPLIST_FILE = ChatDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -439,6 +440,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.vishal.ChatDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = Dev_All;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

@@ -25,15 +25,13 @@ class ChatListCell: UITableViewCell {
 class ChatListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet var chatListTable: UITableView!
-    
     var chatListArray : [ChatList]?
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         chatListTable.tableFooterView = UIView.init()
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.chatListArray?.removeAll()
@@ -41,12 +39,37 @@ class ChatListViewController: UIViewController, UITableViewDelegate, UITableView
         self.checkDataAvailable()
     }
     
+    @IBAction func btnLogoutAction(_ sender: UIBarButtonItem) {
+        appdelegate.objAPI.socketDisconnect { (success, error) in
+            self.clearAllCoreData()
+            appdelegate.objAPI.socket.removeAllHandlers()
+            UserDefaults.standard.userID = nil
+            self.navigationController?.popViewController(animated: true)
+        }
+    }
+    
+    public func clearAllCoreData() {
+        let entities = appdelegate.persistentContainer.managedObjectModel.entities
+        entities.compactMap({ $0.name }).forEach(clearDeepObjectEntity)
+    }
+    
+    private func clearDeepObjectEntity(_ entity: String) {
+        let context = appdelegate.persistentContainer.viewContext
+        let deleteFetch = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: deleteFetch)
+        do {
+            try context.execute(deleteRequest)
+            try context.save()
+        } catch {
+            print ("There was an error")
+        }
+    }
+    
     func checkDataAvailable(){
         do{
             let context = appdelegate.persistentContainer.viewContext
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ChatList")
             if let dataArray = try context.fetch(fetchRequest) as? [ChatList]{
-                print(dataArray)
                 if dataArray.count == 0{
                     getChatList()
                 }else{
@@ -54,7 +77,6 @@ class ChatListViewController: UIViewController, UITableViewDelegate, UITableView
                     self.chatListTable.reloadData()
                 }
             }
-            
         }catch let error{
             print(error.localizedDescription)
         }
@@ -104,7 +126,6 @@ class ChatListViewController: UIViewController, UITableViewDelegate, UITableView
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destination = segue.destination as? ChatViewController{
-            
             destination.chatObj = sender as? ChatList
         }
     }

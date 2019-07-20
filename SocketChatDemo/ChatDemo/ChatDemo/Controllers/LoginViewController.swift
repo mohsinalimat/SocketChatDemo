@@ -26,26 +26,34 @@ class LoginViewController: UIViewController {
         }else{
             let params = ["email":emailID.text!,
                           "password":password.text!]
-            appdelegate.objAPI.authenticateUser(params) { (response, error) in
-                if let error = error {
-                    print(error)
-                }else{
-                    if let responseData = response {
-                        do {
-                            let managedObjectContext = appdelegate.persistentContainer.viewContext
-                            let decoder = JSONDecoder()
-                            if let context = CodingUserInfoKey.managedObjectContext {
-                                decoder.userInfo[context] = managedObjectContext
-                            }
-                            let objUser = try decoder.decode(LoginUser.self, from: responseData.toData())
-                            try managedObjectContext.save()
-                            print("data saved")
-                            UserDefaults.standard.userID = objUser.id
-                            appdelegate.objAPI.getData()
-                            self.performSegue(withIdentifier: "segueChatList", sender: self)
-                        } catch {
-                            print(error.localizedDescription)
+            appdelegate.objAPI.connectSocket { (success, error) in
+                if success ?? false {
+                    self.login(params)
+                }
+            }
+        }
+    }
+    
+    func login(_ params:[String:Any]) -> Void {
+        appdelegate.objAPI.authenticateUser(params) { (response, error) in
+            if let error = error {
+                print(error)
+            }else{
+                if let responseData = response {
+                    do {
+                        let managedObjectContext = appdelegate.persistentContainer.viewContext
+                        let decoder = JSONDecoder()
+                        if let context = CodingUserInfoKey.managedObjectContext {
+                            decoder.userInfo[context] = managedObjectContext
                         }
+                        let objUser = try decoder.decode(LoginUser.self, from: responseData.toData())
+                        try managedObjectContext.save()
+                        print("data saved")
+                        UserDefaults.standard.userID = objUser.id
+                        appdelegate.objAPI.getData()
+                        self.performSegue(withIdentifier: "segueChatList", sender: self)
+                    } catch {
+                        print(error.localizedDescription)
                     }
                 }
             }

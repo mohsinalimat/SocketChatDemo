@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14835.7" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="3Yt-TA-xZR">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14810.12" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="3Yt-TA-xZR">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14790.5"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14766.15"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
         <capability name="iOS 13.0 system colors" minToolsVersion="11.0"/>
@@ -56,7 +56,7 @@
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" xcode11CocoaTouchSystemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="zkk-Sd-Ik7" firstAttribute="leading" secondItem="gzc-OZ-vqb" secondAttribute="leading" constant="10" id="2rN-NR-JCQ"/>
                             <constraint firstItem="TkH-xI-wXk" firstAttribute="top" secondItem="zkk-Sd-Ik7" secondAttribute="bottom" constant="20" id="8EF-6B-dbm"/>
@@ -80,7 +80,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0Kv-oj-zfI" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="173.91304347826087" y="77.678571428571431"/>
+            <point key="canvasLocation" x="183" y="-397"/>
         </scene>
         <!--Chat-->
         <scene sceneID="Blz-vl-eHY">
@@ -145,7 +145,7 @@
                                 </connections>
                             </tableView>
                         </subviews>
-                        <color key="backgroundColor" xcode11CocoaTouchSystemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="1me-L1-OTA" firstAttribute="top" secondItem="2S1-0U-me2" secondAttribute="top" id="Hek-oz-o9g"/>
                             <constraint firstItem="1me-L1-OTA" firstAttribute="leading" secondItem="2S1-0U-me2" secondAttribute="leading" id="cD4-Pc-O0e"/>
@@ -155,6 +155,11 @@
                         <viewLayoutGuide key="safeArea" id="2S1-0U-me2"/>
                     </view>
                     <navigationItem key="navigationItem" title="Chat" id="1NT-yJ-1ZP">
+                        <barButtonItem key="leftBarButtonItem" title="Item" image="logout" landscapeImage="logout" id="2qG-QD-Tkm">
+                            <connections>
+                                <action selector="btnLogoutAction:" destination="xCg-wW-2pK" id="vox-XD-RH2"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="LjI-bn-eUv">
                             <connections>
                                 <segue destination="Ahz-mS-oVt" kind="show" id="wII-xa-9uG"/>
@@ -168,7 +173,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aG0-3P-qQu" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="918.84057971014499" y="77.678571428571431"/>
+            <point key="canvasLocation" x="1167" y="23"/>
         </scene>
         <!--Sign Up View Controller-->
         <scene sceneID="Lp9-BK-96w">
@@ -240,7 +245,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OZ0-9N-yKz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="112" y="816"/>
+            <point key="canvasLocation" x="1167" y="-772"/>
         </scene>
         <!--User List View Controller-->
         <scene sceneID="ZR4-JA-pJG">
@@ -303,60 +308,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hPo-Qd-ZLF" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="918.84057971014499" y="813.61607142857144"/>
-        </scene>
-        <!--View Controller-->
-        <scene sceneID="tne-QT-ifu">
-            <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="ChatDemo" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="c06-Jp-pDE">
-                                <rect key="frame" x="184" y="114" width="46" height="30"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="2gi-n8-WUR"/>
-                                    <constraint firstAttribute="width" constant="46" id="2oj-Tt-PuD"/>
-                                </constraints>
-                                <state key="normal" title="Send"/>
-                                <connections>
-                                    <action selector="btnSendAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="tXx-0O-X1x"/>
-                                </connections>
-                            </button>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisici" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="WRX-9v-8me">
-                                <rect key="frame" x="0.0" y="44" width="414" height="50"/>
-                                <color key="backgroundColor" xcode11CocoaTouchSystemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="Dch-3C-GCe"/>
-                                </constraints>
-                                <color key="textColor" xcode11CocoaTouchSystemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
-                        </subviews>
-                        <color key="backgroundColor" xcode11CocoaTouchSystemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        <constraints>
-                            <constraint firstItem="WRX-9v-8me" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="0zP-rl-1vV"/>
-                            <constraint firstItem="WRX-9v-8me" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="2ni-02-1Ji"/>
-                            <constraint firstItem="c06-Jp-pDE" firstAttribute="top" secondItem="WRX-9v-8me" secondAttribute="bottom" constant="20" id="qEm-Ct-tqd"/>
-                            <constraint firstItem="c06-Jp-pDE" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="rs4-Sq-xHC"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="WRX-9v-8me" secondAttribute="trailing" id="ubs-jE-mSo"/>
-                        </constraints>
-                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                    </view>
-                    <connections>
-                        <outlet property="txtMessage" destination="WRX-9v-8me" id="BIw-ZL-cO6"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1732" y="78"/>
+            <point key="canvasLocation" x="1167" y="797"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="T7T-3b-ppF">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="3Yt-TA-xZR" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="NavigationController" automaticallyAdjustsScrollViewInsets="NO" id="3Yt-TA-xZR" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Dvd-P9-Abu">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
@@ -370,7 +327,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KLj-Bb-GCQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-736.23188405797111" y="77.678571428571431"/>
+            <point key="canvasLocation" x="-719" y="-397"/>
         </scene>
         <!--Chat-->
         <scene sceneID="oOl-ol-p6C">
@@ -380,7 +337,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="4QE-wU-ahA">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="4QE-wU-ahA">
                                 <rect key="frame" x="0.0" y="88" width="414" height="724"/>
                                 <color key="backgroundColor" white="0.79723173515981727" alpha="0.56236622431506844" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
@@ -431,7 +388,7 @@
                                                     </constraints>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="number" keyPath="cornerRadiusView">
-                                                            <real key="value" value="20"/>
+                                                            <real key="value" value="10"/>
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
                                                 </view>
@@ -486,7 +443,7 @@
                                                     </constraints>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="number" keyPath="cornerRadiusView">
-                                                            <real key="value" value="20"/>
+                                                            <real key="value" value="10"/>
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
                                                 </view>
@@ -514,13 +471,13 @@
                                 <rect key="frame" x="0.0" y="812" width="414" height="50"/>
                                 <subviews>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Type a message" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="dfw-Vi-SiS">
-                                        <rect key="frame" x="10" y="5" width="309" height="40"/>
+                                        <rect key="frame" x="10" y="7.5" width="309" height="35"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="40" id="6xj-VB-yRO"/>
+                                            <constraint firstAttribute="height" constant="35" id="pif-r2-4IL"/>
                                         </constraints>
                                         <color key="textColor" xcode11CocoaTouchSystemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                         <connections>
                                             <outlet property="delegate" destination="CyO-hw-kUg" id="UbC-vX-imz"/>
@@ -563,24 +520,26 @@
                         <viewLayoutGuide key="safeArea" id="Qhv-jA-O8L"/>
                     </view>
                     <navigationItem key="navigationItem" title="Chat" id="o7b-PG-hFI">
-                        <barButtonItem key="leftBarButtonItem" image="left-arrow" id="nrd-DN-Jp7">
+                        <barButtonItem key="leftBarButtonItem" image="left-arrow" width="30" id="nrd-DN-Jp7">
                             <connections>
                                 <action selector="btnBackAction:" destination="CyO-hw-kUg" id="yrm-Qm-pl7"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="constraintsBottom" destination="Rci-TG-JlI" id="TIX-Xs-kVE"/>
                         <outlet property="tableView" destination="4QE-wU-ahA" id="N1N-wV-JNx"/>
                         <outlet property="textViewSenderChat" destination="dfw-Vi-SiS" id="UMC-XX-3j4"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="G3Y-Mo-Q8n" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1731.8840579710147" y="815.625"/>
+            <point key="canvasLocation" x="2422" y="419"/>
         </scene>
     </scenes>
     <resources>
-        <image name="left-arrow" width="32" height="32"/>
+        <image name="left-arrow" width="26" height="26"/>
+        <image name="logout" width="16" height="16"/>
         <image name="single_tick" width="12" height="8"/>
     </resources>
     <inferredMetricsTieBreakers>
