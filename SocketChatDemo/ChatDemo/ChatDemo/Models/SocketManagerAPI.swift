@@ -26,7 +26,7 @@ protocol ReceiveChannel {
 
 class SocketManagerAPI: NSObject {
     
-    let manager = SocketManager(socketURL: URL(string: "http://192.168.1.5:3000")!, config: [.log(true), .compress, .connectParams(["user_id":"2"])])
+    let manager = SocketManager(socketURL: URL(string: "http://192.168.1.105:3000")!, config: [.log(true), .compress, .connectParams(["user_id":"2"])])
     let socket : SocketIOClient!
     
     var delegate : ReceiveMessage?
