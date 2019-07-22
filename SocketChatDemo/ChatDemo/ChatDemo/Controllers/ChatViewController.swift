@@ -111,6 +111,18 @@ class ChatViewController: UIViewController {
             
             let managedObjectContext = appdelegate.persistentContainer.viewContext
             guard let result = try managedObjectContext.fetch(fetchRequest) as? [ChatMessages] else { return }
+            
+            
+            for i in result {
+                if i.is_read != "3"{
+                    let dict = ["is_read":"3","id":i.id!,"sender":i.sender!] as [String:Any]
+                    self.changeStatus(dict:dict)
+                }
+            }
+            
+            
+            
+            
             self.chatMsgsArray = result
             self.tableView.reloadData()
             self.tableView.scrollToBottom(index: self.chatMsgsArray.count - 1)
@@ -198,10 +210,13 @@ extension ChatViewController : ReceiveMessage{
         self.tableView.reloadData()
         self.tableView.scrollToBottom(index: self.chatMsgsArray.count - 1)
         let dict = ["is_read":"3","id":msg.id!,"sender":msg.sender!] as [String:Any]
+        self.changeStatus(dict: dict)
+
+    }
+    func changeStatus(dict : [String:Any]){
         appdelegate.objAPI.emitStatus(dict) { (emitData, error) in
             
         }
-
     }
 }
 
