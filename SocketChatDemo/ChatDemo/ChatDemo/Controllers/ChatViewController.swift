@@ -171,12 +171,22 @@ class ChatViewController: UIViewController {
             }else{
                 if let responseData = response {
                     if let objMsg = appdelegate.objAPI.insertMessage(dict: responseData){
+                        
+                        
+                        
+                        let array = [["channelName":self.chatObj!.channelName!,"channelType":self.chatObj!.channelType!,"chatid":self.chatObj!.chatid!,"created_at":objMsg.created_at!,"last_message":objMsg.message!,"updated_at":objMsg.updated_at!,"userIds":self.chatObj!.userIds!] as [String:Any]]
+                        
+                        _ = appdelegate.objAPI.checkChannelAvailable(array)
+                        
+                        
+                        
+                        
+                        
+                        
                         self.chatMsgsArray.append(objMsg)
                         self.tableView.reloadData()
                         
                         self.tableView.scrollToBottom(index: self.chatMsgsArray.count - 1)
-                        
-                        
                         self.textViewSenderChat.text = ""
                     }
                 }
@@ -199,24 +209,41 @@ extension ChatViewController : ReceiveMessage{
 
     
     func typingMsg(data: [String : Any]) {
-        self.navigationItem.title = "Typing..."
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-            self.navigationItem.title = self.chatObj?.channelName
+        
+        if (data["sender"] as? String == self.getReceiverID()){
+            self.navigationItem.title = "Typing..."
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                self.navigationItem.title = self.chatObj?.channelName
+            }
         }
+        
     }
     
     func receiveMsg(msg: ChatMessages) {
-        self.chatMsgsArray.append(msg)
-        self.tableView.reloadData()
-        self.tableView.scrollToBottom(index: self.chatMsgsArray.count - 1)
-        let dict = ["is_read":"3","id":msg.id!,"sender":msg.sender!] as [String:Any]
-        self.changeStatus(dict: dict)
-
+        
+        if (msg.sender == self.getReceiverID()){
+            self.chatMsgsArray.append(msg)
+            self.tableView.reloadData()
+            self.tableView.scrollToBottom(index: self.chatMsgsArray.count - 1)
+            let dict = ["is_read":"3","id":msg.id!,"sender":msg.sender!] as [String:Any]
+            self.changeStatus(dict: dict)
+        }
     }
     func changeStatus(dict : [String:Any]){
         appdelegate.objAPI.emitStatus(dict) { (emitData, error) in
             
         }
+    }
+    func getReceiverID() -> String
+    {
+        var receiverArray = chatObj?.userIds?.components(separatedBy: ",")
+        
+        if let currentIndex = receiverArray?.firstIndex(where: {$0.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) == UserDefaults.standard.userID!}){
+            receiverArray?.remove(at: currentIndex)
+        }
+        
+        
+        return receiverArray!.joined(separator: ",")
     }
 }
 

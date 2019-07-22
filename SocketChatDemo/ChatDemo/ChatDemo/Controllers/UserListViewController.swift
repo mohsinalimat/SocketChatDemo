@@ -71,7 +71,8 @@ class UserListViewController: UIViewController, UITableViewDelegate, UITableView
                         var obj = [String:Any]()
                         obj["userIds"] = "\(self.userList![index].id!), \(UserDefaults.standard.userID!)"
                         obj["chatid"] = responseData["ChatId"] as? String
-                        
+                        obj["channelName"] = "\(self.userList![index].name!)"
+                        obj["channelType"] = "0"
                         
                         let objUser = try decoder.decode(ChatList.self, from: obj.toData())
                         

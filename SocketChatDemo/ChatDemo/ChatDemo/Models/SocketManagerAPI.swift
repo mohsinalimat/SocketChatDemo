@@ -198,6 +198,10 @@ class SocketManagerAPI: NSObject {
                 objResult.chatid = updatedData["chatid"] as? String
                 objResult.channelType = updatedData["channelType"] as? String
                 objResult.channelName = updatedData["channelName"] as? String
+                objResult.updated_at = updatedData["updated_at"] as? String
+                if let createdAt = updatedData["created_at"] as? String {
+                    objResult.created_at = createdAt
+                }
                 appdelegate.saveContext()
             }else{
                 self.insertChannelList(arrayData: arrayData)
