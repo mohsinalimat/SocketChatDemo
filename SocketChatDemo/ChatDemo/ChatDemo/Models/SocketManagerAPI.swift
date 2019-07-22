@@ -101,6 +101,7 @@ class SocketManagerAPI: NSObject {
             return nil
         }
     }
+    
     func getChangeStatus(){
         socket.on("ChangeStatus/\(UserDefaults.standard.userID!)") {data, ack in
             if let getData = data[0] as? [String:Any]{
@@ -108,10 +109,6 @@ class SocketManagerAPI: NSObject {
             }
         }
     }
-    
-    
-    
-    
     
     func getMessages() -> Void {
         socket.on("receiveMessage/\(UserDefaults.standard.userID!)") {data, ack in
@@ -302,5 +299,17 @@ extension UserDefaults {
         set {
             self.set(newValue, forKey: "userID")
         }
+    }
+}
+
+extension Array {
+    func toData() throws -> Data {
+        return try JSONSerialization.data(withJSONObject: self, options: JSONSerialization.WritingOptions(rawValue: 0))
+    }
+}
+
+extension Dictionary {
+    func toData() throws -> Data {
+        return try JSONSerialization.data(withJSONObject: self, options: JSONSerialization.WritingOptions(rawValue: 0))
     }
 }
