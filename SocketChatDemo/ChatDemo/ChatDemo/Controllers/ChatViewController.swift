@@ -48,6 +48,9 @@ class ChatViewController: UIViewController {
     var chatObj : ChatList?
     var chatMsgsArray = [ChatMessages]()
     
+    var msgSent : Bool = false
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -110,17 +113,13 @@ class ChatViewController: UIViewController {
             let managedObjectContext = appdelegate.persistentContainer.viewContext
             guard let result = try managedObjectContext.fetch(fetchRequest) as? [ChatMessages] else { return }
             
-            
             for i in result {
-                if i.is_read != "3"{
+                if i.is_read != "3" && i.sender != UserDefaults.standard.userID! {
                     let dict = ["is_read":"3","id":i.id!,"sender":i.sender!] as [String:Any]
                     self.changeStatus(dict:dict)
                 }
             }
-            
-            
-            
-            
+            self.msgSent = result.count > 0
             self.chatMsgsArray = result
             self.tableView.reloadData()
             self.tableView.scrollToBottom(index: self.chatMsgsArray.count - 1)
@@ -143,7 +142,9 @@ class ChatViewController: UIViewController {
        
         for i in self.navigationController!.viewControllers{
             if i is ChatListViewController{
-                appdelegate.persistentContainer.viewContext.delete(chatObj!)
+                if !self.msgSent {
+                    appdelegate.persistentContainer.viewContext.delete(chatObj!)
+                }
                 self.navigationController?.popToViewController(i, animated: true)
                 break
             }
@@ -161,7 +162,7 @@ class ChatViewController: UIViewController {
         
         
         
-        let params = ["channelType" : "0","message":self.textViewSenderChat.text!,"is_read":"0","chat_id":chatObj!.chatid! , "sender": UserDefaults.standard.userID! , "receiver" : receiverArray!.joined(separator: ",") , "created_at" : getCurrentDateTime(),"updated_at" : getCurrentDateTime() , "id" : "\(Date().millisecondsSince1970)\(chatObj!.chatid!)" ] as [String : Any]
+        let params = ["channelType" : "0","message":self.textViewSenderChat.text!,"is_read":"0","chat_id":chatObj!.chatid! , "sender": UserDefaults.standard.userID! , "receiver" : receiverArray!.joined(separator: ",") , "created_at" : Date().millisecondsSince1970,"updated_at" : Date().millisecondsSince1970 , "id" : "\(Date().millisecondsSince1970)\(chatObj!.chatid!)" ] as [String : Any]
         
         
         appdelegate.objAPI.sendMessage(params) { (response, error) in
@@ -174,7 +175,7 @@ class ChatViewController: UIViewController {
                         
                         
                         let array = [["channelName":self.chatObj!.channelName!,"channelType":self.chatObj!.channelType!,"chatid":self.chatObj!.chatid!,"created_at":objMsg.created_at!,"last_message":objMsg.message!,"updated_at":objMsg.updated_at!,"userIds":self.chatObj!.userIds!] as [String:Any]]
-                        
+                        self.msgSent = true
                         _ = appdelegate.objAPI.checkChannelAvailable(array)
                         
                         
@@ -260,7 +261,7 @@ extension ChatViewController : UITableViewDataSource,UITableViewDelegate{
         if UserDefaults.standard.userID! == chatObj.sender{
             let senderCell = tableView.dequeueReusableCell(withIdentifier: "ChatSenderCell", for: indexPath) as! ChatSenderCell
             senderCell.lblChatSenderMsg.text = chatObj.message
-            senderCell.lblTime.text = chatObj.created_at?.getLocalTime()
+            //senderCell.lblTime.text = chatObj.created_at?.getLocalTime()
             
             
             switch chatObj.is_read {
@@ -288,7 +289,7 @@ extension ChatViewController : UITableViewDataSource,UITableViewDelegate{
         }else{
             let receiverCell = tableView.dequeueReusableCell(withIdentifier: "ChatReceiverCell", for: indexPath) as! ChatReceiverCell
             receiverCell.lblChatReceiverMsg.text = chatObj.message
-            receiverCell.lblTime.text = chatObj.created_at?.getLocalTime()
+            //receiverCell.lblTime.text = chatObj.created_at?.getLocalTime()
             return receiverCell
         }
         
