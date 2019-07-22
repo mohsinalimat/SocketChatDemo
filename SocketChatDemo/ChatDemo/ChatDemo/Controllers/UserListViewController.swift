@@ -76,20 +76,12 @@ class UserListViewController: UIViewController, UITableViewDelegate, UITableView
                         
                         let objUser = try decoder.decode(ChatList.self, from: obj.toData())
                         
-                        
                         self.performSegue(withIdentifier: "ChatConversation", sender: objUser)
                         
                         print("data saved")
                     } catch {
                         print("nodata found")
                     }
-
-                    
-                    
-                    
-                    
-                    
-                    
                 }
             }
         }
@@ -97,9 +89,7 @@ class UserListViewController: UIViewController, UITableViewDelegate, UITableView
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destination = segue.destination as? ChatViewController{
             destination.chatObj = sender as? ChatList
-            
         }
-        
     }
     
     

@@ -101,8 +101,6 @@ class ChatViewController: UIViewController {
     }
     func loadCurrentConversationMessages() {
         
-        
-        
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "ChatMessages")
         fetchRequest.predicate = NSPredicate(format: "chat_id == '\(chatObj!.chatid!)'")
         fetchRequest.returnsObjectsAsFaults = false
@@ -145,6 +143,7 @@ class ChatViewController: UIViewController {
        
         for i in self.navigationController!.viewControllers{
             if i is ChatListViewController{
+                appdelegate.persistentContainer.viewContext.delete(chatObj!)
                 self.navigationController?.popToViewController(i, animated: true)
                 break
             }
