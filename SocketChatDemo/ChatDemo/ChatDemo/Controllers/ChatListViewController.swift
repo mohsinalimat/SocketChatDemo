@@ -115,7 +115,7 @@ class ChatListViewController: UIViewController, UITableViewDelegate, UITableView
         let objChat = self.chatListArray?[indexPath.row]
         cell.lblChatName.text = objChat?.channelName
         cell.lblChatMsg.text = objChat?.last_message
-        cell.lblChatDate.text = objChat?.created_at
+        cell.lblChatDate.text = "\(objChat!.created_at)"
         return cell
     }
     

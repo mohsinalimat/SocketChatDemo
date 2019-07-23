@@ -174,14 +174,9 @@ class ChatViewController: UIViewController {
                         
                         
                         
-                        let array = [["channelName":self.chatObj!.channelName!,"channelType":self.chatObj!.channelType!,"chatid":self.chatObj!.chatid!,"created_at":objMsg.created_at!,"last_message":objMsg.message!,"updated_at":objMsg.updated_at!,"userIds":self.chatObj!.userIds!] as [String:Any]]
+                        let array = [["channelName":self.chatObj!.channelName!,"channelType":self.chatObj!.channelType!,"chatid":self.chatObj!.chatid!,"created_at":objMsg.created_at,"last_message":objMsg.message!,"updated_at":objMsg.updated_at,"userIds":self.chatObj!.userIds!] as [String:Any]]
                         self.msgSent = true
                         _ = appdelegate.objAPI.checkChannelAvailable(array)
-                        
-                        
-                        
-                        
-                        
                         
                         self.chatMsgsArray.append(objMsg)
                         self.tableView.reloadData()
