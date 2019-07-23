@@ -257,7 +257,7 @@ extension ChatViewController : UITableViewDataSource,UITableViewDelegate{
         if UserDefaults.standard.userID! == chatObj.sender{
             let senderCell = tableView.dequeueReusableCell(withIdentifier: "ChatSenderCell", for: indexPath) as! ChatSenderCell
             senderCell.lblChatSenderMsg.text = chatObj.message
-            //senderCell.lblTime.text = chatObj.created_at?.getLocalTime()
+            senderCell.lblTime.text = "\(chatObj.created_at)".timeStampToLocalDate().getLocalTime()
             
             
             switch chatObj.is_read {
@@ -285,7 +285,7 @@ extension ChatViewController : UITableViewDataSource,UITableViewDelegate{
         }else{
             let receiverCell = tableView.dequeueReusableCell(withIdentifier: "ChatReceiverCell", for: indexPath) as! ChatReceiverCell
             receiverCell.lblChatReceiverMsg.text = chatObj.message
-            //receiverCell.lblTime.text = chatObj.created_at?.getLocalTime()
+            receiverCell.lblTime.text = "\(chatObj.created_at)".timeStampToLocalDate().getLocalTime()
             return receiverCell
         }
         

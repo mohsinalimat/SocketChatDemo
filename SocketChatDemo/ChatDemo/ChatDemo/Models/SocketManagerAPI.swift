@@ -254,12 +254,7 @@ class SocketManagerAPI: NSObject {
         socket.emitWithAck("SignUp",data).timingOut(after: 0) { (data) in
             print("got data \(data)")
             guard let data = data[0] as? [String:Any] else { completion(nil,"data Not availabel"); return }
-            //            guard let data1 = data.toJSON() as? [[String:Any]] else { completion(nil,"data Not availabel"); return }
-            //            if data1.count > 0 {
             completion(data,nil)
-            //            }else{
-            //                completion(nil,"invalid Credentials")
-            //            }
         }
     }
     

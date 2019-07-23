@@ -91,7 +91,7 @@ extension UIView {
 extension String{
     func getLocalTime() -> String? {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        dateFormatter.dateFormat = "yyyy-MM-dd hh:mm a"
         
         
         let timeUTC = dateFormatter.date(from: self)
@@ -104,6 +104,15 @@ extension String{
             return localTime
         }
         return nil
+    }
+    
+    func timeStampToLocalDate() -> String {
+        let now = Date.init(milliseconds: Int64(Double(self)!))
+        let formatter = DateFormatter()
+        formatter.timeZone = TimeZone.current
+        formatter.dateFormat = "yyyy-MM-dd hh:mm a"
+        let dateString = formatter.string(from: now)
+        return dateString
     }
 }
 extension Date {
@@ -120,3 +129,4 @@ public extension CodingUserInfoKey {
     // Helper property to retrieve the context
     static let managedObjectContext = CodingUserInfoKey(rawValue: "managedObjectContext")
 }
+
