@@ -266,7 +266,7 @@ class SocketManagerAPI: NSObject {
     func sendMessage(_ params : [String:Any], ackCallBack:@escaping completionHandler) -> Void {
         socket.emitWithAck("sendMessage", params).timingOut(after: 0) { data in
             print("got message")
-            guard let data = data[0] as? [String:String] else { ackCallBack(nil,"data Not availabel"); return }
+            guard let data = data[0] as? [String:Any] else { ackCallBack(nil,"data Not availabel"); return }
             ackCallBack(data,nil)
         }
         print(socket.sid)

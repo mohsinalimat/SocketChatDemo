@@ -211,7 +211,6 @@ extension ChatViewController : ReceiveMessage{
                 self.navigationItem.title = self.chatObj?.channelName
             }
         }
-        
     }
     
     func receiveMsg(msg: ChatMessages) {
@@ -224,11 +223,13 @@ extension ChatViewController : ReceiveMessage{
             self.changeStatus(dict: dict)
         }
     }
+    
     func changeStatus(dict : [String:Any]){
         appdelegate.objAPI.emitStatus(dict) { (emitData, error) in
             
         }
     }
+    
     func getReceiverID() -> String
     {
         var receiverArray = chatObj?.userIds?.components(separatedBy: ",")
@@ -318,6 +319,7 @@ extension ChatViewController : UITextViewDelegate{
     
     
 }
+
 extension UITableView{
     func scrollToBottom(index : Int){
         DispatchQueue.main.async {
@@ -328,6 +330,7 @@ extension UITableView{
         }
     }
 }
+
 func getCurrentDateTime() -> String{
     
     let dateFormatter : DateFormatter = DateFormatter()
