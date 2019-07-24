@@ -263,7 +263,7 @@ class SocketManagerAPI: NSObject {
             let finalC_ids: [String] = obj.filter({ $0.is_read != "3" }).map({ $0.chat_id ?? "" }).uniqueElements.filter({ $0 != nil && $0.count > 0})
             
             for i in finalC_ids{
-                    let arrayObj = obj.filter({ $0.is_read != "3" && $0.chat_id == i})
+                    let arrayObj = obj.filter({ $0.is_read != "3" && $0.chat_id == i && $0.receiver == UserDefaults.standard.userID!})
                     self.updateUnReadMsgCount(i, count: arrayObj.count)
             }
             try managedObjectContext.save()
