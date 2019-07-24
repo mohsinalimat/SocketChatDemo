@@ -116,10 +116,10 @@ class SocketManagerAPI: NSObject {
             if let getData = data[0] as? [String:Any]{
                 if let msg =  self.insertMessage(dict: getData){
                     
-                    let status = self.updateUnReadMsgCount(msg)
-                    if status{
-                        self.chnlDelegate?.receiveChnl()
-                    }
+//                    let status = self.updateUnReadMsgCount(msg)
+//                    if status{
+//                        self.chnlDelegate?.receiveChnl()
+//                    }
                     
                     
                     let dict = ["is_read":"2","id":msg.id!,"sender":msg.sender!] as [String:Any]
@@ -187,16 +187,16 @@ class SocketManagerAPI: NSObject {
             ack.with("Got your currentAmount", "dude")
         }
     }
-    func updateUnReadMsgCount(_ msgDict : ChatMessages) -> Bool{
+    func updateUnReadMsgCount(_ msgDict : ChatList) -> Bool{
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "ChatList")
-        fetchRequest.predicate = NSPredicate(format: "chatid = '\(msgDict.chat_id!)'")
+        fetchRequest.predicate = NSPredicate(format: "chatid = '\(msgDict.chatid!)'")
         
         do {
             guard let result = try? appdelegate.persistentContainer.viewContext.fetch(fetchRequest)  as? [ChatList] else { return false }
             if result.count > 0 {
                 let objResult = result[0]
                 
-                objResult.unreadcount += 1
+                objResult.unreadcount = 0
                 
                 appdelegate.saveContext()
             }
