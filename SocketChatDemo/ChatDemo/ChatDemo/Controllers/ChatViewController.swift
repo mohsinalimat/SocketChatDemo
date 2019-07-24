@@ -182,7 +182,7 @@ class ChatViewController: UIViewController {
                         self.tableView.reloadData()
                         
                         self.tableView.scrollToBottom(index: self.chatMsgsArray.count - 1)
-                        self.textViewSenderChat.text = ""
+                        self.textViewSenderChat.text = "Type a message"
                     }
                 }
             }
@@ -316,8 +316,6 @@ extension ChatViewController : UITextViewDelegate{
             appdelegate.objAPI.updateTyping(param)
         }
     }
-    
-    
 }
 
 extension UITableView{

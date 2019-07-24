@@ -23,6 +23,7 @@ extension ChatList {
     @NSManaged public var last_message: String?
     @NSManaged public var updated_at: Double
     @NSManaged public var userIds: String?
+    @NSManaged public var unreadcount: Int16
     
     
     
@@ -34,6 +35,7 @@ extension ChatList {
         case updated_at = "updated_at"
         case channelType = "channelType"
         case channelName = "channelName"
+        case unreadcount = "unreadcount"
     }
     
     
@@ -47,6 +49,7 @@ extension ChatList {
         try container.encode(updated_at, forKey: .updated_at)
         try container.encode(channelType, forKey: .channelType)
         try container.encode(channelName, forKey: .channelName)
+        try container.encode(unreadcount, forKey: .unreadcount)
     }
     
     
