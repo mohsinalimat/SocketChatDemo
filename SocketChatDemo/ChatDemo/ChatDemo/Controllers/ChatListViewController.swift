@@ -14,6 +14,8 @@ class ChatListCell: UITableViewCell {
     @IBOutlet var lblChatName: UILabel!
     @IBOutlet var lblChatMsg: UILabel!
     @IBOutlet var lblChatDate: UILabel!
+    @IBOutlet weak var lblUnReadCount: UILabel!
+    @IBOutlet weak var viewUnReadCount: UIView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -116,6 +118,8 @@ class ChatListViewController: UIViewController, UITableViewDelegate, UITableView
         cell.lblChatName.text = objChat?.channelName
         cell.lblChatMsg.text = objChat?.last_message
         cell.lblChatDate.text = "\(objChat!.created_at)".timeStampToLocalDate()
+        cell.viewUnReadCount.isHidden = Int(objChat!.unreadcount) <= 0
+        cell.lblUnReadCount.text = "\(objChat!.unreadcount)"
         return cell
     }
     
