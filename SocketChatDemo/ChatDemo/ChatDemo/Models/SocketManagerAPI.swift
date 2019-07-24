@@ -61,12 +61,19 @@ class SocketManagerAPI: NSObject {
     
     func getData() -> Void {
         if UserDefaults.standard.userID != nil {
+            
+            
             self.socket.removeAllHandlers()
-            self.getMessages()
+            
             self.getChannel()
             self.getTypingMessage()
             self.getChangeStatus()
+            
+            self.getMessages()
+        
+            
         }
+        
     }
     
     func getUserList(ackCallBack:@escaping completionHandlerArray) -> Void {
