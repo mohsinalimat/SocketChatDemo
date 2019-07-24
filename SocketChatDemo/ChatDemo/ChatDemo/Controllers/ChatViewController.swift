@@ -187,7 +187,7 @@ class ChatViewController: UIViewController {
                         self.tableView.reloadData()
                         
                         self.tableView.scrollToBottom(index: self.chatMsgsArray.count - 1)
-                        self.textViewSenderChat.text = "Type a message"
+                        self.textViewSenderChat.text = ""
                     }
                 }
             }
@@ -319,6 +319,14 @@ extension ChatViewController : UITextViewDelegate{
         let param = ["sender": UserDefaults.standard.userID!, "receiver": receiverArray!.joined(separator: ",")]
         if textView.text.trimmingCharacters(in: .whitespacesAndNewlines) != "" {
             appdelegate.objAPI.updateTyping(param)
+        }
+    }
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text.isEmpty {
+            textView.text = "Type a message"
+            textView.textColor = UIColor.lightGray
+        }else{
+            textView.text = ""
         }
     }
 }
