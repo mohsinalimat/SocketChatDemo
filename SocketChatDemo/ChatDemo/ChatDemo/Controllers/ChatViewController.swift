@@ -301,9 +301,11 @@ extension ChatViewController : UITableViewDataSource,UITableViewDelegate{
 extension ChatViewController : UITextViewDelegate{
     func textViewDidBeginEditing(_ textView: UITextView) {
         if textView.text.isEmpty {
+        
             textView.text = "Type a message"
             textView.textColor = UIColor.lightGray
         }else{
+            self.tableView.scrollToBottom(index: self.chatMsgsArray.count - 1)
             textView.text = ""
         }
     }
