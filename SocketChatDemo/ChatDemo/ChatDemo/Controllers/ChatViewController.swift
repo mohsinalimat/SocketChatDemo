@@ -307,6 +307,7 @@ extension ChatViewController : UITextViewDelegate{
         }else{
             self.tableView.scrollToBottom(index: self.chatMsgsArray.count - 1)
             textView.text = ""
+            textView.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         }
     }
     
@@ -322,15 +323,13 @@ extension ChatViewController : UITextViewDelegate{
         if textView.text.trimmingCharacters(in: .whitespacesAndNewlines) != "" {
             appdelegate.objAPI.updateTyping(param)
         }
+       
     }
     func textViewDidEndEditing(_ textView: UITextView) {
-        if textView.text.isEmpty {
             textView.text = "Type a message"
             textView.textColor = UIColor.lightGray
-        }else{
-            textView.text = ""
-        }
     }
+    
 }
 
 extension UITableView{
