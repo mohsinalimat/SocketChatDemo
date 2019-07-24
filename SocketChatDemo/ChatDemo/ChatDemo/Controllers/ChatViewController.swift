@@ -141,7 +141,7 @@ class ChatViewController: UIViewController {
     @IBAction func btnBackAction(_ sender: Any) {
        
         
-        _ = appdelegate.objAPI.updateUnReadMsgCount(self.chatObj!)
+        _ = appdelegate.objAPI.updateUnReadMsgCount(self.chatObj!.chatid!)
         for i in self.navigationController!.viewControllers{
             if i is ChatListViewController{
                 if !self.msgSent {

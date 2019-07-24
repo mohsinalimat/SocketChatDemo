@@ -190,16 +190,17 @@ class SocketManagerAPI: NSObject {
             ack.with("Got your currentAmount", "dude")
         }
     }
-    func updateUnReadMsgCount(_ msgDict : ChatList) -> Bool{
+    func updateUnReadMsgCount(_ chatID : String , count : Int = 0) -> Bool{
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "ChatList")
-        fetchRequest.predicate = NSPredicate(format: "chatid = '\(msgDict.chatid!)'")
+        fetchRequest.predicate = NSPredicate(format: "chatid = '\(chatID)'")
+        
         
         do {
-            guard let result = try? appdelegate.persistentContainer.viewContext.fetch(fetchRequest)  as? [ChatList] else { return false }
+        guard let result = try? appdelegate.persistentContainer.viewContext.fetch(fetchRequest)  as? [ChatList] else { return false }
             if result.count > 0 {
                 let objResult = result[0]
                 
-                objResult.unreadcount = 0
+                objResult.unreadcount = Int16(count)
                 
                 appdelegate.saveContext()
             }
@@ -250,15 +251,20 @@ class SocketManagerAPI: NSObject {
                 decoder.userInfo[context] = managedObjectContext
             }
             
-            _ = try decoder.decode([ChatMessages].self, from: array.toData())
+            let obj = try decoder.decode([ChatMessages].self, from: array.toData())
+            
+            let finalC_ids: [String] = obj.filter({ $0.is_read != "3" }).map({ $0.chat_id ?? "" }).uniqueElements.filter({ $0 != nil && $0.count > 0})
+            
+            for i in finalC_ids{
+                    let arrayObj = obj.filter({ $0.is_read != "3" && $0.chat_id == i})
+                    self.updateUnReadMsgCount(i, count: arrayObj.count)
+            }
             try managedObjectContext.save()
             
             
         } catch {
             print(error.localizedDescription)
         }
-        
-        
     }
     
     
@@ -358,5 +364,17 @@ extension Array {
 extension Dictionary {
     func toData() throws -> Data {
         return try JSONSerialization.data(withJSONObject: self, options: JSONSerialization.WritingOptions(rawValue: 0))
+    }
+}
+
+public extension Sequence where Element: Equatable {
+    var uniqueElements: [Element] {
+        return self.reduce(into: []) {
+            uniqueElements, element in
+            
+            if !uniqueElements.contains(element) {
+                uniqueElements.append(element)
+            }
+        }
     }
 }
