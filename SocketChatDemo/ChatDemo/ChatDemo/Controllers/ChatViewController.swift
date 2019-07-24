@@ -104,9 +104,12 @@ class ChatViewController: UIViewController {
     }
     func loadCurrentConversationMessages() {
         
-        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "ChatMessages")
+        let fetchRequest = NSFetchRequest<ChatMessages>(entityName: "ChatMessages")
         fetchRequest.predicate = NSPredicate(format: "chat_id == '\(chatObj!.chatid!)'")
         fetchRequest.returnsObjectsAsFaults = false
+        let sort = NSSortDescriptor(key: #keyPath(ChatMessages.created_at), ascending: true)
+        fetchRequest.sortDescriptors = [sort]
+
         
         do {
             
