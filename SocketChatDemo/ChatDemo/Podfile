@@ -7,4 +7,5 @@ target 'ChatDemo' do
 
   # Pods for ChatDemo
 pod 'Socket.IO-Client-Swift', '~> 15.1.0'
+pod 'MBProgressHUD'
 end

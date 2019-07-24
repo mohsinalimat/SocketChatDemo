@@ -128,6 +128,9 @@ class SocketManagerAPI: NSObject {
                     }
                     self.delegate?.receiveMsg(msg: msg)
                 }
+            }else{
+                let arrayData = data[0] as? [[String:Any]]
+                self.insertMsgArray(array: arrayData!)
             }
             ack.with("got it")
         }
@@ -238,6 +241,24 @@ class SocketManagerAPI: NSObject {
             print("error executing fetch request: \(error.localizedDescription)")
             return false
         }
+    }
+    func insertMsgArray(array : [[String:Any]]) {
+        do{
+            let managedObjectContext = appdelegate.persistentContainer.viewContext
+            let decoder = JSONDecoder()
+            if let context = CodingUserInfoKey.managedObjectContext {
+                decoder.userInfo[context] = managedObjectContext
+            }
+            
+            _ = try decoder.decode([ChatMessages].self, from: array.toData())
+            try managedObjectContext.save()
+            
+            
+        } catch {
+            print(error.localizedDescription)
+        }
+        
+        
     }
     
     

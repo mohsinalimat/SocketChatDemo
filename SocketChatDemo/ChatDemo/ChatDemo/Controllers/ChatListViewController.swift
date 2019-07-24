@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import MBProgressHUD
 
 class ChatListCell: UITableViewCell {
     
@@ -85,6 +86,11 @@ class ChatListViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func getChatList() -> Void {
+        let mbProgress = MBProgressHUD.showAdded(to: self.view, animated: true)
+        mbProgress.label.text = "Sync Data..."
+        
+        
+        
         let params = ["senderId": "\(UserDefaults.standard.userID!)"]
         
         appdelegate.objAPI.getChatList(params) { (chatList, error) in
@@ -100,7 +106,9 @@ class ChatListViewController: UIViewController, UITableViewDelegate, UITableView
                     print("nodata found")
                 }
             }
+            mbProgress.hide(animated: true)
         }
+        
     }
     
     
