@@ -137,7 +137,7 @@ class ChatViewController: UIViewController {
     
     
     @IBAction func btnMsgSendAction(_ sender: Any) {
-        guard textViewSenderChat.text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) == "" else {
+        if textViewSenderChat.text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) == "" {
             return
         }
         self.sendChatMsg()
@@ -168,7 +168,7 @@ class ChatViewController: UIViewController {
         
         
         
-        let params = ["channelType" : "0","message":self.textViewSenderChat.text!,"is_read":"0","chat_id":chatObj!.chatid! , "sender": UserDefaults.standard.userID! , "receiver" : receiverArray!.joined(separator: ",") , "created_at" : Date().millisecondsSince1970,"updated_at" : Date().millisecondsSince1970 , "id" : "\(Date().millisecondsSince1970)\(chatObj!.chatid!)" ] as [String : Any]
+        let params = ["channelType" : "0","message":textViewSenderChat.text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines),"is_read":"0","chat_id":chatObj!.chatid! , "sender": UserDefaults.standard.userID! , "receiver" : receiverArray!.joined(separator: ",") , "created_at" : Date().millisecondsSince1970,"updated_at" : Date().millisecondsSince1970 , "id" : "\(Date().millisecondsSince1970)\(chatObj!.chatid!)" ] as [String : Any]
         
         
         appdelegate.objAPI.sendMessage(params) { (response, error) in
