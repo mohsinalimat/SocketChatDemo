@@ -26,7 +26,7 @@ protocol ReceiveChannel {
 
 class SocketManagerAPI: NSObject {
     
-    let manager = SocketManager(socketURL: URL(string: "http://192.168.1.105:3000")!, config: [.log(true), .compress, .connectParams(["user_id":UserDefaults.standard.userID ?? ""])])
+    let manager = SocketManager(socketURL: URL(string: "http://192.168.1.86:3000")!, config: [.log(true), .compress, .connectParams(["user_id":UserDefaults.standard.userID ?? ""])])
     let socket : SocketIOClient!
     
     var delegate : ReceiveMessage?
@@ -265,6 +265,13 @@ class SocketManagerAPI: NSObject {
             for i in finalC_ids{
                     let arrayObj = obj.filter({ $0.is_read != "3" && $0.chat_id == i && $0.receiver == UserDefaults.standard.userID!})
                     self.updateUnReadMsgCount(i, count: arrayObj.count)
+            
+                for i in arrayObj{
+                    let dict = ["is_read":"2","id":i.id!,"sender":i.sender!] as [String:Any]
+                    self.emitStatus(dict) { (dict, error) in
+                        
+                    }
+                }
             }
             try managedObjectContext.save()
             

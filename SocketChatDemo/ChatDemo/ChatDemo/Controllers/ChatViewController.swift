@@ -136,7 +136,7 @@ class ChatViewController: UIViewController {
     
     
     @IBAction func btnMsgSendAction(_ sender: Any) {
-        guard textViewSenderChat.text != ""  else {
+        guard textViewSenderChat.text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) == "" else {
             return
         }
         self.sendChatMsg()
