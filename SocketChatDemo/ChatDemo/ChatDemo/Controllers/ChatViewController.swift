@@ -107,9 +107,7 @@ class ChatViewController: UIViewController , UINavigationControllerDelegate, UII
         
     }
     
-    @IBAction func btnAttachmentAction(_ sender: UIButton) {
-        self.openImageViewPicker()
-    }
+    
     
     
     
@@ -166,6 +164,9 @@ class ChatViewController: UIViewController , UINavigationControllerDelegate, UII
             }
         }
     }
+    @IBAction func btnAttachmentAction(_ sender: UIButton) {
+        self.openActionSheet()
+    }
     
     //MARK:- API Call
     func sendChatMsg(){
@@ -204,11 +205,30 @@ class ChatViewController: UIViewController , UINavigationControllerDelegate, UII
             }
         }
     }
+    func openActionSheet(){
+        let alert = UIAlertController(title: "ChatDemo", message: "Please Select an Option", preferredStyle: .actionSheet)
+        
+        alert.addAction(UIAlertAction(title: "camera", style: .default , handler:{ (UIAlertAction)in
+            self.openImageViewPicker(isOpenGallery: false)
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Gallery", style: .default , handler:{ (UIAlertAction)in
+            self.openImageViewPicker(isOpenGallery: true)
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Documents", style: .destructive , handler:{ (UIAlertAction)in
+            print("User click Delete button")
+        }))
+        
+        self.present(alert, animated: true, completion: {
+            print("completion block")
+        })
+    }
     
-    func openImageViewPicker(){
+    func openImageViewPicker(isOpenGallery : Bool){
         if UIImagePickerController.isSourceTypeAvailable(.savedPhotosAlbum){
             imagePicker.delegate = self
-            imagePicker.sourceType = .savedPhotosAlbum
+            imagePicker.sourceType = isOpenGallery ? .savedPhotosAlbum : .camera
             imagePicker.allowsEditing = false
             
             present(imagePicker, animated: true, completion: nil)
