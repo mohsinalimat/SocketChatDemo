@@ -108,7 +108,7 @@ class ChatViewController: UIViewController , UINavigationControllerDelegate, UII
     }
     
     @IBAction func btnAttachmentAction(_ sender: UIButton) {
-        
+        self.openImageViewPicker()
     }
     
     
@@ -147,12 +147,10 @@ class ChatViewController: UIViewController , UINavigationControllerDelegate, UII
     
     //MARK:- Button Actions
     @IBAction func btnMsgSendAction(_ sender: Any) {
-//        if textViewSenderChat.text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) == "" {
-//            return
-//        }
-//        self.sendChatMsg()
-        
-        self.openImageViewPicker()
+        if textViewSenderChat.text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) == "" {
+            return
+        }
+        self.sendChatMsg()
     }
     @IBAction func btnBackAction(_ sender: Any) {
        
