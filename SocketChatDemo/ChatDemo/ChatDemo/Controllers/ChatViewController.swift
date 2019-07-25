@@ -42,6 +42,7 @@ class ChatViewController: UIViewController {
      
     @IBOutlet weak var constraintsBottom: NSLayoutConstraint!
     
+    @IBOutlet weak var lblPlaceHolder: UILabel!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var textViewSenderChat: UITextView!
     
@@ -300,15 +301,7 @@ extension ChatViewController : UITableViewDataSource,UITableViewDelegate{
 }
 extension ChatViewController : UITextViewDelegate{
     func textViewDidBeginEditing(_ textView: UITextView) {
-        if textView.text.isEmpty {
-        
-            textView.text = "Type a message"
-            textView.textColor = UIColor.lightGray
-        }else{
-            self.tableView.scrollToBottom(index: self.chatMsgsArray.count - 1)
-            textView.text = ""
-            textView.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-        }
+        self.tableView.scrollToBottom(index: self.chatMsgsArray.count - 1)
     }
     
     
@@ -321,13 +314,17 @@ extension ChatViewController : UITextViewDelegate{
         }
         let param = ["sender": UserDefaults.standard.userID!, "receiver": receiverArray!.joined(separator: ",")]
         if textView.text.trimmingCharacters(in: .whitespacesAndNewlines) != "" {
+            lblPlaceHolder.isHidden = true
             appdelegate.objAPI.updateTyping(param)
+        }else{
+            lblPlaceHolder.isHidden = false
         }
        
     }
     func textViewDidEndEditing(_ textView: UITextView) {
-            textView.text = "Type a message"
-            textView.textColor = UIColor.lightGray
+        if textView.text.isEmpty {
+            lblPlaceHolder.isHidden = false
+        }
     }
     
 }

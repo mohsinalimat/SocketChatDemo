@@ -515,7 +515,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WTc-yS-Hwn">
                                 <rect key="frame" x="0.0" y="812" width="414" height="50"/>
                                 <subviews>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Type a message" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="dfw-Vi-SiS">
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="dfw-Vi-SiS">
                                         <rect key="frame" x="10" y="7.5" width="309" height="35"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
@@ -528,6 +528,15 @@
                                             <outlet property="delegate" destination="CyO-hw-kUg" id="UbC-vX-imz"/>
                                         </connections>
                                     </textView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Type a message" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CKN-Ak-QK3">
+                                        <rect key="frame" x="14.5" y="8" width="118" height="35"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="35" id="GVu-Yc-g5S"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vLV-bq-Gy5">
                                         <rect key="frame" x="329" y="5" width="70" height="40"/>
                                         <color key="backgroundColor" cocoaTouchSystemColor="systemYellowColor"/>
@@ -545,6 +554,8 @@
                                 <constraints>
                                     <constraint firstItem="vLV-bq-Gy5" firstAttribute="leading" secondItem="dfw-Vi-SiS" secondAttribute="trailing" constant="10" id="5Lm-R2-Ecl"/>
                                     <constraint firstItem="vLV-bq-Gy5" firstAttribute="centerY" secondItem="dfw-Vi-SiS" secondAttribute="centerY" id="BIl-IB-q52"/>
+                                    <constraint firstItem="CKN-Ak-QK3" firstAttribute="leading" secondItem="dfw-Vi-SiS" secondAttribute="leading" constant="4.5" id="FzZ-Cj-XdE"/>
+                                    <constraint firstItem="CKN-Ak-QK3" firstAttribute="top" secondItem="dfw-Vi-SiS" secondAttribute="top" constant="0.5" id="HjY-bz-r06"/>
                                     <constraint firstAttribute="trailing" secondItem="vLV-bq-Gy5" secondAttribute="trailing" constant="15" id="Plj-dG-ZMd"/>
                                     <constraint firstItem="dfw-Vi-SiS" firstAttribute="leading" secondItem="WTc-yS-Hwn" secondAttribute="leading" constant="10" id="PyC-z2-F7M"/>
                                     <constraint firstAttribute="height" constant="50" id="QlV-SB-wAd"/>
@@ -573,6 +584,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="constraintsBottom" destination="Rci-TG-JlI" id="TIX-Xs-kVE"/>
+                        <outlet property="lblPlaceHolder" destination="CKN-Ak-QK3" id="LAo-nd-XUd"/>
                         <outlet property="tableView" destination="4QE-wU-ahA" id="N1N-wV-JNx"/>
                         <outlet property="textViewSenderChat" destination="dfw-Vi-SiS" id="UMC-XX-3j4"/>
                     </connections>
