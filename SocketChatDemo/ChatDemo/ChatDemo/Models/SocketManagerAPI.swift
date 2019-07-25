@@ -346,8 +346,6 @@ class SocketManagerAPI: NSObject {
             ackCallBack(data1,nil)
         }
     }
-    
-    
 }
 
 extension String {

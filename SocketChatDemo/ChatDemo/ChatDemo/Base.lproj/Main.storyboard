@@ -516,7 +516,7 @@
                                 <rect key="frame" x="0.0" y="812" width="414" height="50"/>
                                 <subviews>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="dfw-Vi-SiS">
-                                        <rect key="frame" x="10" y="7.5" width="309" height="35"/>
+                                        <rect key="frame" x="10" y="7.5" width="289" height="35"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="35" id="pif-r2-4IL"/>
@@ -537,29 +537,45 @@
                                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vLV-bq-Gy5">
-                                        <rect key="frame" x="329" y="5" width="70" height="40"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vLV-bq-Gy5">
+                                        <rect key="frame" x="359" y="5" width="40" height="40"/>
                                         <color key="backgroundColor" cocoaTouchSystemColor="systemYellowColor"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="gO9-wU-RJF"/>
-                                            <constraint firstAttribute="width" constant="70" id="nP4-nK-6xB"/>
+                                            <constraint firstAttribute="width" constant="40" id="nP4-nK-6xB"/>
                                         </constraints>
-                                        <state key="normal" title="Send"/>
+                                        <state key="normal" image="paper-plane"/>
                                         <connections>
                                             <action selector="btnMsgSendAction:" destination="CyO-hw-kUg" eventType="touchUpInside" id="ntS-rZ-GYK"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1IT-kS-OHn">
+                                        <rect key="frame" x="309" y="5" width="40" height="40"/>
+                                        <color key="backgroundColor" cocoaTouchSystemColor="systemYellowColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="40" id="Iby-HV-MPi"/>
+                                            <constraint firstAttribute="height" constant="40" id="JoH-jS-L4L"/>
+                                        </constraints>
+                                        <inset key="imageEdgeInsets" minX="12" minY="12" maxX="12" maxY="12"/>
+                                        <state key="normal" image="attachment"/>
+                                        <connections>
+                                            <action selector="btnAttachmentAction:" destination="CyO-hw-kUg" eventType="touchUpInside" id="Ing-HP-mYa"/>
                                         </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstItem="vLV-bq-Gy5" firstAttribute="leading" secondItem="dfw-Vi-SiS" secondAttribute="trailing" constant="10" id="5Lm-R2-Ecl"/>
+                                    <constraint firstAttribute="bottom" secondItem="1IT-kS-OHn" secondAttribute="bottom" constant="5" id="59J-U2-0JU"/>
                                     <constraint firstItem="vLV-bq-Gy5" firstAttribute="centerY" secondItem="dfw-Vi-SiS" secondAttribute="centerY" id="BIl-IB-q52"/>
                                     <constraint firstItem="CKN-Ak-QK3" firstAttribute="leading" secondItem="dfw-Vi-SiS" secondAttribute="leading" constant="4.5" id="FzZ-Cj-XdE"/>
                                     <constraint firstItem="CKN-Ak-QK3" firstAttribute="top" secondItem="dfw-Vi-SiS" secondAttribute="top" constant="0.5" id="HjY-bz-r06"/>
+                                    <constraint firstItem="vLV-bq-Gy5" firstAttribute="leading" secondItem="1IT-kS-OHn" secondAttribute="trailing" constant="10" id="MTi-wQ-MeJ"/>
                                     <constraint firstAttribute="trailing" secondItem="vLV-bq-Gy5" secondAttribute="trailing" constant="15" id="Plj-dG-ZMd"/>
                                     <constraint firstItem="dfw-Vi-SiS" firstAttribute="leading" secondItem="WTc-yS-Hwn" secondAttribute="leading" constant="10" id="PyC-z2-F7M"/>
                                     <constraint firstAttribute="height" constant="50" id="QlV-SB-wAd"/>
+                                    <constraint firstItem="1IT-kS-OHn" firstAttribute="top" secondItem="WTc-yS-Hwn" secondAttribute="top" constant="5" id="h6I-un-Ivb"/>
                                     <constraint firstItem="dfw-Vi-SiS" firstAttribute="centerY" secondItem="WTc-yS-Hwn" secondAttribute="centerY" id="qLy-wm-FdY"/>
+                                    <constraint firstItem="1IT-kS-OHn" firstAttribute="leading" secondItem="dfw-Vi-SiS" secondAttribute="trailing" constant="10" id="x7e-gR-rF6"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -595,8 +611,10 @@
         </scene>
     </scenes>
     <resources>
+        <image name="attachment" width="32" height="32"/>
         <image name="left-arrow" width="26" height="26"/>
         <image name="logout" width="16" height="16"/>
+        <image name="paper-plane" width="16" height="16"/>
         <image name="single_tick" width="12" height="8"/>
     </resources>
     <inferredMetricsTieBreakers>

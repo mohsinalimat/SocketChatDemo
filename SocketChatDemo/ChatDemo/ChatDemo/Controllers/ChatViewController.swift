@@ -106,6 +106,13 @@ class ChatViewController: UIViewController , UINavigationControllerDelegate, UII
         
         
     }
+    
+    @IBAction func btnAttachmentAction(_ sender: UIButton) {
+        
+    }
+    
+    
+    
     func loadCurrentConversationMessages() {
         
         let fetchRequest = NSFetchRequest<ChatMessages>(entityName: "ChatMessages")
