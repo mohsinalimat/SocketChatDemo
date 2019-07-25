@@ -37,7 +37,7 @@ class ChatReceiverCell: UITableViewCell {
 
 
 
-class ChatViewController: UIViewController {
+class ChatViewController: UIViewController , UINavigationControllerDelegate, UIImagePickerControllerDelegate{
 
      
     @IBOutlet weak var constraintsBottom: NSLayoutConstraint!
@@ -50,6 +50,9 @@ class ChatViewController: UIViewController {
     var chatMsgsArray = [ChatMessages]()
     
     var msgSent : Bool = false
+    
+    var imagePicker = UIImagePickerController()
+
     
     
     override func viewDidLoad() {
@@ -135,12 +138,14 @@ class ChatViewController: UIViewController {
     }
     
     
-    
+    //MARK:- Button Actions
     @IBAction func btnMsgSendAction(_ sender: Any) {
-        if textViewSenderChat.text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) == "" {
-            return
-        }
-        self.sendChatMsg()
+//        if textViewSenderChat.text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) == "" {
+//            return
+//        }
+//        self.sendChatMsg()
+        
+        self.openImageViewPicker()
     }
     @IBAction func btnBackAction(_ sender: Any) {
        
@@ -157,7 +162,7 @@ class ChatViewController: UIViewController {
         }
     }
     
-    
+    //MARK:- API Call
     func sendChatMsg(){
         
         var receiverArray = chatObj?.userIds?.components(separatedBy: ",")
@@ -193,6 +198,35 @@ class ChatViewController: UIViewController {
                 }
             }
         }
+    }
+    
+    func openImageViewPicker(){
+        if UIImagePickerController.isSourceTypeAvailable(.savedPhotosAlbum){
+            imagePicker.delegate = self
+            imagePicker.sourceType = .savedPhotosAlbum
+            imagePicker.allowsEditing = false
+            
+            present(imagePicker, animated: true, completion: nil)
+        }
+    }
+    //MARK:- ImagePickerController Delegate
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        self.dismiss(animated: true, completion: { () -> Void in
+            
+        })
+        let chosenImage = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
+        let imagePath = saveImageIntoDocumentDirectory(chosenImage)
+
+
+        print(imagePath)
+        
+        MTPLAPIManager.shared.upload(ChatURLManager.file_upload, parameter: nil, videoPath: [imagePath!], filekey: "file") { (objData, error) in
+            
+            
+            
+        }
+        
     }
     
 
@@ -255,6 +289,7 @@ extension ChatViewController : UITableViewDataSource,UITableViewDelegate{
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.chatMsgsArray.count
+        
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         

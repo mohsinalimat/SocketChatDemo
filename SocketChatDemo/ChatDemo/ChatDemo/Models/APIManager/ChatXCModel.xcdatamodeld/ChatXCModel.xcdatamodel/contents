@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14490.99" systemVersion="19A471t" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="ChatDetails" representedClassName="ChatDetails" syncable="YES" codeGenerationType="class">
+        <attribute name="c_id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="c_type" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="is_allow" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="is_read" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="msg" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="msg_id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="msg_type" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="pic" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="r_id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="s_id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="status" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="time" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+    </entity>
+    <entity name="ChatList" representedClassName="ChatList" syncable="YES" codeGenerationType="class">
+        <attribute name="channelId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="channelName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="channelProfilePic" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="channelType" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="friendSocketId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="fullName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="is_allow" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="isRead" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="isReadOffline" optional="YES" attributeType="Integer 16" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="message" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="messageId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="messageSentOn" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="messageStatus" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="messageType" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="profilePic" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="receiverStatus" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="receiverStatusUpdatedOn" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="recipientId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="senderId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="unreadCount" optional="YES" attributeType="Integer 16" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="userType" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="ChatDetails" positionX="-63" positionY="-18" width="128" height="240"/>
+        <element name="ChatList" positionX="-63" positionY="72" width="128" height="360"/>
+    </elements>
+</model>

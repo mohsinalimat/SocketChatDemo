@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import CoreData
+import MobileCoreServices
 
 extension UIView {
     
@@ -89,6 +90,19 @@ extension UIView {
     }
 }
 extension String{
+    func mimeTypeForPath() -> String {
+        if self != "" {
+            let url = URL(fileURLWithPath: self)
+            let pathExtension = url.pathExtension
+            if let uti = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, pathExtension as NSString, nil)?.takeRetainedValue() {
+                if let mimetype = UTTypeCopyPreferredTagWithClass(uti, kUTTagClassMIMEType)?.takeRetainedValue() {
+                    return mimetype as String
+                }
+            }
+        }
+        return "application/octet-stream"
+    }
+
     func getLocalTime() -> String? {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd hh:mm a"
@@ -129,4 +143,61 @@ public extension CodingUserInfoKey {
     // Helper property to retrieve the context
     static let managedObjectContext = CodingUserInfoKey(rawValue: "managedObjectContext")
 }
-
+extension OutputStream {
+    @discardableResult
+    func write(_ string: String) -> Int {
+        guard let data = string.data(using: .utf8) else { return -1 }
+        return data.withUnsafeBytes { (buffer: UnsafePointer<UInt8>) -> Int in
+            write(buffer, maxLength: data.count)
+        }
+    }
+    
+    @discardableResult
+    func append(contentsOf url: URL) -> Int {
+        guard let inputStream = InputStream(url: url) else { return -1 }
+        inputStream.open()
+        let bufferSize = 1_024 * 1_024
+        var buffer = [UInt8](repeating: 0, count: bufferSize)
+        var bytes = 0
+        var totalBytes = 0
+        
+        repeat {
+            bytes = inputStream.read(&buffer, maxLength: bufferSize)
+            if bytes > 0 {
+                write(buffer, maxLength: bytes)
+                totalBytes += bytes
+            }
+        } while bytes > 0
+        
+        inputStream.close()
+        
+        return bytes < 0 ? bytes : totalBytes
+    }
+}
+extension FileManager {
+    func clearTmpDirectory() {
+        do {
+            let tmpDirURL = FileManager.default.temporaryDirectory
+            let tmpDirectory = try contentsOfDirectory(atPath: tmpDirURL.path)
+            try tmpDirectory.forEach { file in
+                let fileUrl = tmpDirURL.appendingPathComponent(file)
+                try removeItem(atPath: fileUrl.path)
+            }
+        } catch {
+            //catch the error somehow
+        }
+    }
+    
+}
+func saveImageIntoDocumentDirectory(_ chosenImage:UIImage) -> String? {
+    let fileManager = FileManager.default
+    do {
+        let documentDirectory = try fileManager.url(for: .documentDirectory, in: .userDomainMask, appropriateFor:nil, create:false)
+        let fileURL = documentDirectory.appendingPathComponent(UUID().uuidString + ".jpeg")
+        let data = chosenImage.jpegData(compressionQuality: 0.1)
+        try! data?.write(to: fileURL, options: .atomic)
+        return fileURL.path
+    }catch{
+        return nil
+    }
+}

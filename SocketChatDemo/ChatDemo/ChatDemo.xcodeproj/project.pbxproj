@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		042153B222E9D6080058A205 /* URLManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042153AF22E9D6080058A205 /* URLManager.swift */; };
+		042153B322E9D6080058A205 /* MTPLAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042153B022E9D6080058A205 /* MTPLAPIManager.swift */; };
 		04E9670922DDDC48002E33CD /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E9670822DDDC48002E33CD /* SignUpViewController.swift */; };
 		04FD749822DF241700C0EE9B /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FD749722DF241700C0EE9B /* ChatViewController.swift */; };
 		416D80925B7F6123B62DB7EB /* Pods_ChatDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94C06C6368888785CDECF94D /* Pods_ChatDemo.framework */; };
@@ -30,6 +32,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		042153AF22E9D6080058A205 /* URLManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLManager.swift; sourceTree = "<group>"; };
+		042153B022E9D6080058A205 /* MTPLAPIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MTPLAPIManager.swift; sourceTree = "<group>"; };
 		04E9670822DDDC48002E33CD /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		04FD749722DF241700C0EE9B /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		8CA54405A6282C94D9152363 /* Pods-ChatDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatDemo.release.xcconfig"; path = "Target Support Files/Pods-ChatDemo/Pods-ChatDemo.release.xcconfig"; sourceTree = "<group>"; };
@@ -68,6 +72,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		042153AC22E9D6080058A205 /* APIManager */ = {
+			isa = PBXGroup;
+			children = (
+				042153AF22E9D6080058A205 /* URLManager.swift */,
+				042153B022E9D6080058A205 /* MTPLAPIManager.swift */,
+			);
+			path = APIManager;
+			sourceTree = "<group>";
+		};
 		18F9FE747CEC41FAD94B291D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -122,6 +135,7 @@
 		C978E05322DB6C5200AA978D /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				042153AC22E9D6080058A205 /* APIManager */,
 				ED3A1E9322E6D5EB000C31C7 /* Test */,
 				C94B242A22DB1E0B00DB0D78 /* SocketManagerAPI.swift */,
 				EDA24FC622E0ACD40034DD03 /* Extensions.swift */,
@@ -279,7 +293,9 @@
 				C94B241E22DB1A3B00DB0D78 /* ChatDemo.xcdatamodeld in Sources */,
 				04FD749822DF241700C0EE9B /* ChatViewController.swift in Sources */,
 				ED3A1E9A22E6D5EB000C31C7 /* ChatList+CoreDataProperties.swift in Sources */,
+				042153B222E9D6080058A205 /* URLManager.swift in Sources */,
 				C94B241622DB1A3B00DB0D78 /* SceneDelegate.swift in Sources */,
+				042153B322E9D6080058A205 /* MTPLAPIManager.swift in Sources */,
 				ED3A1E9F22E6D5EB000C31C7 /* ChatMessages+CoreDataProperties.swift in Sources */,
 				ED3A1E9D22E6D5EB000C31C7 /* ChatMessages+CoreDataClass.swift in Sources */,
 				ED3A1E9B22E6D5EB000C31C7 /* ChatList+CoreDataClass.swift in Sources */,

@@ -10,14 +10,21 @@ import UIKit
 import CoreData
 
 let appdelegate = UIApplication.shared.delegate as! AppDelegate
+let window = UIApplication.shared.windows[0]
+
+
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var objAPI : SocketManagerAPI!
+    var bgSessionCompletionHandler: (() -> Void)?
+
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         objAPI = SocketManagerAPI.shared
+        MTPLAPIManager.shared.setupReachability()
+
         return true
     }
 
@@ -73,6 +80,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
-
+    func application(_ application: UIApplication, handleEventsForBackgroundURLSession identifier: String, completionHandler: @escaping () -> Void) {
+        
+        bgSessionCompletionHandler = completionHandler
+    }
 }
 
