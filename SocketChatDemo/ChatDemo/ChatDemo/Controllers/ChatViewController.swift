@@ -388,3 +388,15 @@ func getCurrentDateTime() -> String{
     return dateFormatter.string(from: date)
 }
 
+func moveFile() -> Void {
+    let fileManager = FileManager.default
+    
+    // Move 'hello.swift' to 'subfolder/hello.swift'
+    
+    do {
+        try fileManager.moveItem(at: <#T##URL#>, to: <#T##URL#>)
+    }
+    catch let error as NSError {
+        print("Ooops! Something went wrong: \(error)")
+    }
+}
