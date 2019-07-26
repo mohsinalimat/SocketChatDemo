@@ -24,7 +24,7 @@ extension ChatMessages {
     @NSManaged public var receiver: String?
     @NSManaged public var sender: String?
     @NSManaged public var updated_at: Double
-    
+    @NSManaged public var msgtype: Int16
     
     
     enum CodingKeys: String, CodingKey {
@@ -36,6 +36,7 @@ extension ChatMessages {
         case updated_at = "updated_at"
         case receiver = "receiver"
         case created_at = "created_at"
+        case msgtype = "msgtype"
         
     }
     
@@ -51,6 +52,7 @@ extension ChatMessages {
         try container.encode(updated_at, forKey: .updated_at)
         try container.encode(created_at, forKey: .created_at)
         try container.encode(receiver, forKey: .receiver)
+        try container.encode(msgtype, forKey: .msgtype)
     }
     
 }

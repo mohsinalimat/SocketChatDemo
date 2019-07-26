@@ -146,7 +146,7 @@ class ChatViewController: UIViewController , UINavigationControllerDelegate, UII
         if textViewSenderChat.text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) == "" {
             return
         }
-        self.sendChatMsg()
+        self.sendChatMsg(msg: textViewSenderChat.text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines), msgType: 0)
     }
     @IBAction func btnBackAction(_ sender: Any) {
        
@@ -167,7 +167,7 @@ class ChatViewController: UIViewController , UINavigationControllerDelegate, UII
     }
     
     //MARK:- API Call
-    func sendChatMsg(){
+    func sendChatMsg(msg : String,msgType : Int, mediaURL : String = ""){
         
         var receiverArray = chatObj?.userIds?.components(separatedBy: ",")
         
@@ -177,7 +177,7 @@ class ChatViewController: UIViewController , UINavigationControllerDelegate, UII
         
         
         
-        let params = ["channelType" : "0","message":textViewSenderChat.text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines),"is_read":"0","chat_id":chatObj!.chatid! , "sender": UserDefaults.standard.userID! , "receiver" : receiverArray!.joined(separator: ",") , "created_at" : Date().millisecondsSince1970,"updated_at" : Date().millisecondsSince1970 , "id" : "\(Date().millisecondsSince1970)\(chatObj!.chatid!)" ] as [String : Any]
+        let params = ["channelType" : "0","message":msg,"is_read":"0","chat_id":chatObj!.chatid! , "sender": UserDefaults.standard.userID! , "receiver" : receiverArray!.joined(separator: ",") , "created_at" : Date().millisecondsSince1970,"updated_at" : Date().millisecondsSince1970 , "id" : "\(Date().millisecondsSince1970)\(chatObj!.chatid!)", "msgtype": msgType,"mediaurl":mediaURL ] as [String : Any]
         
         
         appdelegate.objAPI.sendMessage(params) { (response, error) in
@@ -247,15 +247,18 @@ class ChatViewController: UIViewController , UINavigationControllerDelegate, UII
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
         var imagePath : String = ""
+        var mediaTypeIndex : Int = 0
         
         self.dismiss(animated: true, completion: { () -> Void in
             if let chosenImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage{
                 imagePath = saveImageIntoDocumentDirectory(chosenImage) ?? ""
+                mediaTypeIndex = 1
             }else if let mediaPath = info[UIImagePickerController.InfoKey.mediaURL] as? URL{
                 imagePath = mediaPath.path
+                mediaTypeIndex = 2
             }
             
-            self.callUploadMediaAPI(path: imagePath)
+            self.callUploadMediaAPI(path: imagePath , mediaType: mediaTypeIndex)
         })
     }
     //MARK:- DocumentControl Delegate
@@ -265,8 +268,24 @@ class ChatViewController: UIViewController , UINavigationControllerDelegate, UII
 //        self.callUploadMediaAPI(path: urls[0]..path)
 //
 //    }
-    func callUploadMediaAPI(path : String){
+    func callUploadMediaAPI(path : String , mediaType : Int){
         MTPLAPIManager.shared.upload(ChatURLManager.file_upload, parameter: nil, videoPath: [path], filekey: "file") { (objData, error) in
+            if let error = error{
+                print(error)
+            }else{
+                
+                guard let data = objData else {
+                    return
+                }
+                do{
+                
+                    if let jsonData = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String:Any]{
+                        if let mediaUrl = jsonData["filename"] as? String{
+                                self.sendChatMsg(msg: "", msgType: mediaType, mediaURL: mediaUrl)
+                        }
+                    }
+                }catch{}
+            }
         }
     }
 
@@ -277,7 +296,7 @@ extension ChatViewController {
         controller.dismiss(animated: true) {
             
             if let urlFile = moveFile(filepath: url) {
-                self.callUploadMediaAPI(path: urlFile.path)
+                self.callUploadMediaAPI(path: urlFile.path, mediaType: 3)
             }
         }
     }

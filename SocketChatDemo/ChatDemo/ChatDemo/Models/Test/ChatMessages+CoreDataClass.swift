@@ -30,5 +30,6 @@ public class ChatMessages: NSManagedObject, Codable {
         self.updated_at = try (container.decodeIfPresent(Double.self, forKey: .updated_at) ?? 0.0)
         self.receiver = try container.decodeIfPresent(String.self, forKey: .receiver)
         self.created_at = try (container.decodeIfPresent(Double.self, forKey: .created_at) ?? 0.0)
+        
     }
 }
