@@ -25,6 +25,7 @@ extension ChatMessages {
     @NSManaged public var sender: String?
     @NSManaged public var updated_at: Double
     @NSManaged public var msgtype: Int16
+    @NSManaged public var mediaurl : String?
     
     
     enum CodingKeys: String, CodingKey {
@@ -37,7 +38,7 @@ extension ChatMessages {
         case receiver = "receiver"
         case created_at = "created_at"
         case msgtype = "msgtype"
-        
+        case mediaurl = "mediaurl"
     }
     
     
@@ -53,6 +54,7 @@ extension ChatMessages {
         try container.encode(created_at, forKey: .created_at)
         try container.encode(receiver, forKey: .receiver)
         try container.encode(msgtype, forKey: .msgtype)
+        try container.encode(mediaurl, forKey: .mediaurl)
     }
     
 }

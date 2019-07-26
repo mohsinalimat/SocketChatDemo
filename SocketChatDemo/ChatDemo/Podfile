@@ -9,5 +9,5 @@ target 'ChatDemo' do
 pod 'Socket.IO-Client-Swift', '~> 15.1.0'
 pod 'MBProgressHUD'
 pod 'ReachabilitySwift'
-
+pod 'SDWebImage'
 end
