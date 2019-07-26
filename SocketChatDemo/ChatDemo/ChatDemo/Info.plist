@@ -7,6 +7,14 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+    
+    <key>NSCameraUsageDescription</key>
+    <string>Camera usage description</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Need microphone access for uploading videos</string>
+
+    
+    
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
