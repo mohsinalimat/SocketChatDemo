@@ -278,11 +278,9 @@ extension ChatViewController {
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
         print("url = \(url)")
         
-        let status = iOSDocumentsDirectory.moveFile(withName:  url.lastPathComponent, inDirectory: .Temp, toDirectory: .Documents)
-        print(status)
-        
-        
-        self.callUploadMediaAPI(path: url.path)
+        if let urlFile = moveFile(filepath: url) {
+            self.callUploadMediaAPI(path: urlFile.path)
+        }
     }
 }
 
@@ -437,15 +435,15 @@ func getCurrentDateTime() -> String{
     return dateFormatter.string(from: date)
 }
 
-func moveFile() -> Void {
+func moveFile(filepath : URL) -> URL? {
     let fileManager = FileManager.default
-    
-    // Move 'hello.swift' to 'subfolder/hello.swift'
-    
     do {
-        try fileManager.moveItem(at: <#T##URL#>, to: <#T##URL#>)
-    }
-    catch let error as NSError {
+        let documentDirectory = try fileManager.url(for: .documentDirectory, in: .userDomainMask, appropriateFor:nil, create:false)
+        let fileURL = documentDirectory.appendingPathComponent(filepath.lastPathComponent)
+        try fileManager.moveItem(at: filepath, to: fileURL)
+        return fileURL
+    } catch let error as NSError {
         print("Ooops! Something went wrong: \(error)")
+        return nil
     }
 }
