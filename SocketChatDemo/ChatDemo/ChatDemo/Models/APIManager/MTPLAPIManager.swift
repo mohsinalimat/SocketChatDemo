@@ -236,7 +236,7 @@ extension MTPLAPIManager:URLSessionDelegate {
 extension MTPLAPIManager:URLSessionDataDelegate {
     
     public func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-        MBProgressHUD.hide(for: (window.rootViewController?.view)!, animated: true)
+        MBProgressHUD.hide(for: (UIApplication.topViewController()?.view!)!, animated: true)
         if let err = error {
             print("\n\n Error Server --------- ❌  --------->>")
             print(err.localizedDescription)
