@@ -34,6 +34,7 @@
 /* Begin PBXFileReference section */
 		042153AF22E9D6080058A205 /* URLManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLManager.swift; sourceTree = "<group>"; };
 		042153B022E9D6080058A205 /* MTPLAPIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MTPLAPIManager.swift; sourceTree = "<group>"; };
+		043A94CF22EB079B00CC2971 /* ChatDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ChatDemo.entitlements; sourceTree = "<group>"; };
 		04E9670822DDDC48002E33CD /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		04FD749722DF241700C0EE9B /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		8CA54405A6282C94D9152363 /* Pods-ChatDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatDemo.release.xcconfig"; path = "Target Support Files/Pods-ChatDemo/Pods-ChatDemo.release.xcconfig"; sourceTree = "<group>"; };
@@ -119,6 +120,7 @@
 		C94B241222DB1A3B00DB0D78 /* ChatDemo */ = {
 			isa = PBXGroup;
 			children = (
+				043A94CF22EB079B00CC2971 /* ChatDemo.entitlements */,
 				C978E05422DB6C7900AA978D /* Controllers */,
 				C978E05322DB6C5200AA978D /* Models */,
 				C94B241322DB1A3B00DB0D78 /* AppDelegate.swift */,
@@ -445,6 +447,7 @@
 			baseConfigurationReference = F5295EFA3550916D1161E39A /* Pods-ChatDemo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = ChatDemo/ChatDemo.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = TUBBTSR2F6;
@@ -467,6 +470,7 @@
 			baseConfigurationReference = 8CA54405A6282C94D9152363 /* Pods-ChatDemo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = ChatDemo/ChatDemo.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = TUBBTSR2F6;

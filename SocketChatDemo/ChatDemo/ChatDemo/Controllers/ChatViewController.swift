@@ -8,7 +8,7 @@
 
 import UIKit
 import CoreData
-
+import MobileCoreServices
 
 
 class ChatSenderCell : UITableViewCell {
@@ -37,11 +37,12 @@ class ChatReceiverCell: UITableViewCell {
 
 
 
-class ChatViewController: UIViewController , UINavigationControllerDelegate, UIImagePickerControllerDelegate{
+class ChatViewController: UIViewController , UINavigationControllerDelegate, UIImagePickerControllerDelegate,UIDocumentPickerDelegate{
+    
+    
 
      
     @IBOutlet weak var constraintsBottom: NSLayoutConstraint!
-    
     @IBOutlet weak var lblPlaceHolder: UILabel!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var textViewSenderChat: UITextView!
@@ -52,7 +53,7 @@ class ChatViewController: UIViewController , UINavigationControllerDelegate, UII
     var msgSent : Bool = false
     
     var imagePicker = UIImagePickerController()
-
+    let iOSDocumentsDirectory = iOSAppFileSystemDirectory(using: .Temp)
     
     
     override func viewDidLoad() {
@@ -208,16 +209,19 @@ class ChatViewController: UIViewController , UINavigationControllerDelegate, UII
     func openActionSheet(){
         let alert = UIAlertController(title: "ChatDemo", message: "Please Select an Option", preferredStyle: .actionSheet)
         
-        alert.addAction(UIAlertAction(title: "camera", style: .default , handler:{ (UIAlertAction)in
-            self.openImageViewPicker(isOpenGallery: false)
+        alert.addAction(UIAlertAction(title: "Camera", style: .default , handler:{ (UIAlertAction)in
+            self.openImageViewPicker(isOpenGallery: .camera)
         }))
         
         alert.addAction(UIAlertAction(title: "Gallery", style: .default , handler:{ (UIAlertAction)in
-            self.openImageViewPicker(isOpenGallery: true)
+            self.openImageViewPicker(isOpenGallery: .photoLibrary)
         }))
         
-        alert.addAction(UIAlertAction(title: "Documents", style: .destructive , handler:{ (UIAlertAction)in
-            print("User click Delete button")
+        alert.addAction(UIAlertAction(title: "Documents", style: .default , handler:{ (UIAlertAction)in
+            self.openDocumentViewController()
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel , handler:{ (UIAlertAction)in
+            self.dismiss(animated: true, completion: nil)
         }))
         
         self.present(alert, animated: true, completion: {
@@ -225,37 +229,66 @@ class ChatViewController: UIViewController , UINavigationControllerDelegate, UII
         })
     }
     
-    func openImageViewPicker(isOpenGallery : Bool){
-        if UIImagePickerController.isSourceTypeAvailable(.savedPhotosAlbum){
+    func openImageViewPicker(isOpenGallery : UIImagePickerController.SourceType){
+        if UIImagePickerController.isSourceTypeAvailable(isOpenGallery){
             imagePicker.delegate = self
-            imagePicker.sourceType = isOpenGallery ? .savedPhotosAlbum : .camera
-            imagePicker.allowsEditing = false
-            
+            imagePicker.sourceType = isOpenGallery
+            imagePicker.mediaTypes = ["public.image", "public.movie"]
+
+            imagePicker.allowsEditing = true
             present(imagePicker, animated: true, completion: nil)
         }
     }
+    func openDocumentViewController(){
+        
+        let documentPicker = UIDocumentPickerViewController(documentTypes: ["public.text", "com.apple.iwork.pages.pages", "public.data"], in: .import)
+        
+        documentPicker.delegate = self
+        present(documentPicker, animated: true, completion: nil)
+    }
     //MARK:- ImagePickerController Delegate
-    
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        
+        var imagePath : String = ""
+        
         self.dismiss(animated: true, completion: { () -> Void in
             
         })
-        let chosenImage = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
-        let imagePath = saveImageIntoDocumentDirectory(chosenImage)
-
-
-        print(imagePath)
-        
-        MTPLAPIManager.shared.upload(ChatURLManager.file_upload, parameter: nil, videoPath: [imagePath!], filekey: "file") { (objData, error) in
-            
-            
-            
+        if let chosenImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage{
+            imagePath = saveImageIntoDocumentDirectory(chosenImage) ?? ""
+        }else if let mediaPath = info[UIImagePickerController.InfoKey.mediaURL] as? URL{
+            imagePath = mediaPath.path
         }
         
+        self.callUploadMediaAPI(path: imagePath)
+        
     }
-    
+    //MARK:- DocumentControl Delegate
+//    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+//
+//
+//        self.callUploadMediaAPI(path: urls[0]..path)
+//
+//    }
+    func callUploadMediaAPI(path : String){
+        MTPLAPIManager.shared.upload(ChatURLManager.file_upload, parameter: nil, videoPath: [path], filekey: "file") { (objData, error) in
+        }
+    }
 
 }
+extension ChatViewController {
+    
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
+        print("url = \(url)")
+        
+        let status = iOSDocumentsDirectory.moveFile(withName:  url.lastPathComponent, inDirectory: .Temp, toDirectory: .Documents)
+        print(status)
+        
+        
+        self.callUploadMediaAPI(path: url.path)
+    }
+}
+
 extension ChatViewController : ReceiveMessage{
     func updateStatus(data: [String : Any]) {
         if let index = self.chatMsgsArray.firstIndex(where: {$0.id == data["id"] as? String}){
@@ -263,7 +296,6 @@ extension ChatViewController : ReceiveMessage{
             obj.is_read = data["is_read"] as? String
             self.chatMsgsArray[index] = obj
             self.tableView.reloadData()
-            
         }
     }
 
@@ -407,4 +439,5 @@ func getCurrentDateTime() -> String{
     let date = Date()
     return dateFormatter.string(from: date)
 }
+
 

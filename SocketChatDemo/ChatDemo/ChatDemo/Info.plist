@@ -8,8 +8,10 @@
 		<true/>
 	</dict>
     
-    <key>Privacy - Camera Usage Description</key>
-    <string>ChatDemo requires access to your phone’s camera.</string>
+    <key>NSCameraUsageDescription</key>
+    <string>Camera usage description</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Need microphone access for uploading videos</string>
 
     
     
