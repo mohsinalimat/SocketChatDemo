@@ -249,16 +249,14 @@ class ChatViewController: UIViewController , UINavigationControllerDelegate, UII
         var imagePath : String = ""
         
         self.dismiss(animated: true, completion: { () -> Void in
+            if let chosenImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage{
+                imagePath = saveImageIntoDocumentDirectory(chosenImage) ?? ""
+            }else if let mediaPath = info[UIImagePickerController.InfoKey.mediaURL] as? URL{
+                imagePath = mediaPath.path
+            }
             
+            self.callUploadMediaAPI(path: imagePath)
         })
-        if let chosenImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage{
-            imagePath = saveImageIntoDocumentDirectory(chosenImage) ?? ""
-        }else if let mediaPath = info[UIImagePickerController.InfoKey.mediaURL] as? URL{
-            imagePath = mediaPath.path
-        }
-        
-        self.callUploadMediaAPI(path: imagePath)
-        
     }
     //MARK:- DocumentControl Delegate
 //    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
@@ -276,10 +274,11 @@ class ChatViewController: UIViewController , UINavigationControllerDelegate, UII
 extension ChatViewController {
     
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
-        print("url = \(url)")
-        
-        if let urlFile = moveFile(filepath: url) {
-            self.callUploadMediaAPI(path: urlFile.path)
+        controller.dismiss(animated: true) {
+            
+            if let urlFile = moveFile(filepath: url) {
+                self.callUploadMediaAPI(path: urlFile.path)
+            }
         }
     }
 }
@@ -440,6 +439,9 @@ func moveFile(filepath : URL) -> URL? {
     do {
         let documentDirectory = try fileManager.url(for: .documentDirectory, in: .userDomainMask, appropriateFor:nil, create:false)
         let fileURL = documentDirectory.appendingPathComponent(filepath.lastPathComponent)
+        if fileManager.fileExists(atPath: fileURL.path){
+            try fileManager.removeItem(at: fileURL)
+        }
         try fileManager.moveItem(at: filepath, to: fileURL)
         return fileURL
     } catch let error as NSError {

@@ -85,27 +85,28 @@ class MTPLAPIManager: NSObject {
 //            guard let parameters = parameter else {
 //                return
 //            }
-            
-            let boundary = generateBoundary()
-            showProgressHUD("Processing...")
-            var request = buildRequest(baseURl)
-            request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-            request.setValue("Keep-Alive", forHTTPHeaderField: "Connection")
-            
-            guard let payloadFileURL = buildPayloadFile(videoFileURL: videoPath, parameter:parameter , boundary: boundary, filekey: filekey) else{
-                callback(nil,"file not found")
-                MBProgressHUD.hide(for: (window.rootViewController?.view)!, animated: true)
-                return
+            DispatchQueue.main.async {
+                let boundary = self.generateBoundary()
+                self.showProgressHUD("Processing...")
+                var request = self.buildRequest(baseURl)
+                request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+                request.setValue("Keep-Alive", forHTTPHeaderField: "Connection")
+                
+                guard let payloadFileURL = self.buildPayloadFile(videoFileURL: videoPath, parameter:parameter , boundary: boundary, filekey: filekey) else{
+                    callback(nil,"file not found")
+                    MBProgressHUD.hide(for: (UIApplication.topViewController()?.view!)!, animated: true)
+                    return
+                }
+                self.obj?.label.text = "Uploading..."
+                self.performUpload(request, payload: payloadFileURL, callback: callback)
             }
-            obj?.label.text = "Uploading..."
-            performUpload(request, payload: payloadFileURL, callback: callback)
         }else{
             print("No Internet Connection")
         }
     }
     
     func showProgressHUD(_ text:String) -> Void {
-        obj = MBProgressHUD.showAdded(to: (window.rootViewController?.view)!, animated: true)
+        obj = MBProgressHUD.showAdded(to: UIApplication.topViewController()!.view, animated: true)
         obj?.mode = .indeterminate
         obj?.label.text = text
     }
