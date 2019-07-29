@@ -167,6 +167,24 @@ class SocketManagerAPI: NSObject {
         }
     }
     
+    func getLastChatListUpdatedTime() -> Double? {
+        let context = appdelegate.persistentContainer.viewContext
+        let request = NSFetchRequest<ChatList>(entityName: "ChatList")
+        request.sortDescriptors = [NSSortDescriptor(key: "updated_at", ascending: false)]
+        request.fetchLimit = 1
+        request.returnsObjectsAsFaults = false
+        do{
+            let obj = try context.fetch(request)
+            if obj.count > 0 {
+                return obj[0].updated_at
+            }else{
+                return nil
+            }
+        }catch{
+            return nil
+        }
+    }
+    
     func emitStatus(_ params : [String:Any]) -> Void {
         socket.emit("ChangeStatus", params)
     }
@@ -240,7 +258,7 @@ class SocketManagerAPI: NSObject {
         
     }
     
-    func checkChannelAvailable(_ arrayData : [[String:Any]]) -> Bool {
+    func checkChannelAvailable(_ arrayData : [[String:Any]], isUpdatedUnread: Bool = true) -> Bool {
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "ChatList")
         fetchRequest.predicate = NSPredicate(format: "chatid = '\(arrayData[0]["chatid"] ?? "")'")
         
@@ -255,7 +273,9 @@ class SocketManagerAPI: NSObject {
                 objResult.channelType = updatedData["channelType"] as? String
                 objResult.channelName = updatedData["channelName"] as? String
                 objResult.updated_at = updatedData["updated_at"] as? Double ?? 0.0
-                objResult.unreadcount += 1
+                if isUpdatedUnread {
+                    objResult.unreadcount += 1
+                }
                 if let createdAt = updatedData["created_at"] as? Double {
                     objResult.created_at = createdAt
                 }
@@ -385,7 +405,8 @@ class SocketManagerAPI: NSObject {
         let mbProgress = MBProgressHUD.showAdded(to: (UIApplication.topViewController()?.view!)!, animated: true)
         mbProgress.label.text = "Sync Data..."
         
-        let params = ["senderId": "\(UserDefaults.standard.userID!)"]
+        let params = ["senderId": "\(UserDefaults.standard.userID!)",
+            "updated_at":getLastChatListUpdatedTime() ?? 0] as [String : Any]
         
         self.getChatList(params) { (chatList, error) in
             if let error = error {
@@ -393,12 +414,14 @@ class SocketManagerAPI: NSObject {
                 mbProgress.hide(animated: true)
             }else{
                 do {
-                    try clearDeepObjectEntity("ChatList")
+                    //try clearDeepObjectEntity("ChatList")
                     if let chatlist = chatList, chatlist.count > 0 {
-                        if self.insertChannelList(arrayData: chatlist) != nil {
+                        if self.checkChannelAvailable(chatlist,isUpdatedUnread: false) {
                             self.getChatMessageHistory { (success, error) in
                                 if success ?? false{
                                     self.chnlDelegate?.receiveChnl()
+                                }else{
+                                    
                                 }
                                 mbProgress.hide(animated: true)
                             }
