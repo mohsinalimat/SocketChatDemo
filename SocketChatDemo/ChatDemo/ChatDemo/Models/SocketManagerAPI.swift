@@ -9,6 +9,8 @@
 import UIKit
 import SocketIO
 import CoreData
+import MBProgressHUD
+
 
 typealias completionHandler = ([String:Any]?, String?) -> Void
 typealias completionHandlerArray = ([[String:Any]]?, String?) -> Void
@@ -62,10 +64,10 @@ class SocketManagerAPI: NSObject {
     func getData() -> Void {
         if UserDefaults.standard.userID != nil {
             self.socket.removeAllHandlers()
+            self.getHistroy()
             self.getChannel()
             self.getTypingMessage()
             self.getChangeStatus()
-            
             self.getMessages()
         }
     }
@@ -87,6 +89,7 @@ class SocketManagerAPI: NSObject {
             ackCallBack(data,nil)
         }
     }
+    
     func insertChannelList(arrayData : [[String:Any]]) -> [ChatList]?{
         do {
             let managedObjectContext = appdelegate.persistentContainer.viewContext
@@ -136,7 +139,11 @@ class SocketManagerAPI: NSObject {
             if arrayData?.count ?? 0 > 0 {
                 if self.insertUpdateMsgArray(array: arrayData!){
                     completion(true , nil)
+                }else{
+                    completion(false , nil)
                 }
+            }else{
+                completion(false , nil)
             }
         }
     }
@@ -163,6 +170,7 @@ class SocketManagerAPI: NSObject {
     func emitStatus(_ params : [String:Any]) -> Void {
         socket.emit("ChangeStatus", params)
     }
+    
     func updateMessageStatus(_ arrayData : [String:Any]) -> Bool {
         
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "ChatMessages")
@@ -206,6 +214,7 @@ class SocketManagerAPI: NSObject {
             ack.with("Got your currentAmount", "dude")
         }
     }
+    
     func updateUnReadMsgCount(_ chatID : String , count : Int = 0) -> Bool{
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "ChatList")
         fetchRequest.predicate = NSPredicate(format: "chatid = '\(chatID)'")
@@ -252,7 +261,7 @@ class SocketManagerAPI: NSObject {
                 }
                 appdelegate.saveContext()
             }else{
-                self.insertChannelList(arrayData: arrayData)
+                _ = self.insertChannelList(arrayData: arrayData)
             }
             return true
         } catch {
@@ -369,6 +378,41 @@ class SocketManagerAPI: NSObject {
             print("got message")
             guard let data1 = data[0] as? [String:String] else { ackCallBack(nil,"data Not availabel"); return }
             ackCallBack(data1,nil)
+        }
+    }
+    
+    func getHistroy() -> Void {
+        let mbProgress = MBProgressHUD.showAdded(to: (UIApplication.topViewController()?.view!)!, animated: true)
+        mbProgress.label.text = "Sync Data..."
+        
+        let params = ["senderId": "\(UserDefaults.standard.userID!)"]
+        
+        self.getChatList(params) { (chatList, error) in
+            if let error = error {
+                print(error)
+                mbProgress.hide(animated: true)
+            }else{
+                do {
+                    try clearDeepObjectEntity("ChatList")
+                    if let chatlist = chatList, chatlist.count > 0 {
+                        if self.insertChannelList(arrayData: chatlist) != nil {
+                            self.getChatMessageHistory { (success, error) in
+                                if success ?? false{
+                                    self.chnlDelegate?.receiveChnl()
+                                }
+                                mbProgress.hide(animated: true)
+                            }
+                        }else{
+                            mbProgress.hide(animated: true)
+                        }
+                    }else{
+                        print("nodata found")
+                        mbProgress.hide(animated: true)
+                    }
+                }catch{
+                    
+                }
+            }
         }
     }
 }

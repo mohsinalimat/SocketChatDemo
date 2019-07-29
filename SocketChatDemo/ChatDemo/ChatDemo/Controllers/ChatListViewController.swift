@@ -32,6 +32,7 @@ class ChatListViewController: UIViewController, UITableViewDelegate, UITableView
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         chatListTable.tableFooterView = UIView.init()
     }
     
@@ -53,18 +54,10 @@ class ChatListViewController: UIViewController, UITableViewDelegate, UITableView
     
     public func clearAllCoreData() {
         let entities = appdelegate.persistentContainer.managedObjectModel.entities
-        entities.compactMap({ $0.name }).forEach(clearDeepObjectEntity)
-    }
-    
-    private func clearDeepObjectEntity(_ entity: String) {
-        let context = appdelegate.persistentContainer.viewContext
-        let deleteFetch = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
-        let deleteRequest = NSBatchDeleteRequest(fetchRequest: deleteFetch)
         do {
-            try context.execute(deleteRequest)
-            try context.save()
-        } catch {
-            print ("There was an error")
+            try entities.compactMap({ $0.name }).forEach(clearDeepObjectEntity)
+        }catch{
+            
         }
     }
     
@@ -74,7 +67,7 @@ class ChatListViewController: UIViewController, UITableViewDelegate, UITableView
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ChatList")
             if let dataArray = try context.fetch(fetchRequest) as? [ChatList]{
                 if dataArray.count == 0{
-                    getChatList()
+                    
                 }else{
                     self.chatListArray = dataArray
                     self.chatListTable.reloadData()
@@ -84,41 +77,6 @@ class ChatListViewController: UIViewController, UITableViewDelegate, UITableView
             print(error.localizedDescription)
         }
     }
-    
-    func getChatList() -> Void {
-        let mbProgress = MBProgressHUD.showAdded(to: self.view, animated: true)
-        mbProgress.label.text = "Sync Data..."
-        
-        let params = ["senderId": "\(UserDefaults.standard.userID!)"]
-        
-        appdelegate.objAPI.getChatList(params) { (chatList, error) in
-            if let error = error {
-                print(error)
-                mbProgress.hide(animated: true)
-            }else{
-                if let chatlist = chatList, chatlist.count > 0 {
-                    if let objChatList = appdelegate.objAPI.insertChannelList(arrayData: chatlist){
-                        self.chatListArray = objChatList
-                        self.chatListTable.reloadData()
-                        appdelegate.objAPI.getChatMessageHistory { (success, error) in
-                            if success ?? false{
-                                self.checkDataAvailable()
-                            }
-                            mbProgress.hide(animated: true)
-                        }
-                    }else{
-                        mbProgress.hide(animated: true)
-                    }
-                }else{
-                    print("nodata found")
-                    mbProgress.hide(animated: true)
-                }
-            }
-            
-        }
-        
-    }
-    
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
