@@ -54,7 +54,6 @@ class ChatViewController: UIViewController , UINavigationControllerDelegate, UII
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         self.setUpUI()
     }
     
@@ -63,7 +62,6 @@ class ChatViewController: UIViewController , UINavigationControllerDelegate, UII
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         appdelegate.objAPI.delegate = self
-        
     }
     
     @objc func keyboardWillShow(notification: NSNotification) {
@@ -72,11 +70,14 @@ class ChatViewController: UIViewController , UINavigationControllerDelegate, UII
                 let window = UIApplication.shared.keyWindow
                 _ = window?.safeAreaInsets.top
                 guard let bottomPadding = window?.safeAreaInsets.bottom else { return }
-                constraintsBottom.constant += keyboardSize.height - bottomPadding
+                if constraintsBottom.constant <= 20 {
+                    constraintsBottom.constant += keyboardSize.height - bottomPadding
+                }
             }else{
-                constraintsBottom.constant += keyboardSize.height
+                if constraintsBottom.constant <= 20 {
+                    constraintsBottom.constant += keyboardSize.height
+                }
             }
-            
         }
     }
     
@@ -95,23 +96,17 @@ class ChatViewController: UIViewController , UINavigationControllerDelegate, UII
     
     func setUpUI(){
         self.tableView.tableFooterView = UIView.init()
-        
         self.navigationItem.title = chatObj?.channelName
         _ = appdelegate.objAPI.updateUnReadMsgCount(self.chatObj!.chatid!)
         self.loadCurrentConversationMessages()
-        
-        
     }
     
     func loadCurrentConversationMessages() {
-        
         let fetchRequest = NSFetchRequest<ChatMessages>(entityName: "ChatMessages")
         fetchRequest.predicate = NSPredicate(format: "chat_id == '\(chatObj!.chatid!)'")
         fetchRequest.returnsObjectsAsFaults = false
         let sort = NSSortDescriptor(key: #keyPath(ChatMessages.created_at), ascending: true)
         fetchRequest.sortDescriptors = [sort]
-        
-        
         do {
             let managedObjectContext = appdelegate.persistentContainer.viewContext
             let result = try managedObjectContext.fetch(fetchRequest)
@@ -142,7 +137,6 @@ class ChatViewController: UIViewController , UINavigationControllerDelegate, UII
     }
     
     @IBAction func btnBackAction(_ sender: Any) {
-        
         _ = appdelegate.objAPI.updateUnReadMsgCount(self.chatObj!.chatid!)
         for i in self.navigationController!.viewControllers{
             if i is ChatListViewController{
@@ -210,22 +204,18 @@ class ChatViewController: UIViewController , UINavigationControllerDelegate, UII
     
     func openActionSheet(){
         let alert = UIAlertController(title: "ChatDemo", message: "Please Select an Option", preferredStyle: .actionSheet)
-        
         alert.addAction(UIAlertAction(title: "Camera", style: .default , handler:{ (UIAlertAction)in
             self.openImageViewPicker(isOpenGallery: .camera)
         }))
-        
         alert.addAction(UIAlertAction(title: "Gallery", style: .default , handler:{ (UIAlertAction)in
             self.openImageViewPicker(isOpenGallery: .photoLibrary)
         }))
-        
         alert.addAction(UIAlertAction(title: "Documents", style: .default , handler:{ (UIAlertAction)in
             self.openDocumentViewController()
         }))
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel , handler:{ (UIAlertAction)in
             self.dismiss(animated: true, completion: nil)
         }))
-        
         self.present(alert, animated: true, completion: {
             print("completion block")
         })
@@ -242,9 +232,7 @@ class ChatViewController: UIViewController , UINavigationControllerDelegate, UII
     }
     
     func openDocumentViewController(){
-        
         let documentPicker = UIDocumentPickerViewController(documentTypes: ["public.text", "com.apple.iwork.pages.pages", "public.data"], in: .import)
-        
         documentPicker.delegate = self
         present(documentPicker, animated: true, completion: nil)
     }
@@ -263,7 +251,6 @@ class ChatViewController: UIViewController , UINavigationControllerDelegate, UII
                 imagePath = mediaPath.path
                 mediaTypeIndex = 2
             }
-            
             self.callUploadMediaAPI(path: imagePath , mediaType: mediaTypeIndex)
         })
     }
@@ -278,11 +265,8 @@ class ChatViewController: UIViewController , UINavigationControllerDelegate, UII
                 print(error)
             }else{
                 
-                guard let data = objData else {
-                    return
-                }
+                guard let data = objData else { return }
                 do{
-                    
                     if let jsonData = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String:Any]{
                         if let mediaUrl = jsonData["filename"] as? String{
                             self.sendChatMsg(msg: "", msgType: mediaType, mediaURL: mediaUrl)
@@ -312,7 +296,6 @@ extension ChatViewController : ReceiveMessage{
             if Int(obj.is_read!)! < Int(data["is_read"] as! String)!{
                 obj.is_read = data["is_read"] as? String
                 self.chatMsgsArray[index] = obj
-                
             }
             self.tableView.reloadData()
         }
