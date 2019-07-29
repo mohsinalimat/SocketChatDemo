@@ -118,7 +118,7 @@ class ChatViewController: UIViewController , UINavigationControllerDelegate, UII
             
             for i in result {
                 if i.is_read != "3" && i.sender != UserDefaults.standard.userID! {
-                    let dict = ["is_read":"3","id":i.id!,"sender":i.sender!] as [String:Any]
+                    let dict = ["is_read":"3","id":i.id!,"sender":i.sender!,"updated_at":Date().millisecondsSince1970] as [String:Any]
                     self.changeStatus(dict:dict)
                 }
             }
@@ -336,9 +336,7 @@ extension ChatViewController : ReceiveMessage{
     }
     
     func changeStatus(dict : [String:Any]){
-        appdelegate.objAPI.emitStatus(dict) { (emitData, error) in
-            
-        }
+        appdelegate.objAPI.emitStatus(dict)
     }
     
     func getReceiverID() -> String {

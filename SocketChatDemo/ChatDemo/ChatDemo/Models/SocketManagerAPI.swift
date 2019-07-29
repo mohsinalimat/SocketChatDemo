@@ -117,9 +117,7 @@ class SocketManagerAPI: NSObject {
             if let getData = data[0] as? [String:Any]{
                 if let msg =  self.insertMessage(dict: getData){
                     let dict = ["is_read":"2","id":msg.id!,"sender":msg.sender!,"updated_at":Date().millisecondsSince1970] as [String:Any]
-                    self.emitStatus(dict) { (dict, error) in
-                        
-                    }
+                    self.emitStatus(dict)
                     self.delegate?.receiveMsg(msg: msg)
                 }
             }
@@ -158,14 +156,15 @@ class SocketManagerAPI: NSObject {
         }
     }
     
-    func emitStatus(_ params : [String:Any], ackCallBack:@escaping completionHandler) -> Void {
+    func emitStatus(_ params : [String:Any]) -> Void {
         socket.emitWithAck("ChangeStatus", params).timingOut(after: 0) { data in
-            guard let data = data[0] as? [String:String] else { ackCallBack(nil,"data Not availabel"); return }
+            guard let data = data[0] as? [String:String] else { //ackCallBack(nil,"data Not availabel");
+                return }
             
             let status = self.updateMessageStatus(data)
             
             if status{
-                ackCallBack(data,nil)
+                //ackCallBack(data,nil)
             }
         }
     }
@@ -289,9 +288,7 @@ class SocketManagerAPI: NSObject {
                 if let msg =  self.insertMessage(dict: arrayData) {
                     if msg.sender != UserDefaults.standard.userID! && msg.is_read == "1" {
                         let dict = ["is_read":"2","id":msg.id!,"sender":msg.sender!,"updated_at":Date().millisecondsSince1970] as [String:Any]
-                        self.emitStatus(dict) { (dict, error) in
-                            
-                        }
+                        self.emitStatus(dict)
                     }
                 }
             }
