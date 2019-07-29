@@ -89,8 +89,6 @@ class ChatListViewController: UIViewController, UITableViewDelegate, UITableView
         let mbProgress = MBProgressHUD.showAdded(to: self.view, animated: true)
         mbProgress.label.text = "Sync Data..."
         
-        
-        
         let params = ["senderId": "\(UserDefaults.standard.userID!)"]
         
         appdelegate.objAPI.getChatList(params) { (chatList, error) in
