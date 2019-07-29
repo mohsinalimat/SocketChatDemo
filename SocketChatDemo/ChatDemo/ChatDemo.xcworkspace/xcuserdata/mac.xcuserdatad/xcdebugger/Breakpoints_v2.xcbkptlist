@@ -18,16 +18,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "D767C56C-C56D-4293-8E6B-71E806F2E8BF"
+            uuid = "70C0165C-F8D7-4393-B08A-71E138685317"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "ChatDemo/Models/DocumentManager/DirectoryManager.swift"
+            filePath = "ChatDemo/Controllers/ChatViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "211"
-            endingLineNumber = "211"
-            landmarkName = "moveFile(withName:inDirectory:toDirectory:)"
+            startingLineNumber = "277"
+            endingLineNumber = "277"
+            landmarkName = "callUploadMediaAPI(path:mediaType:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
