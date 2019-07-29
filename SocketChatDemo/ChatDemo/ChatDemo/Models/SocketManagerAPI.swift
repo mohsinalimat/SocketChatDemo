@@ -169,7 +169,7 @@ class SocketManagerAPI: NSObject {
         }
     }
     func updateMessageStatus(_ arrayData : [String:Any]) -> Bool {
-       
+        
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "ChatMessages")
         fetchRequest.predicate = NSPredicate(format: "id = '\(arrayData["id"] ?? "")'")
         
@@ -217,11 +217,14 @@ class SocketManagerAPI: NSObject {
         
         
         do {
-        guard let result = try? appdelegate.persistentContainer.viewContext.fetch(fetchRequest)  as? [ChatList] else { return false }
+            guard let result = try? appdelegate.persistentContainer.viewContext.fetch(fetchRequest)  as? [ChatList] else { return false }
             if result.count > 0 {
                 let objResult = result[0]
-                
-                objResult.unreadcount = Int16(count)
+                if count > 0 {
+                    objResult.unreadcount += Int16(count)
+                }else{
+                    objResult.unreadcount = Int16(count)
+                }
                 
                 appdelegate.saveContext()
             }
@@ -230,7 +233,7 @@ class SocketManagerAPI: NSObject {
             print("error executing fetch request: \(error.localizedDescription)")
             return false
         }
-
+        
     }
     
     func checkChannelAvailable(_ arrayData : [[String:Any]]) -> Bool {
@@ -287,8 +290,10 @@ class SocketManagerAPI: NSObject {
             }else{
                 if let msg =  self.insertMessage(dict: arrayData) {
                     if msg.sender != UserDefaults.standard.userID! && msg.is_read == "1" {
-                        let dict = ["is_read":"2","id":msg.id!,"sender":msg.sender!,"updated_at":Date().millisecondsSince1970] as [String:Any]
-                        self.emitStatus(dict)
+                        if updateUnReadMsgCount(msg.chat_id!, count: 1) {
+                            let dict = ["is_read":"2","id":msg.id!,"sender":msg.sender!,"updated_at":Date().millisecondsSince1970] as [String:Any]
+                            self.emitStatus(dict)
+                        }
                     }
                 }
             }
@@ -296,7 +301,7 @@ class SocketManagerAPI: NSObject {
             print("error executing fetch request: \(error.localizedDescription)")
         }
     }
-
+    
     func insertUpdateMsgArray(array : [[String:Any]]) {
         for msgData in array {
             checkMsgAvailable(msgData)
@@ -364,49 +369,6 @@ class SocketManagerAPI: NSObject {
             print("got message")
             guard let data1 = data[0] as? [String:String] else { ackCallBack(nil,"data Not availabel"); return }
             ackCallBack(data1,nil)
-        }
-    }
-}
-
-extension String {
-    func toJSON() -> Any? {
-        guard let data = self.data(using: .utf8, allowLossyConversion: false) else { return nil }
-        return try? JSONSerialization.jsonObject(with: data, options: .mutableContainers)
-    }
-}
-
-
-extension UserDefaults {
-    var userID : String? {
-        get{
-            return self.value(forKey: "userID") as? String ?? nil
-        }
-        set {
-            self.set(newValue, forKey: "userID")
-        }
-    }
-}
-
-extension Array {
-    func toData() throws -> Data {
-        return try JSONSerialization.data(withJSONObject: self, options: JSONSerialization.WritingOptions(rawValue: 0))
-    }
-}
-
-extension Dictionary {
-    func toData() throws -> Data {
-        return try JSONSerialization.data(withJSONObject: self, options: JSONSerialization.WritingOptions(rawValue: 0))
-    }
-}
-
-public extension Sequence where Element: Equatable {
-    var uniqueElements: [Element] {
-        return self.reduce(into: []) {
-            uniqueElements, element in
-            
-            if !uniqueElements.contains(element) {
-                uniqueElements.append(element)
-            }
         }
     }
 }

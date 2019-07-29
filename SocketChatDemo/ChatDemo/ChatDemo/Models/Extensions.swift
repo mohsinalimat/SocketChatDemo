@@ -227,3 +227,34 @@ extension UIApplication {
         return base
     }
 }
+
+extension String {
+    func toJSON() -> Any? {
+        guard let data = self.data(using: .utf8, allowLossyConversion: false) else { return nil }
+        return try? JSONSerialization.jsonObject(with: data, options: .mutableContainers)
+    }
+}
+
+
+extension UserDefaults {
+    var userID : String? {
+        get{
+            return self.value(forKey: "userID") as? String ?? nil
+        }
+        set {
+            self.set(newValue, forKey: "userID")
+        }
+    }
+}
+
+extension Array {
+    func toData() throws -> Data {
+        return try JSONSerialization.data(withJSONObject: self, options: JSONSerialization.WritingOptions(rawValue: 0))
+    }
+}
+
+extension Dictionary {
+    func toData() throws -> Data {
+        return try JSONSerialization.data(withJSONObject: self, options: JSONSerialization.WritingOptions(rawValue: 0))
+    }
+}
