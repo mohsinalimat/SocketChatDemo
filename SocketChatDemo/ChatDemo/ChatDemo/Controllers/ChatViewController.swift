@@ -235,8 +235,7 @@ class ChatViewController: UIViewController , UINavigationControllerDelegate, UII
         if UIImagePickerController.isSourceTypeAvailable(isOpenGallery){
             imagePicker.delegate = self
             imagePicker.sourceType = isOpenGallery
-            imagePicker.mediaTypes = ["public.image", "public.movie"]
-            
+            imagePicker.mediaTypes = ["public.image", "public.movie", ""]
             imagePicker.allowsEditing = true
             present(imagePicker, animated: true, completion: nil)
         }
