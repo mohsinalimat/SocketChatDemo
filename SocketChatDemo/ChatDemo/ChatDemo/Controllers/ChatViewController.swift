@@ -312,8 +312,9 @@ extension ChatViewController : ReceiveMessage{
             if Int(obj.is_read!)! < Int(data["is_read"] as! String)!{
                 obj.is_read = data["is_read"] as? String
                 self.chatMsgsArray[index] = obj
-                self.tableView.reloadData()
+                
             }
+            self.tableView.reloadData()
         }
     }
     
