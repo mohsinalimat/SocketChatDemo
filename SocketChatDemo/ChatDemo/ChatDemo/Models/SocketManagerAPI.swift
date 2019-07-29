@@ -61,19 +61,13 @@ class SocketManagerAPI: NSObject {
     
     func getData() -> Void {
         if UserDefaults.standard.userID != nil {
-            
-            
             self.socket.removeAllHandlers()
-            
             self.getChannel()
             self.getTypingMessage()
             self.getChangeStatus()
-            
+            getChatMessageHistory()
             self.getMessages()
-        
-            
         }
-        
     }
     
     func getUserList(ackCallBack:@escaping completionHandlerArray) -> Void {
@@ -122,24 +116,45 @@ class SocketManagerAPI: NSObject {
             
             if let getData = data[0] as? [String:Any]{
                 if let msg =  self.insertMessage(dict: getData){
-                    
-//                    let status = self.updateUnReadMsgCount(msg)
-//                    if status{
-//                        self.chnlDelegate?.receiveChnl()
-//                    }
-                    
-                    
-                    let dict = ["is_read":"2","id":msg.id!,"sender":msg.sender!] as [String:Any]
+                    let dict = ["is_read":"2","id":msg.id!,"sender":msg.sender!,"updated_at":Date().millisecondsSince1970] as [String:Any]
                     self.emitStatus(dict) { (dict, error) in
                         
                     }
                     self.delegate?.receiveMsg(msg: msg)
                 }
-            }else{
-                let arrayData = data[0] as? [[String:Any]]
-                self.insertMsgArray(array: arrayData!)
             }
             ack.with("got it")
+        }
+    }
+    
+    func getChatMessageHistory() -> Void {
+        let userID = UserDefaults.standard.userID ?? ""
+        let params = ["id":userID,
+                      "updated_at":getLastMessageUpdatedTime() ?? 0] as [String : Any]
+        socket.emitWithAck("getMessageHistory", params).timingOut(after: 0) { data in
+            let arrayData = data[0] as? [[String:Any]]
+            if arrayData?.count ?? 0 > 0 {
+                self.insertMsgArray(array: arrayData!)
+            }
+        }
+    }
+    
+    func getLastMessageUpdatedTime() -> Double? {
+        let context = appdelegate.persistentContainer.viewContext
+        let request = NSFetchRequest<ChatMessages>(entityName: "ChatMessages")
+        request.sortDescriptors = [NSSortDescriptor(key: "updated_at", ascending: false)]
+        request.fetchLimit = 1
+        request.returnsObjectsAsFaults = false
+        do{
+            let obj = try context.fetch(request)
+            if obj.count > 0 {
+                print(obj[0].id)
+                return obj[0].updated_at
+            }else{
+                return nil
+            }
+        }catch{
+            return nil
         }
     }
     
@@ -219,8 +234,6 @@ class SocketManagerAPI: NSObject {
 
     }
     
-    
-    
     func checkChannelAvailable(_ arrayData : [[String:Any]]) -> Bool {
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "ChatList")
         fetchRequest.predicate = NSPredicate(format: "chatid = '\(arrayData[0]["chatid"] ?? "")'")
@@ -250,6 +263,8 @@ class SocketManagerAPI: NSObject {
             return false
         }
     }
+
+    
     func insertMsgArray(array : [[String:Any]]) {
         do{
             let managedObjectContext = appdelegate.persistentContainer.viewContext
@@ -267,7 +282,7 @@ class SocketManagerAPI: NSObject {
                     self.updateUnReadMsgCount(i, count: arrayObj.count)
             
                 for i in arrayObj{
-                    let dict = ["is_read":"2","id":i.id!,"sender":i.sender!] as [String:Any]
+                    let dict = ["is_read":"2","id":i.id!,"sender":i.sender!,"updated_at":Date().millisecondsSince1970] as [String:Any]
                     self.emitStatus(dict) { (dict, error) in
                         
                     }
@@ -299,8 +314,6 @@ class SocketManagerAPI: NSObject {
             print(error.localizedDescription)
             return nil
         }
-        
-        
     }
     
     func authenticateUser(_ data:[String:Any], completion:@escaping completionHandler) -> Void {

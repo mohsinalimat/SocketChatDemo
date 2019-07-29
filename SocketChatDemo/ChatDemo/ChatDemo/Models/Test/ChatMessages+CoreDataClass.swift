@@ -22,6 +22,7 @@ public class ChatMessages: NSManagedObject, Codable {
         self.init(entity: entity, insertInto: managedObjectContext)
         
         let container = try decoder.container(keyedBy: CodingKeys.self)
+        
         self.chat_id = try container.decodeIfPresent(String.self, forKey: .chat_id)
         self.is_read = try container.decodeIfPresent(String.self, forKey: .is_read)
         self.message = try container.decodeIfPresent(String.self, forKey: .message)

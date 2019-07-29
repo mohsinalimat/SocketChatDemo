@@ -331,7 +331,7 @@ extension ChatViewController : ReceiveMessage{
             self.chatMsgsArray.append(msg)
             self.tableView.reloadData()
             self.tableView.scrollToBottom(index: self.chatMsgsArray.count - 1)
-            let dict = ["is_read":"3","id":msg.id!,"sender":msg.sender!] as [String:Any]
+            let dict = ["is_read":"3","id":msg.id!,"sender":msg.sender!,"updated_at":Date().millisecondsSince1970] as [String:Any]
             self.changeStatus(dict: dict)
         }
     }

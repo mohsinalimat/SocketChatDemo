@@ -15,5 +15,69 @@
             stopOnStyle = "0">
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "61D5E470-4561-49BD-8E28-3BA3577E5A69"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ChatDemo/Models/SocketManagerAPI.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "136"
+            endingLineNumber = "136"
+            landmarkName = "getChatMessageHistory()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "3D5C33F9-33D4-401A-AB91-06E8E0B9470C"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ChatDemo/Models/SocketManagerAPI.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "134"
+            endingLineNumber = "134"
+            landmarkName = "getChatMessageHistory()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "3D5C33F9-33D4-401A-AB91-06E8E0B9470C - e56c885aa747b62f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "ChatDemo.SocketManagerAPI.getChatMessageHistory() -&gt; ()"
+                  moduleName = "ChatDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/moweb001/Documents/DemoSocket/ChatSocket/SocketChatDemo/ChatDemo/ChatDemo/Models/SocketManagerAPI.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "134"
+                  endingLineNumber = "134"
+                  offsetFromSymbolStart = "622">
+               </Location>
+               <Location
+                  uuid = "3D5C33F9-33D4-401A-AB91-06E8E0B9470C - 77315f9002701027"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Array&lt;Any&gt;) -&gt; () in ChatDemo.SocketManagerAPI.getChatMessageHistory() -&gt; ()"
+                  moduleName = "ChatDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/moweb001/Documents/DemoSocket/ChatSocket/SocketChatDemo/ChatDemo/ChatDemo/Models/SocketManagerAPI.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "135"
+                  endingLineNumber = "135"
+                  offsetFromSymbolStart = "148">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>
