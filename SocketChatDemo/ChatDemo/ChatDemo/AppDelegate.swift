@@ -19,12 +19,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var objAPI : SocketManagerAPI!
     var bgSessionCompletionHandler: (() -> Void)?
-
-
+    
+    var window: UIWindow?
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         objAPI = SocketManagerAPI.shared
         MTPLAPIManager.shared.setupReachability()
 
+        if UserDefaults.standard.userID != nil {
+            appdelegate.objAPI.connectSocket(completion: nil)
+            let  storyboard = UIStoryboard.init(name: "Main", bundle: Bundle.main)
+            if #available(iOS 13.0, *) {
+                
+            } else {
+                let navigation = storyboard.instantiateViewController(withIdentifier: "NavigationController") as! UINavigationController
+                let home = storyboard.instantiateViewController(withIdentifier: "ChatListViewController") as! ChatListViewController
+                navigation.viewControllers.append(home)
+                window?.rootViewController = navigation
+                window?.makeKeyAndVisible()
+            }
+        }
         return true
     }
 
@@ -36,12 +50,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     // MARK: UISceneSession Lifecycle
 
+    @available(iOS 13.0, *)
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
         // Called when a new scene session is being created.
         // Use this method to select a configuration to create the new scene with.
         return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
     }
 
+    @available(iOS 13.0,*)
     func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {
         // Called when the user discards a scene session.
         // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
