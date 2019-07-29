@@ -134,7 +134,7 @@ class SocketManagerAPI: NSObject {
         socket.emitWithAck("getMessageHistory", params).timingOut(after: 0) { data in
             let arrayData = data[0] as? [[String:Any]]
             if arrayData?.count ?? 0 > 0 {
-                self.insertMsgArray(array: arrayData!)
+                self.insertUpdateMsgArray(array: arrayData!)
             }
         }
     }
@@ -263,36 +263,46 @@ class SocketManagerAPI: NSObject {
             return false
         }
     }
-
     
-    func insertMsgArray(array : [[String:Any]]) {
-        do{
-            let managedObjectContext = appdelegate.persistentContainer.viewContext
-            let decoder = JSONDecoder()
-            if let context = CodingUserInfoKey.managedObjectContext {
-                decoder.userInfo[context] = managedObjectContext
-            }
-            
-            let obj = try decoder.decode([ChatMessages].self, from: array.toData())
-            
-            let finalC_ids: [String] = obj.filter({ $0.is_read != "3" }).map({ $0.chat_id ?? "" }).uniqueElements.filter({ $0 != nil && $0.count > 0})
-            
-            for i in finalC_ids{
-                    let arrayObj = obj.filter({ $0.is_read != "3" && $0.chat_id == i && $0.receiver == UserDefaults.standard.userID!})
-                    self.updateUnReadMsgCount(i, count: arrayObj.count)
-            
-                for i in arrayObj{
-                    let dict = ["is_read":"2","id":i.id!,"sender":i.sender!,"updated_at":Date().millisecondsSince1970] as [String:Any]
-                    self.emitStatus(dict) { (dict, error) in
-                        
+    func checkMsgAvailable(_ arrayData : [String:Any]) -> Void {
+        let fetchRequest = NSFetchRequest<ChatMessages>(entityName: "ChatMessages")
+        fetchRequest.predicate = NSPredicate(format: "id = '\(arrayData["id"] ?? "")'")
+        
+        do {
+            let result = try appdelegate.persistentContainer.viewContext.fetch(fetchRequest)
+            if result.count > 0 {
+                
+                let objResult = result[0]
+                let updatedData = arrayData
+                objResult.chat_id = updatedData["chat_id"] as? String
+                objResult.id = updatedData["id"] as? String
+                objResult.is_read = updatedData["is_read"] as? String
+                objResult.message = updatedData["message"] as? String
+                objResult.receiver = updatedData["receiver"] as? String
+                objResult.sender = updatedData["sender"] as? String
+                objResult.updated_at = updatedData["updated_at"] as? Double ?? 0.0
+                objResult.msgtype = Int16(updatedData["msgtype"] as? Int ?? 0)
+                objResult.mediaurl = updatedData["mediaurl"] as? String
+                objResult.created_at = updatedData["created_at"] as? Double ?? 0.0
+                appdelegate.saveContext()
+            }else{
+                if let msg =  self.insertMessage(dict: arrayData) {
+                    if msg.sender != UserDefaults.standard.userID! && msg.is_read == "1" {
+                        let dict = ["is_read":"2","id":msg.id!,"sender":msg.sender!,"updated_at":Date().millisecondsSince1970] as [String:Any]
+                        self.emitStatus(dict) { (dict, error) in
+                            
+                        }
                     }
                 }
             }
-            try managedObjectContext.save()
-            
-            
         } catch {
-            print(error.localizedDescription)
+            print("error executing fetch request: \(error.localizedDescription)")
+        }
+    }
+
+    func insertUpdateMsgArray(array : [[String:Any]]) {
+        for msgData in array {
+            checkMsgAvailable(msgData)
         }
     }
     
