@@ -97,7 +97,7 @@ class ChatViewController: UIViewController , UINavigationControllerDelegate, UII
         self.tableView.tableFooterView = UIView.init()
         
         self.navigationItem.title = chatObj?.channelName
-        
+        _ = appdelegate.objAPI.updateUnReadMsgCount(self.chatObj!.chatid!)
         self.loadCurrentConversationMessages()
         
         
@@ -309,9 +309,11 @@ extension ChatViewController : ReceiveMessage{
     func updateStatus(data: [String : Any]) {
         if let index = self.chatMsgsArray.firstIndex(where: {$0.id == data["id"] as? String}){
             let obj = self.chatMsgsArray[index]
-            obj.is_read = data["is_read"] as? String
-            self.chatMsgsArray[index] = obj
-            self.tableView.reloadData()
+            if Int(obj.is_read!)! < Int(data["is_read"] as! String)!{
+                obj.is_read = data["is_read"] as? String
+                self.chatMsgsArray[index] = obj
+                self.tableView.reloadData()
+            }
         }
     }
     
@@ -331,7 +333,9 @@ extension ChatViewController : ReceiveMessage{
             self.tableView.reloadData()
             self.tableView.scrollToBottom(index: self.chatMsgsArray.count - 1)
             let dict = ["is_read":"3","id":msg.id!,"sender":msg.sender!,"updated_at":Date().millisecondsSince1970] as [String:Any]
-            self.changeStatus(dict: dict)
+            DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
+                self.changeStatus(dict: dict)
+            })
         }
     }
     
