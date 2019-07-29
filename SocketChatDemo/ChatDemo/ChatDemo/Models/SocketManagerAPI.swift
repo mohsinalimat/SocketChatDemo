@@ -116,15 +116,11 @@ class SocketManagerAPI: NSObject {
     
     func getMessages() -> Void {
         socket.on("receiveMessage/\(UserDefaults.standard.userID!)") {data, ack in
-            
             if let getData = data[0] as? [String:Any]{
                 if let msg =  self.insertMessage(dict: getData){
-                    let status = self.updateMessageStatus(getData)
-                    if status {
-                        let dict = ["is_read":"2","id":msg.id!,"sender":msg.sender!,"updated_at":Date().millisecondsSince1970] as [String:Any]
-                        self.emitStatus(dict)
-                        self.delegate?.receiveMsg(msg: msg)
-                    }
+                    let dict = ["is_read":"2","id":msg.id!,"sender":msg.sender!,"updated_at":Date().millisecondsSince1970] as [String:Any]
+                    self.emitStatus(dict)
+                    self.delegate?.receiveMsg(msg: msg)
                 }
             }
             ack.with("got it")
