@@ -94,17 +94,27 @@ class ChatListViewController: UIViewController, UITableViewDelegate, UITableView
         appdelegate.objAPI.getChatList(params) { (chatList, error) in
             if let error = error {
                 print(error)
+                mbProgress.hide(animated: true)
             }else{
                 if let chatlist = chatList, chatlist.count > 0 {
                     if let objChatList = appdelegate.objAPI.insertChannelList(arrayData: chatlist){
                         self.chatListArray = objChatList
                         self.chatListTable.reloadData()
+                        appdelegate.objAPI.getChatMessageHistory { (success, error) in
+                            if success ?? false{
+                                self.checkDataAvailable()
+                            }
+                            mbProgress.hide(animated: true)
+                        }
+                    }else{
+                        mbProgress.hide(animated: true)
                     }
                 }else{
                     print("nodata found")
+                    mbProgress.hide(animated: true)
                 }
             }
-            mbProgress.hide(animated: true)
+            
         }
         
     }

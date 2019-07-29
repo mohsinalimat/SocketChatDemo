@@ -65,7 +65,7 @@ class SocketManagerAPI: NSObject {
             self.getChannel()
             self.getTypingMessage()
             self.getChangeStatus()
-            getChatMessageHistory()
+            
             self.getMessages()
         }
     }
@@ -125,14 +125,16 @@ class SocketManagerAPI: NSObject {
         }
     }
     
-    func getChatMessageHistory() -> Void {
+    func getChatMessageHistory(_ completion : @escaping completionHandlerBool) -> Void {
         let userID = UserDefaults.standard.userID ?? ""
         let params = ["id":userID,
                       "updated_at":getLastMessageUpdatedTime() ?? 0] as [String : Any]
         socket.emitWithAck("getMessageHistory", params).timingOut(after: 0) { data in
             let arrayData = data[0] as? [[String:Any]]
             if arrayData?.count ?? 0 > 0 {
-                self.insertUpdateMsgArray(array: arrayData!)
+                if self.insertUpdateMsgArray(array: arrayData!){
+                    completion(true , nil)
+                }
             }
         }
     }
@@ -289,7 +291,7 @@ class SocketManagerAPI: NSObject {
                 appdelegate.saveContext()
             }else{
                 if let msg =  self.insertMessage(dict: arrayData) {
-                    if msg.sender != UserDefaults.standard.userID! && msg.is_read == "1" {
+                    if msg.sender != UserDefaults.standard.userID! && Int(msg.is_read!)! <= 2 {
                         if updateUnReadMsgCount(msg.chat_id!, count: 1) {
                             let dict = ["is_read":"2","id":msg.id!,"sender":msg.sender!,"updated_at":Date().millisecondsSince1970] as [String:Any]
                             self.emitStatus(dict)
@@ -302,10 +304,15 @@ class SocketManagerAPI: NSObject {
         }
     }
     
-    func insertUpdateMsgArray(array : [[String:Any]]) {
-        for msgData in array {
+    func insertUpdateMsgArray(array : [[String:Any]]) -> Bool {
+        for (index , msgData) in array.enumerated() {
             checkMsgAvailable(msgData)
+            
+            if index == array.count - 1{
+                return true
+            }
         }
+        return false
     }
     
     
