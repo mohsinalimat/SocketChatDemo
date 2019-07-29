@@ -106,7 +106,10 @@ class SocketManagerAPI: NSObject {
     func getChangeStatus(){
         socket.on("ChangeStatus/\(UserDefaults.standard.userID!)") {data, ack in
             if let getData = data[0] as? [String:Any]{
-                self.delegate?.updateStatus(data: getData)
+                let status = self.updateMessageStatus(getData)
+                if status {
+                    self.delegate?.updateStatus(data: getData)
+                }
             }
         }
     }
@@ -116,9 +119,12 @@ class SocketManagerAPI: NSObject {
             
             if let getData = data[0] as? [String:Any]{
                 if let msg =  self.insertMessage(dict: getData){
-                    let dict = ["is_read":"2","id":msg.id!,"sender":msg.sender!,"updated_at":Date().millisecondsSince1970] as [String:Any]
-                    self.emitStatus(dict)
-                    self.delegate?.receiveMsg(msg: msg)
+                    let status = self.updateMessageStatus(getData)
+                    if status {
+                        let dict = ["is_read":"2","id":msg.id!,"sender":msg.sender!,"updated_at":Date().millisecondsSince1970] as [String:Any]
+                        self.emitStatus(dict)
+                        self.delegate?.receiveMsg(msg: msg)
+                    }
                 }
             }
             ack.with("got it")
@@ -159,16 +165,7 @@ class SocketManagerAPI: NSObject {
     }
     
     func emitStatus(_ params : [String:Any]) -> Void {
-        socket.emitWithAck("ChangeStatus", params).timingOut(after: 0) { data in
-            guard let data = data[0] as? [String:String] else { //ackCallBack(nil,"data Not availabel");
-                return }
-            
-            let status = self.updateMessageStatus(data)
-            
-            if status{
-                //ackCallBack(data,nil)
-            }
-        }
+        socket.emit("ChangeStatus", params)
     }
     func updateMessageStatus(_ arrayData : [String:Any]) -> Bool {
         
