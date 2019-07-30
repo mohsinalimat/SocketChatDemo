@@ -402,8 +402,11 @@ class SocketManagerAPI: NSObject {
     }
     
     func getHistroy() -> Void {
-        let mbProgress = MBProgressHUD.showAdded(to: (UIApplication.topViewController()?.view!)!, animated: true)
-        mbProgress.label.text = "Sync Data..."
+        var mbProgress : MBProgressHUD?
+        DispatchQueue.main.async {
+            mbProgress = MBProgressHUD.showAdded(to: (UIApplication.topViewController()?.view!)!, animated: true)
+            mbProgress?.label.text = "Sync Data..."
+        }
         
         let params = ["senderId": "\(UserDefaults.standard.userID!)",
             "updated_at":getLastChatListUpdatedTime() ?? 0] as [String : Any]
@@ -411,7 +414,7 @@ class SocketManagerAPI: NSObject {
         self.getChatList(params) { (chatList, error) in
             if let error = error {
                 print(error)
-                mbProgress.hide(animated: true)
+                mbProgress?.hide(animated: true)
             }else{
                 do {
                     //try clearDeepObjectEntity("ChatList")
@@ -423,14 +426,14 @@ class SocketManagerAPI: NSObject {
                                 }else{
                                     
                                 }
-                                mbProgress.hide(animated: true)
+                                mbProgress?.hide(animated: true)
                             }
                         }else{
-                            mbProgress.hide(animated: true)
+                            mbProgress?.hide(animated: true)
                         }
                     }else{
                         print("nodata found")
-                        mbProgress.hide(animated: true)
+                        mbProgress?.hide(animated: true)
                     }
                 }catch{
                     

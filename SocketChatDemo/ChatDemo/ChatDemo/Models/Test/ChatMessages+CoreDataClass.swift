@@ -34,5 +34,6 @@ public class ChatMessages: NSManagedObject, Codable {
         self.mediaurl = try container.decodeIfPresent(String.self, forKey: .mediaurl)
         self.msgtype = try Int16(container.decodeIfPresent(Int.self, forKey: .msgtype) ?? 0)
         
+        
     }
 }

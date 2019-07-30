@@ -39,7 +39,7 @@ class ChatReceiverCell: UITableViewCell {
 
 
 
-class ChatViewController: UIViewController , UINavigationControllerDelegate, UIImagePickerControllerDelegate,UIDocumentPickerDelegate{
+class ChatViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIDocumentPickerDelegate {
     
     @IBOutlet weak var constraintsBottom: NSLayoutConstraint!
     @IBOutlet weak var lblPlaceHolder: UILabel!
@@ -48,9 +48,13 @@ class ChatViewController: UIViewController , UINavigationControllerDelegate, UII
     
     var chatObj : ChatList?
     var chatMsgsArray = [ChatMessages]()
-    
     var msgSent : Bool = false
     var imagePicker = UIImagePickerController()
+    var page : Int = 0
+    var isPaginationEnable : Bool = false
+    var pagelimit = 300
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -107,10 +111,16 @@ class ChatViewController: UIViewController , UINavigationControllerDelegate, UII
         fetchRequest.returnsObjectsAsFaults = false
         let sort = NSSortDescriptor(key: #keyPath(ChatMessages.created_at), ascending: true)
         fetchRequest.sortDescriptors = [sort]
+        fetchRequest.fetchLimit = pagelimit
+        fetchRequest.fetchOffset = fetchRequest.fetchLimit * page
         do {
             let managedObjectContext = appdelegate.persistentContainer.viewContext
             let result = try managedObjectContext.fetch(fetchRequest)
-            
+            if result.count >= pagelimit {
+                isPaginationEnable = true
+            }else{
+                isPaginationEnable = false
+            }
             for i in result {
                 if i.is_read != "3" && i.sender != UserDefaults.standard.userID! {
                     let dict = ["is_read":"3","id":i.id!,"sender":i.sender!,"updated_at":Date().millisecondsSince1970] as [String:Any]
@@ -118,7 +128,7 @@ class ChatViewController: UIViewController , UINavigationControllerDelegate, UII
                 }
             }
             self.msgSent = result.count > 0
-            self.chatMsgsArray = result
+            self.chatMsgsArray += result
             self.tableView.reloadData()
             self.tableView.scrollToBottom(index: self.chatMsgsArray.count - 1)
             
@@ -365,6 +375,7 @@ extension ChatViewController : UITableViewDataSource,UITableViewDelegate{
         }
     }
     
+    
     func configureImageCell(_ chatObj:ChatMessages) -> UITableViewCell {
         if UserDefaults.standard.userID! == chatObj.sender{
             let senderCell = tableView.dequeueReusableCell(withIdentifier: "ChatSenderCellMedia") as! ChatSenderCell
@@ -399,6 +410,7 @@ extension ChatViewController : UITableViewDataSource,UITableViewDelegate{
             return receiverCell
         }
     }
+    
     
     
     func configureTextCell(_ chatObj:ChatMessages) -> UITableViewCell {
@@ -464,37 +476,14 @@ extension ChatViewController : UITextViewDelegate{
         }
     }
 }
-
-extension UITableView{
-    func scrollToBottom(index : Int){
-        DispatchQueue.main.async {
-            if index > 0{
-                let indexPath = IndexPath(row: index, section: 0)
-                self.scrollToRow(at: indexPath, at: .bottom, animated: true)
-            }
+extension ChatViewController {
+    //MARK:- ScrollView Method
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.y < 500 && isPaginationEnable {
+            page += 1
+            self.loadCurrentConversationMessages()
         }
     }
+    
 }
 
-func getCurrentDateTime() -> String{
-    let dateFormatter : DateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-    let date = Date()
-    return dateFormatter.string(from: date)
-}
-
-func moveFile(filepath : URL) -> URL? {
-    let fileManager = FileManager.default
-    do {
-        let documentDirectory = try fileManager.url(for: .documentDirectory, in: .userDomainMask, appropriateFor:nil, create:false)
-        let fileURL = documentDirectory.appendingPathComponent(filepath.lastPathComponent)
-        if fileManager.fileExists(atPath: fileURL.path){
-            try fileManager.removeItem(at: fileURL)
-        }
-        try fileManager.moveItem(at: filepath, to: fileURL)
-        return fileURL
-    } catch let error as NSError {
-        print("Ooops! Something went wrong: \(error)")
-        return nil
-    }
-}
