@@ -52,6 +52,10 @@ class ChatViewController: UIViewController, UINavigationControllerDelegate, UIIm
     var imagePicker = UIImagePickerController()
     var page : Int = 0
     var isPaginationEnable : Bool = false
+    var pagelimit = 300
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setUpUI()
@@ -107,12 +111,12 @@ class ChatViewController: UIViewController, UINavigationControllerDelegate, UIIm
         fetchRequest.returnsObjectsAsFaults = false
         let sort = NSSortDescriptor(key: #keyPath(ChatMessages.created_at), ascending: true)
         fetchRequest.sortDescriptors = [sort]
-        fetchRequest.fetchLimit = 100
+        fetchRequest.fetchLimit = pagelimit
         fetchRequest.fetchOffset = fetchRequest.fetchLimit * page
         do {
             let managedObjectContext = appdelegate.persistentContainer.viewContext
             let result = try managedObjectContext.fetch(fetchRequest)
-            if result.count >= 100 {
+            if result.count >= pagelimit {
                 isPaginationEnable = true
             }else{
                 isPaginationEnable = false
