@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14835.7" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="3Yt-TA-xZR">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14810.12" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="3Yt-TA-xZR">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14790.5"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14766.15"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
         <capability name="iOS 13.0 system colors" minToolsVersion="11.0"/>
@@ -662,7 +662,7 @@
                                         </connections>
                                     </textView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Type a message" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CKN-Ak-QK3">
-                                        <rect key="frame" x="14.5" y="8" width="118" height="35"/>
+                                        <rect key="frame" x="18" y="8" width="118" height="35"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="35" id="GVu-Yc-g5S"/>
                                         </constraints>
@@ -700,7 +700,7 @@
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="1IT-kS-OHn" secondAttribute="bottom" constant="5" id="59J-U2-0JU"/>
                                     <constraint firstItem="vLV-bq-Gy5" firstAttribute="centerY" secondItem="dfw-Vi-SiS" secondAttribute="centerY" id="BIl-IB-q52"/>
-                                    <constraint firstItem="CKN-Ak-QK3" firstAttribute="leading" secondItem="dfw-Vi-SiS" secondAttribute="leading" constant="4.5" id="FzZ-Cj-XdE"/>
+                                    <constraint firstItem="CKN-Ak-QK3" firstAttribute="leading" secondItem="dfw-Vi-SiS" secondAttribute="leading" constant="8" id="FzZ-Cj-XdE"/>
                                     <constraint firstItem="CKN-Ak-QK3" firstAttribute="top" secondItem="dfw-Vi-SiS" secondAttribute="top" constant="0.5" id="HjY-bz-r06"/>
                                     <constraint firstItem="vLV-bq-Gy5" firstAttribute="leading" secondItem="1IT-kS-OHn" secondAttribute="trailing" constant="10" id="MTi-wQ-MeJ"/>
                                     <constraint firstAttribute="trailing" secondItem="vLV-bq-Gy5" secondAttribute="trailing" constant="15" id="Plj-dG-ZMd"/>

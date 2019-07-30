@@ -26,9 +26,13 @@ class LoginViewController: UIViewController {
         }else{
             let params = ["email":emailID.text!,
                           "password":password.text!]
-            appdelegate.objAPI.connectSocket { (success, error) in
-                if success ?? false {
-                    self.login(params)
+            if appdelegate.objAPI.socket.status == .connected {
+                self.login(params)
+            }else{
+                appdelegate.objAPI.connectSocket { (success, error) in
+                    if success ?? false {
+                        self.login(params)
+                    }
                 }
             }
         }
@@ -50,8 +54,10 @@ class LoginViewController: UIViewController {
                         try managedObjectContext.save()
                         print("data saved")
                         UserDefaults.standard.userID = objUser.id
-                        appdelegate.objAPI.getData()
                         self.performSegue(withIdentifier: "segueChatList", sender: self)
+                        DispatchQueue.main.async {
+                            appdelegate.objAPI.getData()
+                        }
                     } catch {
                         print(error.localizedDescription)
                     }
