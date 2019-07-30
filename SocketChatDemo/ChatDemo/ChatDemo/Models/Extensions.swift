@@ -266,3 +266,35 @@ func clearDeepObjectEntity(_ entity: String) throws {
     try context.execute(deleteRequest)
     try context.save()
 }
+extension UITableView{
+    func scrollToBottom(index : Int){
+        DispatchQueue.main.async {
+            if index > 0{
+                let indexPath = IndexPath(row: index, section: 0)
+                self.scrollToRow(at: indexPath, at: .bottom, animated: true)
+            }
+        }
+    }
+}
+func getCurrentDateTime() -> String{
+    let dateFormatter : DateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+    let date = Date()
+    return dateFormatter.string(from: date)
+}
+
+func moveFile(filepath : URL) -> URL? {
+    let fileManager = FileManager.default
+    do {
+        let documentDirectory = try fileManager.url(for: .documentDirectory, in: .userDomainMask, appropriateFor:nil, create:false)
+        let fileURL = documentDirectory.appendingPathComponent(filepath.lastPathComponent)
+        if fileManager.fileExists(atPath: fileURL.path){
+            try fileManager.removeItem(at: fileURL)
+        }
+        try fileManager.moveItem(at: filepath, to: fileURL)
+        return fileURL
+    } catch let error as NSError {
+        print("Ooops! Something went wrong: \(error)")
+        return nil
+    }
+}
