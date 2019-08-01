@@ -28,7 +28,6 @@ class ChatSenderCell : UITableViewCell {
 class ChatReceiverCell: UITableViewCell {
     
     @IBOutlet var lblChatReceiverMsg: UILabel!
-    
     @IBOutlet weak var lblTime: UILabel!
     @IBOutlet weak var imgDownload: UIImageView!
     override func awakeFromNib() {
@@ -36,8 +35,6 @@ class ChatReceiverCell: UITableViewCell {
         self.selectionStyle = .none
     }
 }
-
-
 
 class ChatViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIDocumentPickerDelegate {
     
@@ -288,6 +285,7 @@ class ChatViewController: UIViewController, UINavigationControllerDelegate, UIIm
     }
     
 }
+
 extension ChatViewController {
     
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
@@ -449,7 +447,8 @@ extension ChatViewController : UITableViewDataSource,UITableViewDelegate{
         }
     }
 }
-extension ChatViewController : UITextViewDelegate{
+
+extension ChatViewController : UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
         self.tableView.scrollToBottom(index: self.chatMsgsArray.count - 1)
     }
@@ -476,6 +475,7 @@ extension ChatViewController : UITextViewDelegate{
         }
     }
 }
+
 extension ChatViewController {
     //MARK:- ScrollView Method
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -484,6 +484,5 @@ extension ChatViewController {
             self.loadCurrentConversationMessages()
         }
     }
-    
 }
 
