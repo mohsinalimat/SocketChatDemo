@@ -24,7 +24,7 @@ public class LoginUser: NSManagedObject,Codable {
         
         self.name = try container.decodeIfPresent(String.self, forKey: .name)
         self.email = try container.decodeIfPresent(String.self, forKey: .email)
-        self.photo = try container.decodeIfPresent(String.self, forKey: .photo)
+        self.userPic = try container.decodeIfPresent(String.self, forKey: .userPic)
         self.id = try container.decodeIfPresent(String.self, forKey: .id)
     }
 }
