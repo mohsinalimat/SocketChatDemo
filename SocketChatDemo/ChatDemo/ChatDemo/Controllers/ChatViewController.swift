@@ -46,7 +46,7 @@ class ChatViewController: UIViewController, UINavigationControllerDelegate, UIIm
     var chatObj : ChatList?
     var chatMsgsArray = [ChatMessages]()
     var msgSent : Bool = false
-    var imagePicker = UIImagePickerController()
+    
     var page : Int = 0
     var isPaginationEnable : Bool = false
     var pagelimit = 300
@@ -212,10 +212,10 @@ class ChatViewController: UIViewController, UINavigationControllerDelegate, UIIm
     func openActionSheet(){
         let alert = UIAlertController(title: "ChatDemo", message: "Please Select an Option", preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "Camera", style: .default , handler:{ (UIAlertAction)in
-            self.openImageViewPicker(isOpenGallery: .camera)
+            openImageViewPicker(isOpenGallery: .camera,viewController: self)
         }))
         alert.addAction(UIAlertAction(title: "Gallery", style: .default , handler:{ (UIAlertAction)in
-            self.openImageViewPicker(isOpenGallery: .photoLibrary)
+            openImageViewPicker(isOpenGallery: .photoLibrary,viewController: self)
         }))
         alert.addAction(UIAlertAction(title: "Documents", style: .default , handler:{ (UIAlertAction)in
             self.openDocumentViewController()
@@ -228,15 +228,7 @@ class ChatViewController: UIViewController, UINavigationControllerDelegate, UIIm
         })
     }
     
-    func openImageViewPicker(isOpenGallery : UIImagePickerController.SourceType){
-        if UIImagePickerController.isSourceTypeAvailable(isOpenGallery){
-            imagePicker.delegate = self
-            imagePicker.sourceType = isOpenGallery
-            imagePicker.mediaTypes = ["public.image", "public.movie", ""]
-            imagePicker.allowsEditing = true
-            present(imagePicker, animated: true, completion: nil)
-        }
-    }
+    
     
     func openDocumentViewController(){
         let documentPicker = UIDocumentPickerViewController(documentTypes: ["public.text", "com.apple.iwork.pages.pages", "public.data"], in: .import)

@@ -314,6 +314,7 @@ class SocketManagerAPI: NSObject {
             }else{
                 if let msg =  self.insertMessage(dict: arrayData) {
                     if msg.sender != UserDefaults.standard.userID! && Int(msg.is_read!)! <= 2 {
+                        
                         if updateUnReadMsgCount(msg.chat_id!, count: 1) {
                             let dict = ["is_read":"2","id":msg.id!,"sender":msg.sender!,"updated_at":Date().millisecondsSince1970] as [String:Any]
                             self.emitStatus(dict)

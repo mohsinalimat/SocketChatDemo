@@ -298,3 +298,13 @@ func moveFile(filepath : URL) -> URL? {
         return nil
     }
 }
+func openImageViewPicker(isOpenGallery : UIImagePickerController.SourceType , viewController : UIViewController){
+    if UIImagePickerController.isSourceTypeAvailable(isOpenGallery){
+        let imagePicker = UIImagePickerController()
+        imagePicker.delegate = viewController as? UIImagePickerControllerDelegate & UINavigationControllerDelegate
+        imagePicker.sourceType = isOpenGallery
+        imagePicker.mediaTypes = ["public.image", "public.movie", ""]
+        imagePicker.allowsEditing = true
+        viewController.present(imagePicker, animated: true, completion: nil)
+    }
+}
