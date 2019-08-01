@@ -437,7 +437,8 @@ class SocketManagerAPI: NSObject {
                         mbProgress?.hide(animated: true)
                     }
                 }catch{
-                    
+                    print("nodata found")
+                    mbProgress?.hide(animated: true)
                 }
             }
         }

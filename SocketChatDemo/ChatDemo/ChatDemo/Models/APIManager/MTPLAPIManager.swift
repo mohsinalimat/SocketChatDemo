@@ -139,7 +139,7 @@ class MTPLAPIManager: NSObject {
             stream.write("Content-Disposition:form-data; name=\(filekey); filename=\"\(videoFileURL.lastPathComponent)\"\(lineBreak)")
             stream.write("Content-Type: \(mimetype + lineBreak + lineBreak)")
             if stream.append(contentsOf: videoFileURL) < 0 {
-                return nil
+                 return nil
             }
         }
         
