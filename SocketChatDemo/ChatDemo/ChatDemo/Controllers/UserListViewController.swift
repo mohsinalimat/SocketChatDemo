@@ -73,6 +73,7 @@ class UserListViewController: UIViewController, UITableViewDelegate, UITableView
                         obj["chatid"] = responseData["ChatId"] as? String
                         obj["channelName"] = "\(self.userList![index].name!)"
                         obj["channelType"] = "0"
+                        obj["channelPic"] = "\(self.userList![index].photo!)"
                         
                         let objUser = try decoder.decode(ChatList.self, from: obj.toData())
                         
