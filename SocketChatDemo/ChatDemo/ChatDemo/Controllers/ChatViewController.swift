@@ -197,7 +197,8 @@ class ChatViewController: UIViewController, UINavigationControllerDelegate, UIIm
                                       "created_at":objMsg.created_at,
                                       "last_message":objMsg.message!,
                                       "updated_at":objMsg.updated_at,
-                                      "userIds":self.chatObj!.userIds! ]] as [[String:Any]]
+                                      "userIds":self.chatObj!.userIds!,
+                                      "channelPic":self.chatObj!.channelPic!]] as [[String:Any]]
                         self.msgSent = true
                         _ = appdelegate.objAPI.checkChannelAvailable(array)
                         
