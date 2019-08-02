@@ -258,6 +258,23 @@ extension Dictionary {
         return try JSONSerialization.data(withJSONObject: self, options: JSONSerialization.WritingOptions(rawValue: 0))
     }
 }
+extension AVAsset {
+    func generateThumbnail(completion: @escaping (UIImage?) -> Void) {
+        DispatchQueue.global().async {
+            let imageGenerator = AVAssetImageGenerator(asset: self)
+            imageGenerator.appliesPreferredTrackTransform = true
+            let time = CMTime(seconds: 0.0, preferredTimescale: 600)
+            let times = [NSValue(time: time)]
+            imageGenerator.generateCGImagesAsynchronously(forTimes: times, completionHandler: { _, image, _, _, _ in
+                if let image = image {
+                    completion(UIImage(cgImage: image))
+                } else {
+                    completion(nil)
+                }
+            })
+        }
+    }
+}
 
 func clearDeepObjectEntity(_ entity: String) throws {
     let context = appdelegate.persistentContainer.viewContext

@@ -168,7 +168,6 @@ class ChatViewController: UIViewController, UINavigationControllerDelegate, UIIm
     func sendChatMsg(msg : String,msgType : Int, mediaURL : String = ""){
         
         var receiverArray = chatObj?.userIds?.components(separatedBy: ",")
-        
         if let currentIndex = receiverArray?.firstIndex(where: {$0.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) == UserDefaults.standard.userID!}){
             receiverArray?.remove(at: currentIndex)
         }
@@ -232,8 +231,6 @@ class ChatViewController: UIViewController, UINavigationControllerDelegate, UIIm
         })
     }
     
-    
-    
     func openDocumentViewController(){
         let documentPicker = UIDocumentPickerViewController(documentTypes: ["public.text", "com.apple.iwork.pages.pages", "public.data"], in: .import)
         documentPicker.delegate = self
@@ -294,6 +291,7 @@ extension ChatViewController {
 }
 
 extension ChatViewController : ReceiveMessage{
+    
     func updateStatus(data: [String : Any]) {
         if let index = self.chatMsgsArray.firstIndex(where: {$0.id == data["id"] as? String}){
             let obj = self.chatMsgsArray[index]
@@ -304,7 +302,6 @@ extension ChatViewController : ReceiveMessage{
             self.tableView.reloadData()
         }
     }
-    
     
     func typingMsg(data: [String : Any]) {
         if (data["sender"] as? String == self.getReceiverID()){
@@ -342,19 +339,17 @@ extension ChatViewController : ReceiveMessage{
 }
 
 extension ChatViewController : UITableViewDataSource,UITableViewDelegate{
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.chatMsgsArray.count
-        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         let chatObj = self.chatMsgsArray[indexPath.row]
-        
         switch chatObj.msgtype {
         case 0:
             return configureTextCell(chatObj,index: indexPath.row)
@@ -369,7 +364,6 @@ extension ChatViewController : UITableViewDataSource,UITableViewDelegate{
         }
     }
     
-    
     func configureImageCell(_ chatObj:ChatMessages, index:Int) -> UITableViewCell {
         if UserDefaults.standard.userID! == chatObj.sender{
             let senderCell = tableView.dequeueReusableCell(withIdentifier: "ChatSenderCellMedia") as! ChatSenderCell
@@ -378,9 +372,6 @@ extension ChatViewController : UITableViewDataSource,UITableViewDelegate{
             
             senderCell.btnShowPreview.setImage(nil, for: .normal)
             let downloadURl = URL.init(string: chatObj.mediaurl?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")!
-            
-            
-            
             
             switch chatObj.msgtype {
             case 1:
@@ -410,8 +401,6 @@ extension ChatViewController : UITableViewDataSource,UITableViewDelegate{
                 break
             }
             
-            
-            
             senderCell.btnShowPreview.addTarget(self, action: #selector(playVideo(_:)), for: .touchUpInside)
             switch chatObj.is_read {
             case "0":
@@ -433,7 +422,6 @@ extension ChatViewController : UITableViewDataSource,UITableViewDelegate{
                 senderCell.imgStatus.image = nil
                 break
             }
-            
             return senderCell
         }else{
             
@@ -442,8 +430,6 @@ extension ChatViewController : UITableViewDataSource,UITableViewDelegate{
             
             receiverCell.btnShowPreview.tag = index
             let downloadURl = URL.init(string: chatObj.mediaurl ?? "")!
-            
-            
             
             switch chatObj.msgtype {
             case 1:
@@ -455,10 +441,7 @@ extension ChatViewController : UITableViewDataSource,UITableViewDelegate{
                     AVAsset(url: downloadURl).generateThumbnail { [weak self] (image) in
                         DispatchQueue.main.async {
                             if let image = image {
-                                //if let resizeImage = self?.resizeImage(image: image, targetSize: CGSize.init(width: 100, height: 100)) {
                                 self?.cacheImages.setObject(image, forKey: downloadURl.lastPathComponent as NSString)
-                                
-                                //}
                             }
                             receiverCell.imgDownload.image = image
                         }
@@ -468,7 +451,7 @@ extension ChatViewController : UITableViewDataSource,UITableViewDelegate{
                 }
                 receiverCell.btnShowPreview.setImage(#imageLiteral(resourceName: "play-button"), for: .normal)
             case 3:
-                 self.imageFromServerURL(downloadURl, placeHolder: nil, completion: { (image) in
+                self.imageFromServerURL(downloadURl, placeHolder: nil, completion: { (image) in
                     receiverCell.imgDownload.image = image
                 })
                 receiverCell.btnShowPreview.setImage(#imageLiteral(resourceName: "document"), for: .normal)
@@ -481,46 +464,16 @@ extension ChatViewController : UITableViewDataSource,UITableViewDelegate{
         }
     }
     
-    func resizeImage(image: UIImage, targetSize: CGSize) -> UIImage? {
-        let size = image.size
-        
-        let widthRatio  = targetSize.width  / size.width
-        let heightRatio = targetSize.height / size.height
-        
-        // Figure out what our orientation is, and use that to form the rectangle
-        var newSize: CGSize
-        if(widthRatio > heightRatio) {
-            newSize = CGSize(width:size.width * heightRatio,height:size.height * heightRatio)
-        } else {
-            newSize = CGSize(width:size.width * widthRatio,height:size.height * widthRatio)
-        }
-        
-        // This is the rect that we've calculated out and this is what is actually used below
-        let rect = CGRect(x:0, y:0, width:newSize.width, height:newSize.height)
-        
-        // Actually do the resizing to the rect using the ImageContext stuff
-        UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
-        image.draw(in: rect)
-        guard let newImage = UIGraphicsGetImageFromCurrentImageContext() else { return nil }
-        UIGraphicsEndImageContext()
-        
-        return newImage
-    }
-    
     @objc func playVideo(_ sender:UIButton) -> Void {
-        
         let chatObj = self.chatMsgsArray[sender.tag]
-        
         switch chatObj.msgtype {
         case 1:
             self.performSegue(withIdentifier: "ImgDocView", sender: chatObj.mediaurl)
             break
-            
         case 2:
             let player = AVPlayer(url: URL.init(string: chatObj.mediaurl ?? "")!)
             let vc = AVPlayerViewController()
             vc.player = player
-            
             present(vc, animated: true) {
                 vc.player?.play()
             }
@@ -532,6 +485,7 @@ extension ChatViewController : UITableViewDataSource,UITableViewDelegate{
             break
         }
     }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let vc = segue.destination as? ImgDocumentOpenViewController{
             vc.imgDocUrl = sender as? String
@@ -564,7 +518,6 @@ extension ChatViewController : UITableViewDataSource,UITableViewDelegate{
                 senderCell.imgStatus.image = nil
                 break
             }
-            
             return senderCell
         }else{
             let receiverCell = tableView.dequeueReusableCell(withIdentifier: "ChatReceiverCell") as! ChatReceiverCell
@@ -576,13 +529,13 @@ extension ChatViewController : UITableViewDataSource,UITableViewDelegate{
 }
 
 extension ChatViewController : UITextViewDelegate {
+    
     func textViewDidBeginEditing(_ textView: UITextView) {
         self.tableView.scrollToBottom(index: self.chatMsgsArray.count - 1)
     }
     
     func textViewDidChange(_ textView: UITextView) {
         var receiverArray = chatObj?.userIds?.components(separatedBy: ",")
-        
         if let currentIndex = receiverArray?.firstIndex(where: {$0.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) == UserDefaults.standard.userID!}){
             receiverArray?.remove(at: currentIndex)
         }
@@ -593,7 +546,6 @@ extension ChatViewController : UITextViewDelegate {
         }else{
             lblPlaceHolder.isHidden = false
         }
-        
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
@@ -604,6 +556,7 @@ extension ChatViewController : UITextViewDelegate {
 }
 
 extension ChatViewController {
+    
     //MARK:- ScrollView Method
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView.contentOffset.y < 500 && isPaginationEnable {
@@ -613,79 +566,49 @@ extension ChatViewController {
     }
 }
 
-
-extension AVAsset {
-    
-    func generateThumbnail(completion: @escaping (UIImage?) -> Void) {
-        DispatchQueue.global().async {
-            let imageGenerator = AVAssetImageGenerator(asset: self)
-            imageGenerator.appliesPreferredTrackTransform = true
-            let time = CMTime(seconds: 0.0, preferredTimescale: 600)
-            let times = [NSValue(time: time)]
-            imageGenerator.generateCGImagesAsynchronously(forTimes: times, completionHandler: { _, image, _, _, _ in
-                if let image = image {
-                    completion(UIImage(cgImage: image))
-                } else {
-                    completion(nil)
-                }
-            })
-        }
-    }
-}
 extension ChatViewController : UIDocumentInteractionControllerDelegate{
+    
     public func documentInteractionControllerViewControllerForPreview(_ controller: UIDocumentInteractionController) -> UIViewController {
         return self
     }
     
-    public func documentInteractionControllerDidEndPreview(_ controller: UIDocumentInteractionController) {
-        
-    }
-    
+    public func documentInteractionControllerDidEndPreview(_ controller: UIDocumentInteractionController) {}
 }
+
 extension ChatViewController {
     
     func imageFromServerURL(_ url: URL, placeHolder: UIImage? , completion: @escaping (UIImage?) -> Void) {
-        
         if let cachedImage = cacheImages.object(forKey: url.lastPathComponent as NSString) {
             completion(cachedImage)
             return
         }
-        
-        
-            URLSession.shared.dataTask(with: url, completionHandler: { (data, response, error) in
-                
-                //print("RESPONSE FROM API: \(response)")
-                if error != nil {
-                    print("ERROR LOADING IMAGES FROM URL: \(error)")
-                    DispatchQueue.main.async {
-                        completion(nil)
-                    }
-                    return
-                }
+        URLSession.shared.dataTask(with: url, completionHandler: { (data, response, error) in
+            if error != nil {
+                print("ERROR LOADING IMAGES FROM URL: \(error)")
                 DispatchQueue.main.async {
-                    if let data = data {
-                        
-                            
-                            
-                            
-                            guard let page = PDFDocument(data: data)?.page(at: 0) else {
-                                completion(nil)
-                                return
-                            }
-                            
-                            let pageSize = page.bounds(for: .cropBox)
-                            let pdfScale = 100 / pageSize.width
-                            
-                            // Apply if you're displaying the thumbnail on screen
-                            let scale = UIScreen.main.scale * pdfScale
-                            let screenSize = CGSize(width: pageSize.width * scale,
-                                                    height: pageSize.height * scale)
-                            
-                        let image =  page.thumbnail(of: screenSize, for: .cropBox)
-                        self.cacheImages.setObject(image, forKey: url.lastPathComponent as NSString)
-                        completion(image)
-                        }
+                    completion(nil)
                 }
-            }).resume()
-        }
+                return
+            }
+            DispatchQueue.main.async {
+                if let data = data {
+                    guard let page = PDFDocument(data: data)?.page(at: 0) else {
+                        completion(nil)
+                        return
+                    }
+                    let pageSize = page.bounds(for: .cropBox)
+                    let pdfScale = 100 / pageSize.width
+                    
+                    // Apply if you're displaying the thumbnail on screen
+                    let scale = UIScreen.main.scale * pdfScale
+                    let screenSize = CGSize(width: pageSize.width * scale,
+                                            height: pageSize.height * scale)
+                    
+                    let image =  page.thumbnail(of: screenSize, for: .cropBox)
+                    self.cacheImages.setObject(image, forKey: url.lastPathComponent as NSString)
+                    completion(image)
+                }
+            }
+        }).resume()
+    }
 }
