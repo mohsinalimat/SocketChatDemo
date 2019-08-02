@@ -10,6 +10,7 @@
 		042153B222E9D6080058A205 /* URLManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042153AF22E9D6080058A205 /* URLManager.swift */; };
 		042153B322E9D6080058A205 /* MTPLAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042153B022E9D6080058A205 /* MTPLAPIManager.swift */; };
 		04E9670922DDDC48002E33CD /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E9670822DDDC48002E33CD /* SignUpViewController.swift */; };
+		04FC9DB922F44411006003B5 /* ImgDocumentOpenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FC9DB822F44411006003B5 /* ImgDocumentOpenViewController.swift */; };
 		04FD749822DF241700C0EE9B /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FD749722DF241700C0EE9B /* ChatViewController.swift */; };
 		416D80925B7F6123B62DB7EB /* Pods_ChatDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94C06C6368888785CDECF94D /* Pods_ChatDemo.framework */; };
 		C94B241422DB1A3B00DB0D78 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94B241322DB1A3B00DB0D78 /* AppDelegate.swift */; };
@@ -36,6 +37,7 @@
 		042153B022E9D6080058A205 /* MTPLAPIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MTPLAPIManager.swift; sourceTree = "<group>"; };
 		043A94CF22EB079B00CC2971 /* ChatDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ChatDemo.entitlements; sourceTree = "<group>"; };
 		04E9670822DDDC48002E33CD /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
+		04FC9DB822F44411006003B5 /* ImgDocumentOpenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImgDocumentOpenViewController.swift; sourceTree = "<group>"; };
 		04FD749722DF241700C0EE9B /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		8CA54405A6282C94D9152363 /* Pods-ChatDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatDemo.release.xcconfig"; path = "Target Support Files/Pods-ChatDemo/Pods-ChatDemo.release.xcconfig"; sourceTree = "<group>"; };
 		94C06C6368888785CDECF94D /* Pods_ChatDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ChatDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -153,6 +155,7 @@
 				ED9EA0F822DDD309001BDA5E /* UserListViewController.swift */,
 				04E9670822DDDC48002E33CD /* SignUpViewController.swift */,
 				04FD749722DF241700C0EE9B /* ChatViewController.swift */,
+				04FC9DB822F44411006003B5 /* ImgDocumentOpenViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -302,6 +305,7 @@
 				ED3A1E9D22E6D5EB000C31C7 /* ChatMessages+CoreDataClass.swift in Sources */,
 				ED3A1E9B22E6D5EB000C31C7 /* ChatList+CoreDataClass.swift in Sources */,
 				C94B242B22DB1E0B00DB0D78 /* SocketManagerAPI.swift in Sources */,
+				04FC9DB922F44411006003B5 /* ImgDocumentOpenViewController.swift in Sources */,
 				EDA24FC722E0ACD40034DD03 /* Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

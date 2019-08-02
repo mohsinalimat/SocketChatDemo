@@ -375,23 +375,43 @@ extension ChatViewController : UITableViewDataSource,UITableViewDelegate{
             let senderCell = tableView.dequeueReusableCell(withIdentifier: "ChatSenderCellMedia") as! ChatSenderCell
             senderCell.btnShowPreview.tag = index
             senderCell.lblTime.text = "\(chatObj.created_at)".timeStampToLocalDate().getLocalTime()
-            //senderCell.imgDownload.sd_setImage(with: URL(string: chatObj.mediaurl ?? ""), placeholderImage: UIImage(named: "placeholder"))
+            
             senderCell.btnShowPreview.setImage(nil, for: .normal)
             let downloadURl = URL.init(string: chatObj.mediaurl?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")!
-            senderCell.imgDownload.image = self.pdfThumbnail(url: downloadURl)
-//            let image = cacheImages.object(forKey:downloadURl.lastPathComponent as NSString)
-//            if image == nil {
-//                AVAsset(url: downloadURl).generateThumbnail { [weak self] (image) in
-//                    DispatchQueue.main.async {
-//                        if let image = image {
-//                            self?.cacheImages.setObject(image, forKey: downloadURl.lastPathComponent as NSString)
-//                        }
-//                        senderCell.imgDownload.image = image
-//                    }
-//                }
-//            }else{
-//                senderCell.imgDownload.image = image as? UIImage
-//            }
+            
+            
+            
+            
+            switch chatObj.msgtype {
+            case 1:
+                senderCell.imgDownload.sd_setImage(with: URL(string: chatObj.mediaurl ?? ""), placeholderImage: UIImage(named: "placeholder"))
+                senderCell.btnShowPreview.setImage(nil, for: .normal)
+            case 2:
+                let image = cacheImages.object(forKey:downloadURl.lastPathComponent as NSString)
+                if image == nil {
+                    AVAsset(url: downloadURl).generateThumbnail { [weak self] (image) in
+                        DispatchQueue.main.async {
+                            if let image = image {
+                                self?.cacheImages.setObject(image, forKey: downloadURl.lastPathComponent as NSString)
+                            }
+                            senderCell.imgDownload.image = image
+                        }
+                    }
+                }else{
+                    senderCell.imgDownload.image = image as? UIImage
+                }
+                senderCell.btnShowPreview.setImage(#imageLiteral(resourceName: "play-button"), for: .normal)
+            case 3:
+                self.imageFromServerURL(downloadURl, placeHolder: nil, completion: { (image) in
+                    senderCell.imgDownload.image = image
+                })
+                senderCell.btnShowPreview.setImage(#imageLiteral(resourceName: "document"), for: .normal)
+            default:
+                break
+            }
+            
+            
+            
             senderCell.btnShowPreview.addTarget(self, action: #selector(playVideo(_:)), for: .touchUpInside)
             switch chatObj.is_read {
             case "0":
@@ -419,28 +439,43 @@ extension ChatViewController : UITableViewDataSource,UITableViewDelegate{
             
             let receiverCell = tableView.dequeueReusableCell(withIdentifier: "ChatReceiverCellMedia") as! ChatReceiverCell
             receiverCell.lblTime.text = "\(chatObj.created_at)".timeStampToLocalDate().getLocalTime()
-            //receiverCell.imgDownload.sd_setImage(with: URL(string: chatObj.mediaurl ?? ""), placeholderImage: UIImage(named: "placeholder"))
-            receiverCell.btnShowPreview.setImage(nil, for: .normal)
+            
             receiverCell.btnShowPreview.tag = index
             let downloadURl = URL.init(string: chatObj.mediaurl ?? "")!
-            receiverCell.imgDownload.image = self.pdfThumbnail(url: downloadURl)
-
-//            let image = cacheImages.object(forKey:downloadURl.lastPathComponent as NSString)
-//            if image == nil {
-//                AVAsset(url: downloadURl).generateThumbnail { [weak self] (image) in
-//                    DispatchQueue.main.async {
-//                        if let image = image {
-//                            //if let resizeImage = self?.resizeImage(image: image, targetSize: CGSize.init(width: 100, height: 100)) {
-//                                self?.cacheImages.setObject(image, forKey: downloadURl.lastPathComponent as NSString)
-//
-//                            //}
-//                        }
-//                        receiverCell.imgDownload.image = image
-//                    }
-//                }
-//            }else{
-//                receiverCell.imgDownload.image = image as? UIImage
-//            }
+            
+            
+            
+            switch chatObj.msgtype {
+            case 1:
+                receiverCell.imgDownload.sd_setImage(with: URL(string: chatObj.mediaurl ?? ""), placeholderImage: UIImage(named: "placeholder"))
+                receiverCell.btnShowPreview.setImage(nil, for: .normal)
+            case 2:
+                let image = cacheImages.object(forKey:downloadURl.lastPathComponent as NSString)
+                if image == nil {
+                    AVAsset(url: downloadURl).generateThumbnail { [weak self] (image) in
+                        DispatchQueue.main.async {
+                            if let image = image {
+                                //if let resizeImage = self?.resizeImage(image: image, targetSize: CGSize.init(width: 100, height: 100)) {
+                                self?.cacheImages.setObject(image, forKey: downloadURl.lastPathComponent as NSString)
+                                
+                                //}
+                            }
+                            receiverCell.imgDownload.image = image
+                        }
+                    }
+                }else{
+                    receiverCell.imgDownload.image = image as? UIImage
+                }
+                receiverCell.btnShowPreview.setImage(#imageLiteral(resourceName: "play-button"), for: .normal)
+            case 3:
+                 self.imageFromServerURL(downloadURl, placeHolder: nil, completion: { (image) in
+                    receiverCell.imgDownload.image = image
+                })
+                receiverCell.btnShowPreview.setImage(#imageLiteral(resourceName: "document"), for: .normal)
+            default:
+                break
+            }
+            
             receiverCell.btnShowPreview.addTarget(self, action: #selector(playVideo(_:)), for: .touchUpInside)
             return receiverCell
         }
@@ -473,13 +508,33 @@ extension ChatViewController : UITableViewDataSource,UITableViewDelegate{
     }
     
     @objc func playVideo(_ sender:UIButton) -> Void {
-        let chatObj = self.chatMsgsArray[sender.tag]
-        let player = AVPlayer(url: URL.init(string: chatObj.mediaurl ?? "")!)
-        let vc = AVPlayerViewController()
-        vc.player = player
         
-        present(vc, animated: true) {
-            vc.player?.play()
+        let chatObj = self.chatMsgsArray[sender.tag]
+        
+        switch chatObj.msgtype {
+        case 1:
+            self.performSegue(withIdentifier: "ImgDocView", sender: chatObj.mediaurl)
+            break
+            
+        case 2:
+            let player = AVPlayer(url: URL.init(string: chatObj.mediaurl ?? "")!)
+            let vc = AVPlayerViewController()
+            vc.player = player
+            
+            present(vc, animated: true) {
+                vc.player?.play()
+            }
+            break
+        case 3:
+            self.performSegue(withIdentifier: "ImgDocView", sender: chatObj.mediaurl)
+            break
+        default:
+            break
+        }
+    }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let vc = segue.destination as? ImgDocumentOpenViewController{
+            vc.imgDocUrl = sender as? String
         }
     }
     
@@ -546,23 +601,6 @@ extension ChatViewController : UITextViewDelegate {
             lblPlaceHolder.isHidden = false
         }
     }
-    
-    func pdfThumbnail(url: URL, width: CGFloat = 100) -> UIImage? {
-        guard let data = try? Data(contentsOf: url),
-            let page = PDFDocument(data: data)?.page(at: 0) else {
-                return nil
-        }
-        
-        let pageSize = page.bounds(for: .cropBox)
-        let pdfScale = width / pageSize.width
-        
-        // Apply if you're displaying the thumbnail on screen
-        let scale = UIScreen.main.scale * pdfScale
-        let screenSize = CGSize(width: pageSize.width * scale,
-                                height: pageSize.height * scale)
-        
-        return page.thumbnail(of: screenSize, for: .cropBox)
-    }
 }
 
 extension ChatViewController {
@@ -593,4 +631,61 @@ extension AVAsset {
             })
         }
     }
+}
+extension ChatViewController : UIDocumentInteractionControllerDelegate{
+    public func documentInteractionControllerViewControllerForPreview(_ controller: UIDocumentInteractionController) -> UIViewController {
+        return self
+    }
+    
+    public func documentInteractionControllerDidEndPreview(_ controller: UIDocumentInteractionController) {
+        
+    }
+    
+}
+extension ChatViewController {
+    
+    func imageFromServerURL(_ url: URL, placeHolder: UIImage? , completion: @escaping (UIImage?) -> Void) {
+        
+        if let cachedImage = cacheImages.object(forKey: url.lastPathComponent as NSString) {
+            completion(cachedImage)
+            return
+        }
+        
+        
+            URLSession.shared.dataTask(with: url, completionHandler: { (data, response, error) in
+                
+                //print("RESPONSE FROM API: \(response)")
+                if error != nil {
+                    print("ERROR LOADING IMAGES FROM URL: \(error)")
+                    DispatchQueue.main.async {
+                        completion(nil)
+                    }
+                    return
+                }
+                DispatchQueue.main.async {
+                    if let data = data {
+                        
+                            
+                            
+                            
+                            guard let page = PDFDocument(data: data)?.page(at: 0) else {
+                                completion(nil)
+                                return
+                            }
+                            
+                            let pageSize = page.bounds(for: .cropBox)
+                            let pdfScale = 100 / pageSize.width
+                            
+                            // Apply if you're displaying the thumbnail on screen
+                            let scale = UIScreen.main.scale * pdfScale
+                            let screenSize = CGSize(width: pageSize.width * scale,
+                                                    height: pageSize.height * scale)
+                            
+                        let image =  page.thumbnail(of: screenSize, for: .cropBox)
+                        self.cacheImages.setObject(image, forKey: url.lastPathComponent as NSString)
+                        completion(image)
+                        }
+                }
+            }).resume()
+        }
 }

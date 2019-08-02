@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14810.12" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="3Yt-TA-xZR">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14854.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="3Yt-TA-xZR">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14766.15"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14806.4"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -561,6 +561,10 @@
                                                                 </userDefinedRuntimeAttribute>
                                                             </userDefinedRuntimeAttributes>
                                                         </imageView>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xn8-gq-gx0">
+                                                            <rect key="frame" x="0.0" y="0.0" width="204" height="201"/>
+                                                            <color key="backgroundColor" white="0.0" alpha="0.25" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        </button>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q8I-ag-BBX">
                                                             <rect key="frame" x="173" y="171" width="24" height="25"/>
                                                             <constraints>
@@ -570,10 +574,6 @@
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xn8-gq-gx0">
-                                                            <rect key="frame" x="0.0" y="0.0" width="204" height="201"/>
-                                                            <state key="normal" title="Button"/>
-                                                        </button>
                                                     </subviews>
                                                     <color key="backgroundColor" red="1" green="0.58431372549019611" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
@@ -631,6 +631,10 @@
                                                                 </userDefinedRuntimeAttribute>
                                                             </userDefinedRuntimeAttributes>
                                                         </imageView>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WGn-A0-vEc">
+                                                            <rect key="frame" x="0.0" y="0.0" width="204" height="201"/>
+                                                            <color key="backgroundColor" white="0.0" alpha="0.25" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        </button>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f7q-4l-wYn">
                                                             <rect key="frame" x="153" y="171" width="24" height="25"/>
                                                             <constraints>
@@ -648,10 +652,6 @@
                                                                 <constraint firstAttribute="height" constant="15" id="gpK-ov-msp"/>
                                                             </constraints>
                                                         </imageView>
-                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WGn-A0-vEc">
-                                                            <rect key="frame" x="0.0" y="0.0" width="204" height="201"/>
-                                                            <state key="normal" title="Button"/>
-                                                        </button>
                                                     </subviews>
                                                     <color key="backgroundColor" red="0.35294117647058826" green="0.78431372549019607" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
@@ -787,11 +787,46 @@
                         <outlet property="lblPlaceHolder" destination="CKN-Ak-QK3" id="LAo-nd-XUd"/>
                         <outlet property="tableView" destination="4QE-wU-ahA" id="N1N-wV-JNx"/>
                         <outlet property="textViewSenderChat" destination="dfw-Vi-SiS" id="UMC-XX-3j4"/>
+                        <segue destination="gQS-b0-Hr6" kind="show" identifier="ImgDocView" id="j9B-g8-pj6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="G3Y-Mo-Q8n" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2421.739130434783" y="418.52678571428572"/>
+        </scene>
+        <!--Img Document Open View Controller-->
+        <scene sceneID="aYd-Vz-Xc3">
+            <objects>
+                <viewController storyboardIdentifier="ImgDocumentOpenViewController" id="gQS-b0-Hr6" customClass="ImgDocumentOpenViewController" customModule="ChatDemo" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="ZfM-X4-E4m">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="c0w-vI-rKG">
+                                <rect key="frame" x="0.0" y="88" width="414" height="774"/>
+                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <wkWebViewConfiguration key="configuration">
+                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                                    <wkPreferences key="preferences"/>
+                                </wkWebViewConfiguration>
+                            </wkWebView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="9f9-UZ-lyw" firstAttribute="bottom" secondItem="c0w-vI-rKG" secondAttribute="bottom" id="0Iw-Gu-nwu"/>
+                            <constraint firstItem="c0w-vI-rKG" firstAttribute="top" secondItem="9f9-UZ-lyw" secondAttribute="top" id="4YZ-Vr-iCC"/>
+                            <constraint firstItem="c0w-vI-rKG" firstAttribute="leading" secondItem="9f9-UZ-lyw" secondAttribute="leading" id="RPK-dV-8QN"/>
+                            <constraint firstItem="9f9-UZ-lyw" firstAttribute="trailing" secondItem="c0w-vI-rKG" secondAttribute="trailing" id="kxx-bC-goc"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="9f9-UZ-lyw"/>
+                    </view>
+                    <connections>
+                        <outlet property="webView" destination="c0w-vI-rKG" id="ug8-CU-Hwo"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qSd-1H-s5u" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3378" y="431"/>
         </scene>
     </scenes>
     <resources>
