@@ -101,13 +101,13 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Opk-kC-fKx">
-                                                    <rect key="frame" x="10" y="21" width="330" height="30"/>
+                                                    <rect key="frame" x="80" y="21" width="260" height="30"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="25"/>
                                                     <color key="textColor" red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cyn-HX-rpI">
-                                                    <rect key="frame" x="10" y="51" width="304" height="26"/>
+                                                    <rect key="frame" x="80" y="51" width="234" height="26"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -152,6 +152,18 @@
                                                     <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="user" translatesAutoresizingMaskIntoConstraints="NO" id="0oV-bP-mOX">
+                                                    <rect key="frame" x="20" y="26" width="50" height="50"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="50" id="90T-3X-zGM"/>
+                                                        <constraint firstAttribute="height" constant="50" id="yld-2t-ZlX"/>
+                                                    </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadiusView">
+                                                            <real key="value" value="25"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
+                                                </imageView>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="Opk-kC-fKx" firstAttribute="top" relation="greaterThanOrEqual" secondItem="YsH-EM-shS" secondAttribute="top" constant="10" id="0Kb-7W-Eb0"/>
@@ -160,16 +172,18 @@
                                                 <constraint firstAttribute="trailing" secondItem="SXJ-1f-gV8" secondAttribute="trailing" constant="10" id="818-rM-XRG"/>
                                                 <constraint firstAttribute="trailing" secondItem="w4p-EL-F0D" secondAttribute="trailing" id="8Yl-9M-fsK"/>
                                                 <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="cyn-HX-rpI" secondAttribute="bottom" constant="10" id="DK9-We-XMI"/>
+                                                <constraint firstItem="Opk-kC-fKx" firstAttribute="leading" secondItem="0oV-bP-mOX" secondAttribute="trailing" constant="10" id="F52-eB-8R7"/>
+                                                <constraint firstItem="0oV-bP-mOX" firstAttribute="leading" secondItem="YsH-EM-shS" secondAttribute="leading" constant="20" id="GYr-S5-49y"/>
+                                                <constraint firstItem="cyn-HX-rpI" firstAttribute="leading" secondItem="Opk-kC-fKx" secondAttribute="leading" id="JS2-9S-tdz"/>
                                                 <constraint firstItem="w4p-EL-F0D" firstAttribute="top" secondItem="Opk-kC-fKx" secondAttribute="bottom" id="N9T-rj-1sX"/>
-                                                <constraint firstItem="Opk-kC-fKx" firstAttribute="leading" secondItem="YsH-EM-shS" secondAttribute="leading" constant="10" id="NA6-Xq-Fub"/>
                                                 <constraint firstItem="w4p-EL-F0D" firstAttribute="centerY" secondItem="YsH-EM-shS" secondAttribute="centerY" id="XMv-oe-TA5"/>
                                                 <constraint firstAttribute="trailing" secondItem="DZ4-a2-Vhb" secondAttribute="trailing" constant="10" id="aet-ks-KYL"/>
                                                 <constraint firstItem="cyn-HX-rpI" firstAttribute="top" secondItem="w4p-EL-F0D" secondAttribute="bottom" id="eZL-NF-7fc"/>
+                                                <constraint firstItem="0oV-bP-mOX" firstAttribute="centerY" secondItem="YsH-EM-shS" secondAttribute="centerY" id="keU-1X-OEy"/>
                                                 <constraint firstItem="w4p-EL-F0D" firstAttribute="centerX" secondItem="YsH-EM-shS" secondAttribute="centerX" id="kru-x4-h42"/>
                                                 <constraint firstItem="w4p-EL-F0D" firstAttribute="leading" secondItem="YsH-EM-shS" secondAttribute="leading" id="mBP-65-pDY"/>
                                                 <constraint firstAttribute="trailing" secondItem="cyn-HX-rpI" secondAttribute="trailing" constant="100" id="mjF-2v-atq"/>
                                                 <constraint firstItem="SXJ-1f-gV8" firstAttribute="leading" secondItem="Opk-kC-fKx" secondAttribute="trailing" constant="10" id="t2K-OX-IRi"/>
-                                                <constraint firstItem="cyn-HX-rpI" firstAttribute="leading" secondItem="YsH-EM-shS" secondAttribute="leading" constant="10" id="xIA-tF-ue2"/>
                                                 <constraint firstItem="DZ4-a2-Vhb" firstAttribute="top" secondItem="w4p-EL-F0D" secondAttribute="bottom" id="xZQ-97-dh9"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -178,6 +192,7 @@
                                             <outlet property="lblChatMsg" destination="cyn-HX-rpI" id="TyQ-L1-dEa"/>
                                             <outlet property="lblChatName" destination="Opk-kC-fKx" id="Ikr-XE-rrn"/>
                                             <outlet property="lblUnReadCount" destination="s4p-YL-3mg" id="bhV-Kv-4K4"/>
+                                            <outlet property="userProfilePic" destination="0oV-bP-mOX" id="rmP-aM-hav"/>
                                             <outlet property="viewUnReadCount" destination="DZ4-a2-Vhb" id="BpX-zV-so3"/>
                                         </connections>
                                     </tableViewCell>

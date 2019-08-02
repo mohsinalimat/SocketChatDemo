@@ -127,7 +127,7 @@ extension SignUpViewController{
                         if let mediaUrl = jsonData["filename"] as? String{
                             DispatchQueue.main.async {
                                 param["photo"]  = mediaUrl
-                                self.SignUp(params)
+                                self.SignUp(param)
                             }
                         }
                     }

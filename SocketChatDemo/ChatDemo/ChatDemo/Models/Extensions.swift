@@ -10,6 +10,8 @@ import Foundation
 import UIKit
 import CoreData
 import MobileCoreServices
+import AVFoundation
+import AVKit
 
 extension UIView {
     

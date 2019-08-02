@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 import MBProgressHUD
+import SDWebImage
 
 class ChatListCell: UITableViewCell {
     
@@ -17,6 +18,8 @@ class ChatListCell: UITableViewCell {
     @IBOutlet var lblChatDate: UILabel!
     @IBOutlet weak var lblUnReadCount: UILabel!
     @IBOutlet weak var viewUnReadCount: UIView!
+    @IBOutlet weak var userProfilePic: UIImageView!
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -94,6 +97,7 @@ class ChatListViewController: UIViewController, UITableViewDelegate, UITableView
         cell.lblChatDate.text = "\(objChat!.created_at)".timeStampToLocalDate()
         cell.viewUnReadCount.isHidden = Int(objChat!.unreadcount) <= 0
         cell.lblUnReadCount.text = "\(objChat!.unreadcount)"
+        cell.userProfilePic.sd_setImage(with: URL.init(string: objChat?.channelPic ?? ""), placeholderImage: #imageLiteral(resourceName: "user"))
         return cell
     }
     

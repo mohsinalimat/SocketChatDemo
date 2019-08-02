@@ -24,7 +24,7 @@ extension ChatList {
     @NSManaged public var updated_at: Double
     @NSManaged public var userIds: String?
     @NSManaged public var unreadcount: Int16
-    
+    @NSManaged public var channelPic: String?
     
     
     enum CodingKeys: String, CodingKey {
@@ -36,9 +36,9 @@ extension ChatList {
         case channelType = "channelType"
         case channelName = "channelName"
         case unreadcount = "unreadcount"
+        case channelPic = "channelPic"
     }
-    
-    
+
     // MARK: - Encodable
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
@@ -50,8 +50,6 @@ extension ChatList {
         try container.encode(channelType, forKey: .channelType)
         try container.encode(channelName, forKey: .channelName)
         try container.encode(unreadcount, forKey: .unreadcount)
+        try container.encode(channelPic, forKey: .channelPic)
     }
-    
-    
-    
 }

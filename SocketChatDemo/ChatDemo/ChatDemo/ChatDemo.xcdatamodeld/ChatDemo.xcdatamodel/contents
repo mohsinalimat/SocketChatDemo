@@ -2,6 +2,7 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14886.2" systemVersion="19A526h" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="ChatList" representedClassName=".ChatList" syncable="YES">
         <attribute name="channelName" optional="YES" attributeType="String"/>
+        <attribute name="channelPic" optional="YES" attributeType="String"/>
         <attribute name="channelType" optional="YES" attributeType="String"/>
         <attribute name="chatid" optional="YES" attributeType="String"/>
         <attribute name="created_at" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
@@ -26,10 +27,10 @@
         <attribute name="email" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="String"/>
         <attribute name="name" optional="YES" attributeType="String"/>
-        <attribute name="userPic" optional="YES" attributeType="String"/>
+        <attribute name="photo" optional="YES" attributeType="String"/>
     </entity>
     <elements>
-        <element name="ChatList" positionX="-63" positionY="-18" width="128" height="163"/>
+        <element name="ChatList" positionX="-63" positionY="-18" width="128" height="178"/>
         <element name="ChatMessages" positionX="-54" positionY="-9" width="128" height="193"/>
         <element name="LoginUser" positionX="-54" positionY="36" width="128" height="103"/>
     </elements>
