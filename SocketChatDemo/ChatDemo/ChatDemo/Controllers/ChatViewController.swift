@@ -271,6 +271,9 @@ class ChatViewController: UIViewController, UINavigationControllerDelegate, UIIm
                     if let jsonData = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String:Any]{
                         if let mediaUrl = jsonData["filename"] as? String{
                             self.sendChatMsg(msg: "", msgType: mediaType, mediaURL: mediaUrl)
+                            let fileManager = FileManager.default
+                            fileManager.clearDocumentDirectory()
+                            
                         }
                     }
                 }catch{}

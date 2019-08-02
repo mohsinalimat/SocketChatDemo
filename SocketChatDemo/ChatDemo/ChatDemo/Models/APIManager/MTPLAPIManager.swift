@@ -113,7 +113,7 @@ class MTPLAPIManager: NSObject {
     
     private func buildPayloadFile(videoFileURL: [String], parameter:[String:Any]?, boundary: String, filekey: String) -> URL? {
         let fileManager = FileManager.default
-        fileManager.clearTmpDirectory()
+        
         let fileURL = fileManager.temporaryDirectory
         let filePath = fileURL.appendingPathComponent(UUID().uuidString).path
         let payloadFileURL = URL(fileURLWithPath: filePath)

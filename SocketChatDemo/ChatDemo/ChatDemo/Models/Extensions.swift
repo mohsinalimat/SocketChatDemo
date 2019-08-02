@@ -189,7 +189,16 @@ extension FileManager {
             //catch the error somehow
         }
     }
-    
+    func clearDocumentDirectory() {
+        let fileManager = FileManager.default
+        let myDocuments = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
+        do {
+            try fileManager.removeItem(at: myDocuments)
+            self.clearTmpDirectory()
+        } catch {
+            return
+        }
+    }
 }
 func saveImageIntoDocumentDirectory(_ chosenImage:UIImage) -> String? {
     let fileManager = FileManager.default
