@@ -18,7 +18,7 @@ class ImgDocumentOpenViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.webView.load(URLRequest(url: URL(string: imgDocUrl!)!))// for web URL
+        self.webView.load(URLRequest(url: URL.init(string: imgDocUrl?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")!))// for web URL
 
     }
 

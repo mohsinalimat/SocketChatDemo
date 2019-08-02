@@ -206,7 +206,7 @@ func saveImageIntoDocumentDirectory(_ chosenImage:UIImage) -> String? {
         let documentDirectory = try fileManager.url(for: .documentDirectory, in: .userDomainMask, appropriateFor:nil, create:false)
         let fileURL = documentDirectory.appendingPathComponent(UUID().uuidString + ".jpeg")
         let data = chosenImage.jpegData(compressionQuality: 0.1)
-        try! data?.write(to: fileURL, options: .atomic)
+        try data?.write(to: fileURL, options: .atomic)
         return fileURL.path
     }catch{
         return nil

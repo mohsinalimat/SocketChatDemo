@@ -379,7 +379,7 @@ extension ChatViewController : UITableViewDataSource,UITableViewDelegate{
             
             switch chatObj.msgtype {
             case 1:
-                senderCell.imgDownload.sd_setImage(with: URL(string: chatObj.mediaurl ?? ""), placeholderImage: UIImage(named: "placeholder"))
+                senderCell.imgDownload.sd_setImage(with: downloadURl, placeholderImage: UIImage(named: "placeholder"))
                 senderCell.btnShowPreview.setImage(nil, for: .normal)
             case 2:
                 let image = cacheImages.object(forKey:downloadURl.lastPathComponent as NSString)
@@ -433,11 +433,11 @@ extension ChatViewController : UITableViewDataSource,UITableViewDelegate{
             receiverCell.lblTime.text = "\(chatObj.created_at)".timeStampToLocalDate().getLocalTime()
             
             receiverCell.btnShowPreview.tag = index
-            let downloadURl = URL.init(string: chatObj.mediaurl ?? "")!
+            let downloadURl = URL.init(string: chatObj.mediaurl?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")!
             
             switch chatObj.msgtype {
             case 1:
-                receiverCell.imgDownload.sd_setImage(with: URL(string: chatObj.mediaurl ?? ""), placeholderImage: UIImage(named: "placeholder"))
+                receiverCell.imgDownload.sd_setImage(with: downloadURl, placeholderImage: UIImage(named: "placeholder"))
                 receiverCell.btnShowPreview.setImage(nil, for: .normal)
             case 2:
                 let image = cacheImages.object(forKey:downloadURl.lastPathComponent as NSString)
