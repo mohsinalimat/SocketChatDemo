@@ -284,22 +284,23 @@ func getCurrentDateTime() -> String{
 }
 
 func moveFile(filepath : URL) -> URL? {
-    let fileManager = FileManager.default
-    do {
-        let documentDirectory = try fileManager.url(for: .documentDirectory, in: .userDomainMask, appropriateFor:nil, create:false)
-        
-        if fileManager.fileExists(atPath: documentDirectory.path){
-//            try fileManager.removeItem(at: documentDirectory)
+    if let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first{
+        let oldPath = filepath
+        let newPath = dir.appendingPathComponent(filepath.lastPathComponent)
+        let fileManager = FileManager.default
+        do{
+            if fileManager.fileExists(atPath: newPath.path) {
+                try fileManager.removeItem(at: newPath)
+            }
+            
+            try fileManager.copyItem(at: oldPath, to: newPath)
+            return newPath
+        }catch{
+            print(error.localizedDescription)
+            return nil
         }
-        filepath.startAccessingSecurityScopedResource()
-        try fileManager.moveItem(at: filepath, to: documentDirectory)
-        filepath.stopAccessingSecurityScopedResource()
-
-        return documentDirectory
-    } catch let error as NSError {
-        print("Ooops! Something went wrong: \(error)")
-        return nil
     }
+    return nil
 }
 func openImageViewPicker(isOpenGallery : UIImagePickerController.SourceType , viewController : UIViewController){
     if UIImagePickerController.isSourceTypeAvailable(isOpenGallery){
