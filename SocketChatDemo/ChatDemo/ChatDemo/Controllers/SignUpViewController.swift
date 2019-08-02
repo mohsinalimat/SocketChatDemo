@@ -8,8 +8,8 @@
 
 import UIKit
 
-class SignUpViewController: UIViewController ,UIImagePickerControllerDelegate,UINavigationControllerDelegate{
-
+class SignUpViewController: UIViewController,UIImagePickerControllerDelegate,UINavigationControllerDelegate{
+    
     @IBOutlet weak var txtName: UITextField!
     @IBOutlet weak var txtEmail: UITextField!
     @IBOutlet weak var txtPassword: UITextField!
@@ -19,11 +19,8 @@ class SignUpViewController: UIViewController ,UIImagePickerControllerDelegate,UI
     
     var imagePath : String = ""
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
     }
     
     //check Validation
@@ -43,7 +40,7 @@ class SignUpViewController: UIViewController ,UIImagePickerControllerDelegate,UI
                 "password":self.txtPassword.text!]
             appdelegate.objAPI.connectSocket { (success, error) in
                 if success ?? false {
-                   self.callUploadMediaAPI(path: self.imagePath , params: params)
+                    self.callUploadMediaAPI(path: self.imagePath , params: params)
                 }
             }
         }
@@ -74,14 +71,16 @@ class SignUpViewController: UIViewController ,UIImagePickerControllerDelegate,UI
             }
         }
     }
-
+    
     //MARK:- Button Actions
     @IBAction func btnSignUpAction(_ sender: Any) {
         self.checkValidation()
     }
+    
     @IBAction func btnProfileAction(_ sender: Any) {
         self.openActionSheet()
     }
+    
     func openActionSheet(){
         let alert = UIAlertController(title: "ChatDemo", message: "Please Select an Option", preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "Camera", style: .default , handler:{ (UIAlertAction)in
@@ -97,49 +96,39 @@ class SignUpViewController: UIViewController ,UIImagePickerControllerDelegate,UI
             print("completion block")
         })
     }
-    
-    
-
 }
 extension SignUpViewController{
+    
     //MARK:- ImagePickerController Delegate
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        
-        
-        
-        
         picker.dismiss(animated: true, completion: { () -> Void in
             self.imagePath = ""
             if let chosenImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage{
                 self.imageViewProfile.image = chosenImage
                 self.imagePath = saveImageIntoDocumentDirectory(chosenImage) ?? ""
-
             }
-            
         })
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true, completion: nil)
     }
+    
     func callUploadMediaAPI(path : String , params : [String:Any]){
         var param = params
         MTPLAPIManager.shared.upload(ChatURLManager.file_upload, parameter: nil, videoPath: [path], filekey: "file") { (objData, error) in
             if let error = error{
                 print(error)
             }else{
-                
                 guard let data = objData else { return }
                 do{
                     if let jsonData = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String:Any]{
                         
                         if let mediaUrl = jsonData["filename"] as? String{
                             DispatchQueue.main.async {
-                                param["userPic"]  = mediaUrl
+                                param["photo"]  = mediaUrl
                                 self.SignUp(params)
                             }
-                            
-                                
                         }
                     }
                 }catch{}
