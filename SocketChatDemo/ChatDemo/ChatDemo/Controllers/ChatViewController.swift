@@ -251,7 +251,7 @@ class ChatViewController: UIViewController, UINavigationControllerDelegate, UIIm
                 imagePath = saveImageIntoDocumentDirectory(chosenImage) ?? ""
                 mediaTypeIndex = 1
             }else if let mediaPath = info[UIImagePickerController.InfoKey.mediaURL] as? URL{
-                imagePath = mediaPath.path
+                imagePath = moveFile(filepath: mediaPath)?.path ?? ""
                 mediaTypeIndex = 2
             }
             self.callUploadMediaAPI(path: imagePath , mediaType: mediaTypeIndex)

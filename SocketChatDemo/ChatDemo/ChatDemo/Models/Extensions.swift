@@ -287,12 +287,15 @@ func moveFile(filepath : URL) -> URL? {
     let fileManager = FileManager.default
     do {
         let documentDirectory = try fileManager.url(for: .documentDirectory, in: .userDomainMask, appropriateFor:nil, create:false)
-        let fileURL = documentDirectory.appendingPathComponent(filepath.lastPathComponent)
-        if fileManager.fileExists(atPath: fileURL.path){
-            try fileManager.removeItem(at: fileURL)
+        
+        if fileManager.fileExists(atPath: documentDirectory.path){
+//            try fileManager.removeItem(at: documentDirectory)
         }
-        try fileManager.moveItem(at: filepath, to: fileURL)
-        return fileURL
+        filepath.startAccessingSecurityScopedResource()
+        try fileManager.moveItem(at: filepath, to: documentDirectory)
+        filepath.stopAccessingSecurityScopedResource()
+
+        return documentDirectory
     } catch let error as NSError {
         print("Ooops! Something went wrong: \(error)")
         return nil
