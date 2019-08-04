@@ -244,13 +244,14 @@
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="LjI-bn-eUv">
                             <connections>
-                                <segue destination="Ahz-mS-oVt" kind="show" id="wII-xa-9uG"/>
+                                <action selector="btnOneToOneChatAction:" destination="xCg-wW-2pK" id="Idv-ge-MNS"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="chatListTable" destination="1me-L1-OTA" id="qQ6-72-ozs"/>
                         <segue destination="CyO-hw-kUg" kind="show" identifier="ChatConversation" id="S0h-IS-DHX"/>
+                        <segue destination="Ahz-mS-oVt" kind="show" identifier="segueUserList" id="zAn-ES-hbO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aG0-3P-qQu" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -283,6 +284,9 @@
                                                 <real key="value" value="45"/>
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="btnChangeProfilePic:" destination="4EZ-EE-Y9u" eventType="touchUpInside" id="7dP-gf-zaW"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" cocoaTouchSystemColor="systemYellowColor"/>
@@ -325,6 +329,54 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="qvT-5g-tup">
                                 <rect key="frame" x="0.0" y="278" width="414" height="584"/>
                                 <color key="backgroundColor" xcode11CocoaTouchSystemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ChatListCell" rowHeight="102" id="cui-rW-Iys" customClass="ChatListCell" customModule="ChatDemo" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="414" height="102"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="cui-rW-Iys" id="Y2r-VZ-rjE">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="102"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a2Q-uw-a2C">
+                                                    <rect key="frame" x="80" y="0.0" width="334" height="102"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="2yd-xD-8Yr">
+                                                    <rect key="frame" x="10" y="10" width="60" height="82"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="60" id="Qnl-7R-u2S"/>
+                                                        <constraint firstAttribute="height" constant="60" id="sNt-2P-SGz"/>
+                                                    </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadiusView">
+                                                            <real key="value" value="30"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
+                                                </imageView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="a2Q-uw-a2C" secondAttribute="trailing" id="5dq-fI-dgb"/>
+                                                <constraint firstItem="2yd-xD-8Yr" firstAttribute="top" secondItem="Y2r-VZ-rjE" secondAttribute="top" constant="10" id="KWO-Q7-2iN"/>
+                                                <constraint firstAttribute="bottom" secondItem="2yd-xD-8Yr" secondAttribute="bottom" constant="10" id="Kyf-Ae-XrD"/>
+                                                <constraint firstItem="a2Q-uw-a2C" firstAttribute="top" secondItem="Y2r-VZ-rjE" secondAttribute="top" id="U7G-eq-fn1"/>
+                                                <constraint firstItem="2yd-xD-8Yr" firstAttribute="leading" secondItem="Y2r-VZ-rjE" secondAttribute="leading" constant="10" id="fhK-DY-BfM"/>
+                                                <constraint firstItem="a2Q-uw-a2C" firstAttribute="leading" secondItem="2yd-xD-8Yr" secondAttribute="trailing" constant="10" id="hAs-Mm-sHS"/>
+                                                <constraint firstAttribute="bottom" secondItem="a2Q-uw-a2C" secondAttribute="bottom" id="iHh-6w-Slu"/>
+                                                <constraint firstItem="2yd-xD-8Yr" firstAttribute="centerY" secondItem="a2Q-uw-a2C" secondAttribute="centerY" id="su9-Am-itQ"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="lblChatName" destination="a2Q-uw-a2C" id="zMf-nR-WGf"/>
+                                            <outlet property="userProfilePic" destination="2yd-xD-8Yr" id="tD3-uf-xv6"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="4EZ-EE-Y9u" id="IAu-2d-MZa"/>
+                                    <outlet property="delegate" destination="4EZ-EE-Y9u" id="PvP-qG-Vnr"/>
+                                </connections>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" xcode11CocoaTouchSystemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -346,9 +398,22 @@
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Create Group" id="Uz3-7f-4PY">
-                        <barButtonItem key="leftBarButtonItem" image="left-arrow" id="ewd-gd-HCl"/>
+                        <barButtonItem key="leftBarButtonItem" image="left-arrow" id="ewd-gd-HCl">
+                            <connections>
+                                <action selector="btnBackAction:" destination="4EZ-EE-Y9u" id="63P-wK-yRQ"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Done" id="XEj-g4-lqY">
+                            <connections>
+                                <action selector="btnDoneAction:" destination="4EZ-EE-Y9u" id="XzU-Z5-57J"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="ImgGroupPic" destination="Je6-LE-C28" id="kqV-sz-HV5"/>
+                        <outlet property="lblNumbersOfParticipants" destination="D18-gV-nWL" id="C0X-yG-ZYs"/>
+                        <outlet property="tableParticipants" destination="qvT-5g-tup" id="Zhp-OP-0A6"/>
+                        <outlet property="txtGroupName" destination="E6j-dq-xhk" id="DW6-F6-Waf"/>
                         <segue destination="CyO-hw-kUg" kind="show" identifier="ChatConversation" id="ypF-KD-GfU"/>
                     </connections>
                 </viewController>
@@ -463,7 +528,7 @@
             </objects>
             <point key="canvasLocation" x="1167" y="-772"/>
         </scene>
-        <!--User List View Controller-->
+        <!--Contacts-->
         <scene sceneID="ZR4-JA-pJG">
             <objects>
                 <viewController storyboardIdentifier="UserListViewController" id="Ahz-mS-oVt" customClass="UserListViewController" customModule="ChatDemo" customModuleProvider="target" sceneMemberID="viewController">
@@ -484,21 +549,48 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Wh-5e-bw7">
-                                                    <rect key="frame" x="10" y="0.0" width="404" height="102"/>
+                                                    <rect key="frame" x="80" y="0.0" width="294" height="102"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="HLH-qH-Nne">
+                                                    <rect key="frame" x="384" y="41" width="20" height="20"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="20" id="bGk-kZ-zLu"/>
+                                                        <constraint firstAttribute="height" constant="20" id="rbF-hF-4A5"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="gJt-u2-8Zr">
+                                                    <rect key="frame" x="10" y="10" width="60" height="82"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="60" id="2vt-Om-Yu0"/>
+                                                        <constraint firstAttribute="width" constant="60" id="Ghv-9h-aBV"/>
+                                                    </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadiusView">
+                                                            <real key="value" value="30"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
+                                                </imageView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="trailing" secondItem="3Wh-5e-bw7" secondAttribute="trailing" id="7Gr-Zn-OpE"/>
-                                                <constraint firstItem="3Wh-5e-bw7" firstAttribute="leading" secondItem="bEX-Hp-N92" secondAttribute="leading" constant="10" id="8QR-sV-yGk"/>
+                                                <constraint firstAttribute="bottom" secondItem="gJt-u2-8Zr" secondAttribute="bottom" constant="10" id="5gh-Zc-eLY"/>
+                                                <constraint firstItem="gJt-u2-8Zr" firstAttribute="top" secondItem="bEX-Hp-N92" secondAttribute="top" constant="10" id="Gkh-Ol-9K2"/>
                                                 <constraint firstAttribute="bottom" secondItem="3Wh-5e-bw7" secondAttribute="bottom" id="Iw6-3j-wxL"/>
+                                                <constraint firstAttribute="trailing" secondItem="HLH-qH-Nne" secondAttribute="trailing" constant="10" id="KUP-Yw-y1w"/>
+                                                <constraint firstItem="HLH-qH-Nne" firstAttribute="centerY" secondItem="3Wh-5e-bw7" secondAttribute="centerY" id="SC3-So-r43"/>
+                                                <constraint firstItem="HLH-qH-Nne" firstAttribute="leading" secondItem="3Wh-5e-bw7" secondAttribute="trailing" constant="10" id="Sc9-uE-Pb3"/>
+                                                <constraint firstItem="gJt-u2-8Zr" firstAttribute="leading" secondItem="bEX-Hp-N92" secondAttribute="leading" constant="10" id="UrA-8s-Jaa"/>
                                                 <constraint firstItem="3Wh-5e-bw7" firstAttribute="top" secondItem="bEX-Hp-N92" secondAttribute="top" id="Zde-sw-7So"/>
+                                                <constraint firstItem="gJt-u2-8Zr" firstAttribute="centerY" secondItem="3Wh-5e-bw7" secondAttribute="centerY" id="ejm-3n-CG5"/>
+                                                <constraint firstItem="3Wh-5e-bw7" firstAttribute="leading" secondItem="gJt-u2-8Zr" secondAttribute="trailing" constant="10" id="iK2-No-Ato"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="ImageViewSelection" destination="HLH-qH-Nne" id="4f6-if-Shx"/>
                                             <outlet property="lblChatName" destination="3Wh-5e-bw7" id="sDe-Sv-fu6"/>
+                                            <outlet property="userProfilePic" destination="gJt-u2-8Zr" id="kom-Li-66x"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -517,6 +609,18 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="2Z9-ra-KkZ"/>
                     </view>
+                    <navigationItem key="navigationItem" title="Contacts" id="Zot-Qc-Oyu">
+                        <barButtonItem key="leftBarButtonItem" image="left-arrow" id="Ctz-SR-46F">
+                            <connections>
+                                <action selector="btnBackAction:" destination="Ahz-mS-oVt" id="HFZ-VF-I16"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Done" id="1Rv-0Q-qNr">
+                            <connections>
+                                <action selector="btnGroupDone:" destination="Ahz-mS-oVt" id="ffk-f4-cbN"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="chatListTable" destination="N8L-BE-ucR" id="CSM-ar-Ymj"/>
                         <segue destination="CyO-hw-kUg" kind="show" identifier="ChatConversation" id="7kH-0e-TQZ"/>
@@ -979,6 +1083,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="ypF-KD-GfU"/>
-        <segue reference="49Q-QE-0J1"/>
+        <segue reference="v3g-32-WCc"/>
     </inferredMetricsTieBreakers>
 </document>

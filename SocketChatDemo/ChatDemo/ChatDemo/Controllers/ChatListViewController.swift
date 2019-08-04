@@ -20,6 +20,7 @@ class ChatListCell: UITableViewCell {
     @IBOutlet weak var viewUnReadCount: UIView!
     @IBOutlet weak var userProfilePic: UIImageView!
     
+    @IBOutlet weak var ImageViewSelection: UIImageView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -46,8 +47,13 @@ class ChatListViewController: UIViewController, UITableViewDelegate, UITableView
         self.checkDataAvailable()
     }
     
+    @IBAction func btnOneToOneChatAction(_ sender: UIBarButtonItem) {
+        self.performSegue(withIdentifier: "segueUserList", sender: "0")
+    }
+    
+    
     @IBAction func btnGroupAction(_ sender: UIButton) {
-        self.performSegue(withIdentifier: "ChatGroup", sender: self)
+        self.performSegue(withIdentifier: "segueUserList", sender: "1")
     }
     
     @IBAction func btnBroadcastAction(_ sender: UIButton) {
@@ -66,9 +72,7 @@ class ChatListViewController: UIViewController, UITableViewDelegate, UITableView
         let entities = appdelegate.persistentContainer.managedObjectModel.entities
         do {
             try entities.compactMap({ $0.name }).forEach(clearDeepObjectEntity)
-        }catch{
-            
-        }
+        }catch{}
     }
     
     func checkDataAvailable(){
@@ -116,6 +120,8 @@ class ChatListViewController: UIViewController, UITableViewDelegate, UITableView
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destination = segue.destination as? ChatViewController{
             destination.chatObj = sender as? ChatList
+        }else if let destination = segue.destination as? UserListViewController {
+            destination.channelType = sender as? String
         }
     }
 }
