@@ -84,7 +84,7 @@ class UserListViewController: UIViewController, UITableViewDelegate, UITableView
                         }
                         
                         var obj = [String:Any]()
-                        obj["userIds"] = "\(self.userList![index].id!), \(UserDefaults.standard.userID!)"
+                        obj["userIds"] = "\(self.userList![index].id!),\(UserDefaults.standard.userID!)"
                         obj["chatid"] = responseData["ChatId"] as? String
                         obj["channelName"] = "\(self.userList![index].name!)"
                         obj["channelType"] = self.channelType

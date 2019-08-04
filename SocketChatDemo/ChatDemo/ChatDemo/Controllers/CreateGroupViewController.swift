@@ -9,7 +9,7 @@
 import UIKit
 
 class CreateGroupViewController: UIViewController {
-
+    
     @IBOutlet weak var txtGroupName: UITextField!
     @IBOutlet weak var ImgGroupPic: UIImageView!
     
@@ -26,7 +26,12 @@ class CreateGroupViewController: UIViewController {
         if txtGroupName.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
             print("Please enter group name")
         }else{
-            self.performSegue(withIdentifier: "ChatConversation", sender: self)
+            guard let tempIdArray = self.selectedUserList?.map({$0.id!}) else{
+                return
+            }
+            let userIds = tempIdArray.joined(separator: ",")
+            let ids = userIds + "," + UserDefaults.standard.userID!
+            getStartChatID(ids: ids)
         }
     }
     
@@ -35,6 +40,44 @@ class CreateGroupViewController: UIViewController {
     }
     
     @IBAction func btnChangeProfilePic(_ sender: UIButton) {
+    }
+    
+    func getStartChatID(ids : String){
+        
+        let params = ["UserIDs":ids]
+        
+        appdelegate.objAPI.getChatID(params) { (response, error) in
+            if let error = error {
+                print(error)
+            }else{
+                if let responseData = response {
+                    do {
+                        let managedObjectContext = appdelegate.persistentContainer.viewContext
+                        let decoder = JSONDecoder()
+                        if let context = CodingUserInfoKey.managedObjectContext {
+                            decoder.userInfo[context] = managedObjectContext
+                        }
+                        var obj = [String:Any]()
+                        
+                        obj["userIds"] = ids
+                        obj["chatid"] = responseData["ChatId"] as? String
+                        obj["channelName"] = self.txtGroupName.text
+                        obj["channelType"] = "1"
+                        obj["channelPic"] = "URL"
+                        let objUser = try decoder.decode(ChatList.self, from: obj.toData())
+                        self.performSegue(withIdentifier: "ChatConversation", sender: objUser)
+                    }catch {
+                        
+                    }
+                }
+            }
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let destination = segue.destination as? ChatViewController{
+            destination.chatObj = sender as? ChatList
+        }
     }
 }
 
