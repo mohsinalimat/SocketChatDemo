@@ -46,6 +46,13 @@ class ChatListViewController: UIViewController, UITableViewDelegate, UITableView
         self.checkDataAvailable()
     }
     
+    @IBAction func btnGroupAction(_ sender: UIButton) {
+        self.performSegue(withIdentifier: "ChatGroup", sender: self)
+    }
+    
+    @IBAction func btnBroadcastAction(_ sender: UIButton) {
+    }
+    
     @IBAction func btnLogoutAction(_ sender: UIBarButtonItem) {
         appdelegate.objAPI.socketDisconnect { (success, error) in
             self.clearAllCoreData()

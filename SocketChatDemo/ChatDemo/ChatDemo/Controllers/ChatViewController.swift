@@ -50,12 +50,10 @@ class ChatViewController: UIViewController, UINavigationControllerDelegate, UIIm
     var chatObj : ChatList?
     var chatMsgsArray = [ChatMessages]()
     var msgSent : Bool = false
-    
     var page : Int = 0
     var isPaginationEnable : Bool = false
     var pagelimit = 300
     var cacheImages = NSCache<NSString,UIImage>()
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -181,8 +179,10 @@ class ChatViewController: UIViewController, UINavigationControllerDelegate, UIIm
                       "created_at" : Date().millisecondsSince1970,
                       "updated_at" : Date().millisecondsSince1970,
                       "id" : "\(Date().millisecondsSince1970)\(chatObj!.chatid!)",
-            "msgtype" : msgType,
-            "mediaurl" : mediaURL] as [String : Any]
+                      "msgtype" : msgType,
+                      "mediaurl" : mediaURL,
+                      "name":chatObj!.channelName!,
+                      "photo":chatObj!.channelPic!] as [String : Any]
         
         appdelegate.objAPI.sendMessage(params) { (response, error) in
             if let error = error {

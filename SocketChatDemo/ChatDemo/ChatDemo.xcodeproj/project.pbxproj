@@ -22,6 +22,7 @@
 		C94B242B22DB1E0B00DB0D78 /* SocketManagerAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94B242A22DB1E0B00DB0D78 /* SocketManagerAPI.swift */; };
 		C978E05022DB5A2800AA978D /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C978E04F22DB5A2800AA978D /* LoginViewController.swift */; };
 		C978E05222DB5A9100AA978D /* ChatListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C978E05122DB5A9100AA978D /* ChatListViewController.swift */; };
+		C9B5E5FA22F70DA500CCD4E5 /* CreateGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B5E5F922F70DA500CCD4E5 /* CreateGroupViewController.swift */; };
 		ED3A1E9A22E6D5EB000C31C7 /* ChatList+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3A1E9422E6D5EB000C31C7 /* ChatList+CoreDataProperties.swift */; };
 		ED3A1E9B22E6D5EB000C31C7 /* ChatList+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3A1E9522E6D5EB000C31C7 /* ChatList+CoreDataClass.swift */; };
 		ED3A1E9C22E6D5EB000C31C7 /* LoginUser+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3A1E9622E6D5EB000C31C7 /* LoginUser+CoreDataProperties.swift */; };
@@ -52,6 +53,7 @@
 		C94B242A22DB1E0B00DB0D78 /* SocketManagerAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketManagerAPI.swift; sourceTree = "<group>"; };
 		C978E04F22DB5A2800AA978D /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		C978E05122DB5A9100AA978D /* ChatListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListViewController.swift; sourceTree = "<group>"; };
+		C9B5E5F922F70DA500CCD4E5 /* CreateGroupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGroupViewController.swift; sourceTree = "<group>"; };
 		ED3A1E9422E6D5EB000C31C7 /* ChatList+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ChatList+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		ED3A1E9522E6D5EB000C31C7 /* ChatList+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ChatList+CoreDataClass.swift"; sourceTree = "<group>"; };
 		ED3A1E9622E6D5EB000C31C7 /* LoginUser+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LoginUser+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -156,6 +158,7 @@
 				04E9670822DDDC48002E33CD /* SignUpViewController.swift */,
 				04FD749722DF241700C0EE9B /* ChatViewController.swift */,
 				04FC9DB822F44411006003B5 /* ImgDocumentOpenViewController.swift */,
+				C9B5E5F922F70DA500CCD4E5 /* CreateGroupViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -298,6 +301,7 @@
 				C94B241E22DB1A3B00DB0D78 /* ChatDemo.xcdatamodeld in Sources */,
 				04FD749822DF241700C0EE9B /* ChatViewController.swift in Sources */,
 				ED3A1E9A22E6D5EB000C31C7 /* ChatList+CoreDataProperties.swift in Sources */,
+				C9B5E5FA22F70DA500CCD4E5 /* CreateGroupViewController.swift in Sources */,
 				042153B222E9D6080058A205 /* URLManager.swift in Sources */,
 				C94B241622DB1A3B00DB0D78 /* SceneDelegate.swift in Sources */,
 				042153B322E9D6080058A205 /* MTPLAPIManager.swift in Sources */,
@@ -452,18 +456,18 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = ChatDemo/ChatDemo.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = TUBBTSR2F6;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = SVKXCL5QB5;
 				INFOPLIST_FILE = ChatDemo/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.vishal.ChatDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = Dev_All;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -475,18 +479,18 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = ChatDemo/ChatDemo.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = TUBBTSR2F6;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = SVKXCL5QB5;
 				INFOPLIST_FILE = ChatDemo/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.vishal.ChatDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = Dev_All;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
