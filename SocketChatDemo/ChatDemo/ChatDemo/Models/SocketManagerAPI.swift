@@ -424,8 +424,6 @@ class SocketManagerAPI: NSObject {
                             self.getChatMessageHistory { (success, error) in
                                 if success ?? false{
                                     self.chnlDelegate?.receiveChnl()
-                                }else{
-                                    
                                 }
                                 mbProgress?.hide(animated: true)
                             }
