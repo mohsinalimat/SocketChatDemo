@@ -31,7 +31,7 @@ public class ChatList: NSManagedObject,Codable {
         self.updated_at = try (container.decodeIfPresent(Double.self, forKey: .updated_at) ?? 0.0)
         self.channelType = try container.decodeIfPresent(String.self, forKey: .channelType)
         self.channelName = try container.decodeIfPresent(String.self, forKey: .channelName)
-        self.unreadcount = try (container.decodeIfPresent(Int16.self, forKey: .unreadcount) ?? 1)
+        self.unreadcount = try (container.decodeIfPresent(Int16.self, forKey: .unreadcount) ?? 0)
         self.channelPic = try container.decodeIfPresent(String.self, forKey: .channelPic)
         
     }

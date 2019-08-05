@@ -90,7 +90,7 @@ class SocketManagerAPI: NSObject {
         }
     }
     
-    func insertChannelList(arrayData : [[String:Any]]) -> [ChatList]?{
+    func insertChannelList(arrayData : [[String:Any]],isUpdatedUnread:Bool = true) -> [ChatList]?{
         do {
             let managedObjectContext = appdelegate.persistentContainer.viewContext
             let decoder = JSONDecoder()
@@ -98,6 +98,11 @@ class SocketManagerAPI: NSObject {
                 decoder.userInfo[context] = managedObjectContext
             }
             let objUser = try decoder.decode([ChatList].self, from: arrayData.toData())
+            if isUpdatedUnread {
+                for obj in objUser {
+                    obj.unreadcount = 1
+                }
+            }
             appdelegate.saveContext()
             return objUser
         } catch {
@@ -281,7 +286,7 @@ class SocketManagerAPI: NSObject {
                 }
                 appdelegate.saveContext()
             }else{
-                _ = self.insertChannelList(arrayData: arrayData)
+                _ = self.insertChannelList(arrayData: arrayData,isUpdatedUnread: isUpdatedUnread)
             }
             return true
         } catch {
