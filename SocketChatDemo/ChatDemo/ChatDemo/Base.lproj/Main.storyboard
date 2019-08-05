@@ -24,7 +24,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                             </textField>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="@moweb.com" borderStyle="roundedRect" placeholder="email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="zkk-Sd-Ik7">
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="@gmail.com" borderStyle="roundedRect" placeholder="email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="zkk-Sd-Ik7">
                                 <rect key="frame" x="10" y="138" width="394" height="34"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="34" id="hpM-VN-RLJ"/>
@@ -1082,6 +1082,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="S0h-IS-DHX"/>
-        <segue reference="v3g-32-WCc"/>
+        <segue reference="49Q-QE-0J1"/>
     </inferredMetricsTieBreakers>
 </document>
