@@ -49,7 +49,6 @@ class ChatViewController: UIViewController, UINavigationControllerDelegate, UIIm
     
     var chatObj : ChatList?
     var chatMsgsArray = [ChatMessages]()
-    var msgSent : Bool = false
     var page : Int = 0
     var isPaginationEnable : Bool = false
     var pagelimit = 300
@@ -126,7 +125,6 @@ class ChatViewController: UIViewController, UINavigationControllerDelegate, UIIm
                     self.changeStatus(dict:dict)
                 }
             }
-            self.msgSent = result.count > 0
             self.chatMsgsArray += result
             self.tableView.reloadData()
             self.tableView.scrollToBottom(index: self.chatMsgsArray.count - 1)
@@ -149,9 +147,6 @@ class ChatViewController: UIViewController, UINavigationControllerDelegate, UIIm
         _ = appdelegate.objAPI.updateUnReadMsgCount(self.chatObj!.chatid!)
         for i in self.navigationController!.viewControllers{
             if i is ChatListViewController{
-                if !self.msgSent {
-                    appdelegate.persistentContainer.viewContext.delete(chatObj!)
-                }
                 self.navigationController?.popToViewController(i, animated: true)
                 break
             }
@@ -182,8 +177,7 @@ class ChatViewController: UIViewController, UINavigationControllerDelegate, UIIm
                       "msgtype" : msgType,
                       "mediaurl" : mediaURL,
                       "name":chatObj!.channelName!,
-                      "photo":chatObj!.channelPic!
-                      ] as [String : Any]
+                      "photo":chatObj!.channelPic!] as [String : Any]
         
         appdelegate.objAPI.sendMessage(params) { (response, error) in
             if let error = error {
@@ -191,23 +185,18 @@ class ChatViewController: UIViewController, UINavigationControllerDelegate, UIIm
             }else{
                 if let responseData = response {
                     if let objMsg = appdelegate.objAPI.insertMessage(dict: responseData){
+                        self.chatObj!.created_at = objMsg.created_at
+                        self.chatObj!.last_message = objMsg.message!
+                        self.chatObj!.updated_at = objMsg.updated_at
                         
-                        let array = [["channelName":self.chatObj!.channelName!,
-                                      "channelType":self.chatObj!.channelType!,
-                                      "chatid":self.chatObj!.chatid!,
-                                      "created_at":objMsg.created_at,
-                                      "last_message":objMsg.message!,
-                                      "updated_at":objMsg.updated_at,
-                                      "userIds":self.chatObj!.userIds!,
-                                      "channelPic":self.chatObj!.channelPic!]] as [[String:Any]]
-                        self.msgSent = true
-                        _ = appdelegate.objAPI.checkChannelAvailable(array)
-                        
-                        self.chatMsgsArray.append(objMsg)
-                        self.tableView.reloadData()
-                        
-                        self.tableView.scrollToBottom(index: self.chatMsgsArray.count - 1)
-                        self.textViewSenderChat.text = ""
+                        let updated = appdelegate.objAPI.checkChannelAvailable(self.chatObj!)
+                        if updated {
+                            self.chatMsgsArray.append(objMsg)
+                            self.tableView.reloadData()
+                            
+                            self.tableView.scrollToBottom(index: self.chatMsgsArray.count - 1)
+                            self.textViewSenderChat.text = ""
+                        }
                     }
                 }
             }
@@ -619,8 +608,8 @@ func callUploadMediaAPI(path : String, completion : @escaping completionHandler)
             guard let data = objData else { return }
             do{
                 if let jsonData = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String:Any]{
-                    let fileManager = FileManager.default
-                    fileManager.clearDocumentDirectory()
+//                    let fileManager = FileManager.default
+//                    fileManager.clearDocumentDirectory()
                     completion(jsonData,nil)
                 }else{
                     completion(nil,"wrongJson")

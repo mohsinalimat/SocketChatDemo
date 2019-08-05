@@ -290,6 +290,49 @@ class SocketManagerAPI: NSObject {
         }
     }
     
+    func checkChannelAvailable(_ objChatList : ChatList, isUpdatedUnread: Bool = true) -> Bool {
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "ChatList")
+        fetchRequest.predicate = NSPredicate(format: "chatid = '\(objChatList.chatid!)'")
+        
+        do {
+            guard let result = try? appdelegate.persistentContainer.viewContext.fetch(fetchRequest)  as? [ChatList] else { return false }
+            if result.count > 0 {
+                let objResult = result[0]
+                objResult.userIds = objChatList.userIds
+                objResult.last_message = objChatList.last_message
+                objResult.chatid = objChatList.chatid
+                objResult.channelType = objChatList.channelType
+                objResult.channelName = objChatList.channelName
+                objResult.updated_at = objChatList.updated_at
+                if isUpdatedUnread {
+                    objResult.unreadcount += 1
+                }
+            }
+            appdelegate.saveContext()
+            return true
+        } catch {
+            print("error executing fetch request: \(error.localizedDescription)")
+            return false
+        }
+    }
+    
+    func checkGetExist(_ objChatID : String) -> ChatList? {
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "ChatList")
+        fetchRequest.predicate = NSPredicate(format: "chatid = '\(objChatID)'")
+        
+        do {
+            guard let result = try? appdelegate.persistentContainer.viewContext.fetch(fetchRequest)  as? [ChatList] else { return nil }
+            if result.count > 0 {
+                return result[0]
+            }else{
+                return nil
+            }
+        } catch {
+            print("error executing fetch request: \(error.localizedDescription)")
+            return nil
+        }
+    }
+    
     func checkMsgAvailable(_ arrayData : [String:Any]) -> Void {
         let fetchRequest = NSFetchRequest<ChatMessages>(entityName: "ChatMessages")
         fetchRequest.predicate = NSPredicate(format: "id = '\(arrayData["id"] ?? "")'")
@@ -348,7 +391,7 @@ class SocketManagerAPI: NSObject {
             }
             
             let objUser = try decoder.decode(ChatMessages.self, from: dict.toData())
-            try managedObjectContext.save()
+            appdelegate.saveContext()
             
             return objUser
             
@@ -404,8 +447,9 @@ class SocketManagerAPI: NSObject {
     func createGroup(_ params : [String:Any], ackCallBack:@escaping completionHandler) -> Void {
         socket.emitWithAck("CreateGroup", params).timingOut(after: 0) { data in
             print("got message")
-            guard let data1 = data[0] as? [String:String] else { ackCallBack(nil,"data Not availabel"); return }
-            ackCallBack(data1,nil)
+            guard let data1 = data[0] as? [[String:Any]] else { ackCallBack(nil,"data Not availabel"); return }
+            guard let data2 = data1[0]  as? [String:Any] else { ackCallBack(nil,"data Not availabel"); return }
+            ackCallBack(data2,nil)
         }
     }
     

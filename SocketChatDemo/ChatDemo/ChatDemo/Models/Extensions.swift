@@ -292,7 +292,7 @@ func clearDeepObjectEntity(_ entity: String) throws {
     let deleteFetch = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
     let deleteRequest = NSBatchDeleteRequest(fetchRequest: deleteFetch)
     try context.execute(deleteRequest)
-    try context.save()
+    appdelegate.saveContext()
 }
 extension UITableView{
     func scrollToBottom(index : Int){

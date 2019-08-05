@@ -51,7 +51,7 @@ class LoginViewController: UIViewController {
                             decoder.userInfo[context] = managedObjectContext
                         }
                         let objUser = try decoder.decode(LoginUser.self, from: responseData.toData())
-                        try managedObjectContext.save()
+                        appdelegate.saveContext()
                         print("data saved")
                         UserDefaults.standard.userID = objUser.id
                         self.performSegue(withIdentifier: "segueChatList", sender: self)

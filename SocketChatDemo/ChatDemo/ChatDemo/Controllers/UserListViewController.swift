@@ -69,7 +69,7 @@ class UserListViewController: UIViewController, UITableViewDelegate, UITableView
     
     func getStartChatID(index : Int){
         
-        let params = ["UserIDs":"\(self.userList![index].id!), \(UserDefaults.standard.userID!)"]
+        let params = ["UserIDs":"\(self.userList![index].id!),\(UserDefaults.standard.userID!)","channelType":"0"]
         
         appdelegate.objAPI.getChatID(params) { (response, error) in
             if let error = error {
@@ -77,23 +77,26 @@ class UserListViewController: UIViewController, UITableViewDelegate, UITableView
             }else{
                 if let responseData = response {
                     do {
-                        let managedObjectContext = appdelegate.persistentContainer.viewContext
-                        let decoder = JSONDecoder()
-                        if let context = CodingUserInfoKey.managedObjectContext {
-                            decoder.userInfo[context] = managedObjectContext
+                        if let objUsr = appdelegate.objAPI.checkGetExist(responseData["ChatId"] as! String) {
+                            self.performSegue(withIdentifier: "ChatConversation", sender: objUsr)
+                        }else{
+                            let managedObjectContext = appdelegate.persistentContainer.viewContext
+                            let decoder = JSONDecoder()
+                            if let context = CodingUserInfoKey.managedObjectContext {
+                                decoder.userInfo[context] = managedObjectContext
+                            }
+                            
+                            var obj = [String:Any]()
+                            obj["userIds"] = "\(self.userList![index].id!),\(UserDefaults.standard.userID!)"
+                            obj["chatid"] = responseData["ChatId"] as? String
+                            obj["channelName"] = "\(self.userList![index].name!)"
+                            obj["channelType"] = self.channelType
+                            obj["channelPic"] = "\(self.userList![index].photo!)"
+                            
+                            let objUser = try decoder.decode(ChatList.self, from: obj.toData())
+                            
+                            self.performSegue(withIdentifier: "ChatConversation", sender: objUser)
                         }
-                        
-                        var obj = [String:Any]()
-                        obj["userIds"] = "\(self.userList![index].id!),\(UserDefaults.standard.userID!)"
-                        obj["chatid"] = responseData["ChatId"] as? String
-                        obj["channelName"] = "\(self.userList![index].name!)"
-                        obj["channelType"] = self.channelType
-                        obj["channelPic"] = "\(self.userList![index].photo!)"
-                        
-                        let objUser = try decoder.decode(ChatList.self, from: obj.toData())
-                        
-                        self.performSegue(withIdentifier: "ChatConversation", sender: objUser)
-                        
                         print("data saved")
                     } catch {
                         print("nodata found")

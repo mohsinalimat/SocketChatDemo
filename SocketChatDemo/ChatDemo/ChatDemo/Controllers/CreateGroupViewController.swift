@@ -28,19 +28,17 @@ class CreateGroupViewController: UIViewController , UIImagePickerControllerDeleg
         }else if imagePath == ""{
             print("Please select group Pic")
         }else{
-            
-        }
-        guard let tempIdArray = self.selectedUserList?.map({$0.id!}) else{
-            return
-        }
-        callUploadMediaAPI(path: imagePath, completion: { (jsonData , error) in
-            if let mediaUrl = jsonData!["filename"] as? String{
-                let userIds = tempIdArray.joined(separator: ",")
-                let ids = userIds + "," + UserDefaults.standard.userID!
-                self.getStartChatID(ids: ids, mediaUrl: mediaUrl)
+            guard let tempIdArray = self.selectedUserList?.map({$0.id!}) else{
+                return
             }
-        })
-        
+            callUploadMediaAPI(path: imagePath, completion: { (jsonData , error) in
+                if let mediaUrl = jsonData!["filename"] as? String{
+                    let userIds = tempIdArray.joined(separator: ",")
+                    let ids = userIds + "," + UserDefaults.standard.userID!
+                    self.createGroup(ids: ids, mediaUrl: mediaUrl)
+                }
+            })
+        }
     }
     
     @IBAction func btnBackAction(_ sender: UIBarButtonItem) {
@@ -83,16 +81,13 @@ class CreateGroupViewController: UIViewController , UIImagePickerControllerDeleg
         picker.dismiss(animated: true, completion: nil)
     }
     
-    func createGroup(){
-        
-    }
-    
-    
-    func getStartChatID(ids : String, mediaUrl:String){
-        
-        let params = ["UserIDs":ids]
-        
-        appdelegate.objAPI.getChatID(params) { (response, error) in
+    func createGroup(ids : String, mediaUrl:String){
+        let channelData = ["userids":ids,
+                           "channelName":txtGroupName.text ?? "",
+                           "channelType":"1",
+                           "channelPic":mediaUrl,
+                           "created_at":Date().millisecondsSince1970] as [String : Any]
+        appdelegate.objAPI.createGroup(channelData) { (response, error) in
             if let error = error {
                 print(error)
             }else{
@@ -103,15 +98,10 @@ class CreateGroupViewController: UIViewController , UIImagePickerControllerDeleg
                         if let context = CodingUserInfoKey.managedObjectContext {
                             decoder.userInfo[context] = managedObjectContext
                         }
-                        var obj = [String:Any]()
                         
-                        obj["userIds"] = ids
-                        obj["chatid"] = responseData["ChatId"] as? String
-                        obj["channelName"] = self.txtGroupName.text
-                        obj["channelType"] = "1"
-                        obj["channelPic"] = mediaUrl
-                        let objUser = try decoder.decode(ChatList.self, from: obj.toData())
+                        let objUser = try decoder.decode(ChatList.self, from: responseData.toData())
                         self.performSegue(withIdentifier: "ChatConversation", sender: objUser)
+                        appdelegate.saveContext()
                     }catch {
                         
                     }
