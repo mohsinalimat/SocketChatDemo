@@ -54,6 +54,8 @@ class LoginViewController: UIViewController {
                         appdelegate.saveContext()
                         print("data saved")
                         UserDefaults.standard.userID = objUser.id
+                        UserDefaults.standard.userName = objUser.name
+                        UserDefaults.standard.userPhoto = objUser.photo
                         self.performSegue(withIdentifier: "segueChatList", sender: self)
                         DispatchQueue.main.async {
                             appdelegate.objAPI.getData()

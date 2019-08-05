@@ -256,6 +256,22 @@ extension UserDefaults {
             self.set(newValue, forKey: "userID")
         }
     }
+    var userName : String? {
+        get{
+            return self.value(forKey: "userName") as? String ?? nil
+        }
+        set {
+            self.set(newValue, forKey: "userName")
+        }
+    }
+    var userPhoto : String? {
+        get{
+            return self.value(forKey: "userPhoto") as? String ?? nil
+        }
+        set {
+            self.set(newValue, forKey: "userPhoto")
+        }
+    }
 }
 
 extension Array {

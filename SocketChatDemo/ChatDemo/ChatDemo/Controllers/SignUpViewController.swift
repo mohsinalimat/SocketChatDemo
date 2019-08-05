@@ -62,6 +62,8 @@ class SignUpViewController: UIViewController,UIImagePickerControllerDelegate,UIN
                         appdelegate.saveContext()
                         print("data saved")
                         UserDefaults.standard.userID = objUser.id
+                        UserDefaults.standard.userName = objUser.name
+                        UserDefaults.standard.userPhoto = objUser.photo
                         appdelegate.objAPI.getData()
                         self.performSegue(withIdentifier: "segueChatList", sender: self)
                     } catch {
