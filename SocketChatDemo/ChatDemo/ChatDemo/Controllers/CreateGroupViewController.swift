@@ -83,6 +83,9 @@ class CreateGroupViewController: UIViewController , UIImagePickerControllerDeleg
         picker.dismiss(animated: true, completion: nil)
     }
     
+    func createGroup(){
+        
+    }
     
     
     func getStartChatID(ids : String, mediaUrl:String){

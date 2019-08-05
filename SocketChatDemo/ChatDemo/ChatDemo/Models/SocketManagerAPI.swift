@@ -401,6 +401,13 @@ class SocketManagerAPI: NSObject {
             ackCallBack(data1,nil)
         }
     }
+    func createGroup(_ params : [String:Any], ackCallBack:@escaping completionHandler) -> Void {
+        socket.emitWithAck("CreateGroup", params).timingOut(after: 0) { data in
+            print("got message")
+            guard let data1 = data[0] as? [String:String] else { ackCallBack(nil,"data Not availabel"); return }
+            ackCallBack(data1,nil)
+        }
+    }
     
     func getHistroy() -> Void {
         var mbProgress : MBProgressHUD?

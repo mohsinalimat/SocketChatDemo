@@ -182,7 +182,8 @@ class ChatViewController: UIViewController, UINavigationControllerDelegate, UIIm
                       "msgtype" : msgType,
                       "mediaurl" : mediaURL,
                       "name":chatObj!.channelName!,
-                      "photo":chatObj!.channelPic!] as [String : Any]
+                      "photo":chatObj!.channelPic!
+                      ] as [String : Any]
         
         appdelegate.objAPI.sendMessage(params) { (response, error) in
             if let error = error {
