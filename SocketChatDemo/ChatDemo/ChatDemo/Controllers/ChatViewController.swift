@@ -170,7 +170,7 @@ class ChatViewController: UIViewController, UINavigationControllerDelegate, UIIm
             receiverArray?.remove(at: currentIndex)
         }
         
-        let params = ["channelType" : "0",
+        let params = ["channelType" : chatObj!.channelType!,
                       "message": msg,
                       "is_read": "0",
                       "chat_id": chatObj!.chatid!,
@@ -252,7 +252,11 @@ class ChatViewController: UIViewController, UINavigationControllerDelegate, UIIm
                 imagePath = moveFile(filepath: mediaPath)?.path ?? ""
                 mediaTypeIndex = 2
             }
-            self.callUploadMediaAPI(path: imagePath , mediaType: mediaTypeIndex)
+            callUploadMediaAPI(path: imagePath,completion: { (jsonData,error) in
+                if let mediaUrl = jsonData!["filename"] as? String{
+                    self.sendChatMsg(msg: "", msgType: mediaTypeIndex, mediaURL: mediaUrl)
+                }
+            })
         })
     }
     
@@ -260,26 +264,7 @@ class ChatViewController: UIViewController, UINavigationControllerDelegate, UIIm
         picker.dismiss(animated: true, completion: nil)
     }
     
-    func callUploadMediaAPI(path : String , mediaType : Int){
-        MTPLAPIManager.shared.upload(ChatURLManager.file_upload, parameter: nil, videoPath: [path], filekey: "file") { (objData, error) in
-            if let error = error{
-                print(error)
-            }else{
-                
-                guard let data = objData else { return }
-                do{
-                    if let jsonData = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String:Any]{
-                        if let mediaUrl = jsonData["filename"] as? String{
-                            self.sendChatMsg(msg: "", msgType: mediaType, mediaURL: mediaUrl)
-                            let fileManager = FileManager.default
-                            fileManager.clearDocumentDirectory()
-                            
-                        }
-                    }
-                }catch{}
-            }
-        }
-    }
+
     
 }
 
@@ -288,7 +273,11 @@ extension ChatViewController {
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
         controller.dismiss(animated: true) {
             if let urlFile = moveFile(filepath: url) {
-                self.callUploadMediaAPI(path: urlFile.path, mediaType: 3)
+                callUploadMediaAPI(path: urlFile.path,completion: { (jsonData,error) in
+                    if let mediaUrl = jsonData!["filename"] as? String{
+                        self.sendChatMsg(msg: "", msgType: 3, mediaURL: mediaUrl)
+                    }
+                })
             }
         }
     }
@@ -616,5 +605,28 @@ extension ChatViewController {
                 }
             }
         }).resume()
+    }
+}
+
+func callUploadMediaAPI(path : String, completion : @escaping completionHandler){
+    MTPLAPIManager.shared.upload(ChatURLManager.file_upload, parameter: nil, videoPath: [path], filekey: "file") { (objData, error) in
+        if let error = error{
+            print(error)
+            completion(nil,"wrongJson")
+        }else{
+            
+            guard let data = objData else { return }
+            do{
+                if let jsonData = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String:Any]{
+                    let fileManager = FileManager.default
+                    fileManager.clearDocumentDirectory()
+                    completion(jsonData,nil)
+                }else{
+                    completion(nil,"wrongJson")
+                }
+            }catch{
+                completion(nil,"wrongJson")
+            }
+        }
     }
 }
