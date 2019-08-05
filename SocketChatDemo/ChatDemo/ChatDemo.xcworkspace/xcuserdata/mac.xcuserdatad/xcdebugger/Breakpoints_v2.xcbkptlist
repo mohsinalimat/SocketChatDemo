@@ -18,16 +18,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "6D3C04AE-C8E6-41C9-9A71-E64E95626FE9"
+            uuid = "2A04B410-2153-4701-9327-50F6F8A54969"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "ChatDemo/Controllers/ChatListViewController.swift"
+            filePath = "ChatDemo/Models/SocketManagerAPI.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "100"
-            endingLineNumber = "100"
-            landmarkName = "tableView(_:cellForRowAt:)"
+            startingLineNumber = "126"
+            endingLineNumber = "126"
+            landmarkName = "getMessages()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

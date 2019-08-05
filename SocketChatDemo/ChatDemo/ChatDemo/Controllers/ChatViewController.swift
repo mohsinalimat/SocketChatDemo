@@ -317,7 +317,9 @@ extension ChatViewController : ReceiveMessage{
     }
     
     func receiveMsg(msg: ChatMessages) {
-        if (msg.sender == self.getReceiverID()){
+       
+        
+        if (msg.chat_id == chatObj?.chatid){
             self.chatMsgsArray.append(msg)
             self.tableView.reloadData()
             self.tableView.scrollToBottom(index: self.chatMsgsArray.count - 1)
