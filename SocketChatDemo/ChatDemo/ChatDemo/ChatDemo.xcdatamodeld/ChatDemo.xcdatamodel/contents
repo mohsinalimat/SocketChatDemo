@@ -19,9 +19,9 @@
         <attribute name="mediaurl" optional="YES" attributeType="String"/>
         <attribute name="message" optional="YES" attributeType="String"/>
         <attribute name="msgtype" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="receiver" optional="YES" attributeType="String"/>
         <attribute name="sender" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="senderName" optional="YES" attributeType="String"/>
         <attribute name="updated_at" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
     </entity>
     <entity name="LoginUser" representedClassName=".LoginUser" syncable="YES">

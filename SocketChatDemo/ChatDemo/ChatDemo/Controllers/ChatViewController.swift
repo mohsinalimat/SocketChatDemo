@@ -184,7 +184,7 @@ class ChatViewController: UIViewController, UINavigationControllerDelegate, UIIm
                       "mediaurl" : mediaURL,
                       "name": chatObj!.channelType! == "1" ? chatObj!.channelName! : UserDefaults.standard.userName!,
                       "photo":chatObj!.channelType! == "1" ? chatObj!.channelPic! : UserDefaults.standard.userPhoto!,
-                      "name":UserDefaults.standard.userName!] as [String : Any]
+                      "senderName":UserDefaults.standard.userName!] as [String : Any]
         
         appdelegate.objAPI.sendMessage(params) { (response, error) in
             if let error = error {
@@ -424,7 +424,7 @@ extension ChatViewController : UITableViewDataSource,UITableViewDelegate{
             if self.chatObj?.channelType == "0" {
                 receiverCell.lblName.text = ""
             }else{
-                receiverCell.lblName.text = chatObjMsg.name
+                receiverCell.lblName.text = chatObjMsg.senderName
             }
             switch chatObjMsg.msgtype {
             case 1:
@@ -521,7 +521,7 @@ extension ChatViewController : UITableViewDataSource,UITableViewDelegate{
             if self.chatObj?.channelType == "0" {
                 receiverCell.lblName.text = ""
             }else{
-                receiverCell.lblName.text = chatObjMsg.name
+                receiverCell.lblName.text = chatObjMsg.senderName
             }
             return receiverCell
         }
