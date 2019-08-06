@@ -33,6 +33,7 @@ class ChatReceiverCell: UITableViewCell {
     @IBOutlet weak var lblTime: UILabel!
     @IBOutlet weak var imgDownload: UIImageView!
     @IBOutlet weak var btnShowPreview: UIButton!
+    @IBOutlet weak var lblName: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -41,6 +42,8 @@ class ChatReceiverCell: UITableViewCell {
 }
 
 class ChatViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIDocumentPickerDelegate {
+    
+    
     
     @IBOutlet weak var constraintsBottom: NSLayoutConstraint!
     @IBOutlet weak var lblPlaceHolder: UILabel!
@@ -53,7 +56,7 @@ class ChatViewController: UIViewController, UINavigationControllerDelegate, UIIm
     var isPaginationEnable : Bool = false
     var pagelimit = 300
     var cacheImages = NSCache<NSString,UIImage>()
-    
+    var privateMsgSent = false
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setUpUI()
@@ -147,6 +150,9 @@ class ChatViewController: UIViewController, UINavigationControllerDelegate, UIIm
         _ = appdelegate.objAPI.updateUnReadMsgCount(self.chatObj!.chatid)
         for i in self.navigationController!.viewControllers{
             if i is ChatListViewController{
+                if privateMsgSent {
+                    appdelegate.persistentContainer.viewContext.delete(self.chatObj!)
+                }
                 self.navigationController?.popToViewController(i, animated: true)
                 break
             }
@@ -177,7 +183,8 @@ class ChatViewController: UIViewController, UINavigationControllerDelegate, UIIm
                       "msgtype" : msgType,
                       "mediaurl" : mediaURL,
                       "name": chatObj!.channelType! == "1" ? chatObj!.channelName! : UserDefaults.standard.userName!,
-                      "photo":chatObj!.channelType! == "1" ? chatObj!.channelPic! : UserDefaults.standard.userPhoto!] as [String : Any]
+                      "photo":chatObj!.channelType! == "1" ? chatObj!.channelPic! : UserDefaults.standard.userPhoto!,
+                      "senderName":UserDefaults.standard.userName!] as [String : Any]
         
         appdelegate.objAPI.sendMessage(params) { (response, error) in
             if let error = error {
@@ -191,6 +198,7 @@ class ChatViewController: UIViewController, UINavigationControllerDelegate, UIIm
                         
                         let updated = appdelegate.objAPI.checkChannelAvailable(self.chatObj!)
                         if updated {
+                            self.privateMsgSent = false
                             self.chatMsgsArray.append(objMsg)
                             self.tableView.reloadData()
                             
@@ -296,8 +304,6 @@ extension ChatViewController : ReceiveMessage{
     }
     
     func receiveMsg(msg: ChatMessages) {
-       
-        
         if (msg.chat_id == chatObj?.chatid){
             self.chatMsgsArray.append(msg)
             self.tableView.reloadData()
@@ -415,7 +421,11 @@ extension ChatViewController : UITableViewDataSource,UITableViewDelegate{
             
             receiverCell.btnShowPreview.tag = index
             let downloadURl = URL.init(string: chatObj.mediaurl?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")!
-            
+            if self.chatObj?.channelType == "0" {
+                receiverCell.lblName.text = ""
+            }else{
+                receiverCell.lblName.text = chatObj.name
+            }
             switch chatObj.msgtype {
             case 1:
                 receiverCell.imgDownload.sd_setImage(with: downloadURl, placeholderImage: UIImage(named: "placeholder"))
@@ -508,6 +518,11 @@ extension ChatViewController : UITableViewDataSource,UITableViewDelegate{
             let receiverCell = tableView.dequeueReusableCell(withIdentifier: "ChatReceiverCell") as! ChatReceiverCell
             receiverCell.lblChatReceiverMsg.text = chatObj.message
             receiverCell.lblTime.text = "\(chatObj.created_at)".timeStampToLocalDate().getLocalTime()
+            if self.chatObj?.channelType == "0" {
+                receiverCell.lblName.text = ""
+            }else{
+                receiverCell.lblName.text = chatObj.name
+            }
             return receiverCell
         }
     }

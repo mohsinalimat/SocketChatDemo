@@ -113,6 +113,7 @@ class CreateGroupViewController: UIViewController , UIImagePickerControllerDeleg
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destination = segue.destination as? ChatViewController{
             destination.chatObj = sender as? ChatList
+            destination.privateMsgSent = false
         }
     }
 }

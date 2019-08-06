@@ -33,7 +33,7 @@ public class ChatMessages: NSManagedObject, Codable {
         self.created_at = try (container.decodeIfPresent(Double.self, forKey: .created_at) ?? 0.0)
         self.mediaurl = try container.decodeIfPresent(String.self, forKey: .mediaurl)
         self.msgtype = try Int16(container.decodeIfPresent(Int.self, forKey: .msgtype) ?? 0)
-        
+        self.name = try container.decodeIfPresent(String.self, forKey: .name)
         
     }
 }

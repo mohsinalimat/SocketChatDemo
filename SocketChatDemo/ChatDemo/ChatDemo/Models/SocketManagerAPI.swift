@@ -297,7 +297,7 @@ class SocketManagerAPI: NSObject {
     
     func checkChannelAvailable(_ objChatList : ChatList, isUpdatedUnread: Bool = true) -> Bool {
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "ChatList")
-        fetchRequest.predicate = NSPredicate(format: "chatid = '\(objChatList.chatid)'")
+        fetchRequest.predicate = NSPredicate(format: "chatid = \(objChatList.chatid)")
         
         do {
             guard let result = try? appdelegate.persistentContainer.viewContext.fetch(fetchRequest)  as? [ChatList] else { return false }
@@ -312,9 +312,11 @@ class SocketManagerAPI: NSObject {
                 if isUpdatedUnread {
                     objResult.unreadcount += 1
                 }
+                appdelegate.saveContext()
+                return true
+            }else{
+                return false
             }
-            appdelegate.saveContext()
-            return true
         } catch {
             print("error executing fetch request: \(error.localizedDescription)")
             return false
@@ -354,6 +356,7 @@ class SocketManagerAPI: NSObject {
                 objResult.message = updatedData["message"] as? String
                 objResult.receiver = updatedData["receiver"] as? String
                 objResult.sender = updatedData["sender"] as! Int64
+                objResult.name = updatedData["name"] as? String
                 objResult.updated_at = updatedData["updated_at"] as? Double ?? 0.0
                 objResult.msgtype = Int16(updatedData["msgtype"] as? Int ?? 0)
                 objResult.mediaurl = updatedData["mediaurl"] as? String

@@ -18,7 +18,7 @@ class UserListViewController: UIViewController, UITableViewDelegate, UITableView
     var channelType : String?
     var selectedUserList = [LoginUser]()
     
-    
+    var privateChat = false
     
     
     override func viewDidLoad() {
@@ -79,6 +79,7 @@ class UserListViewController: UIViewController, UITableViewDelegate, UITableView
                     do {
                         let chatID = responseData["ChatId"] as! Int64
                         if let objUsr = appdelegate.objAPI.checkGetExist(chatID) {
+                            self.privateChat = false
                             self.performSegue(withIdentifier: "ChatConversation", sender: objUsr)
                         }else{
                             let managedObjectContext = appdelegate.persistentContainer.viewContext
@@ -95,7 +96,7 @@ class UserListViewController: UIViewController, UITableViewDelegate, UITableView
                             obj["channelPic"] = "\(self.userList![index].photo!)"
                             
                             let objUser = try decoder.decode(ChatList.self, from: obj.toData())
-                            
+                            self.privateChat = true
                             self.performSegue(withIdentifier: "ChatConversation", sender: objUser)
                         }
                         print("data saved")
@@ -110,6 +111,7 @@ class UserListViewController: UIViewController, UITableViewDelegate, UITableView
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destination = segue.destination as? ChatViewController{
             destination.chatObj = sender as? ChatList
+            destination.privateMsgSent = self.privateChat
         }else if let destination = segue.destination as? CreateGroupViewController {
             destination.selectedUserList = sender as? [LoginUser]
         }
