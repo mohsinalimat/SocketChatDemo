@@ -463,7 +463,7 @@
                                     <action selector="btnSignUpAction:" destination="Eht-a6-1Tj" eventType="touchUpInside" id="tnI-rH-axr"/>
                                 </connections>
                             </button>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="user" translatesAutoresizingMaskIntoConstraints="NO" id="Kvn-8F-6hH">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="user" translatesAutoresizingMaskIntoConstraints="NO" id="Kvn-8F-6hH">
                                 <rect key="frame" x="157" y="300" width="100" height="100"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="100" id="Fem-6w-DNo"/>
@@ -560,7 +560,7 @@
                                                         <constraint firstAttribute="height" constant="20" id="rbF-hF-4A5"/>
                                                     </constraints>
                                                 </imageView>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="gJt-u2-8Zr">
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="gJt-u2-8Zr">
                                                     <rect key="frame" x="10" y="10" width="60" height="82"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="60" id="2vt-Om-Yu0"/>
@@ -1081,7 +1081,7 @@
         <image name="user" width="128" height="128"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="S0h-IS-DHX"/>
-        <segue reference="49Q-QE-0J1"/>
+        <segue reference="7kH-0e-TQZ"/>
+        <segue reference="v3g-32-WCc"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -53,7 +53,7 @@ class LoginViewController: UIViewController {
                         let objUser = try decoder.decode(LoginUser.self, from: responseData.toData())
                         appdelegate.saveContext()
                         print("data saved")
-                        UserDefaults.standard.userID = Int(objUser.id)
+                        UserDefaults.standard.userID = objUser.id
                         UserDefaults.standard.userName = objUser.name
                         UserDefaults.standard.userPhoto = objUser.photo
                         self.performSegue(withIdentifier: "segueChatList", sender: self)

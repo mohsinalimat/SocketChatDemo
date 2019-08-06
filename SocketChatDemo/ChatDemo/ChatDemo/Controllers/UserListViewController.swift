@@ -39,7 +39,7 @@ class UserListViewController: UIViewController, UITableViewDelegate, UITableView
                             decoder.userInfo[context] = managedObjectContext
                         }
                         var objUser = try decoder.decode([LoginUser].self, from: objresponse.toData())
-                        if let index = objUser.firstIndex(where: {$0.id == UserDefaults.standard.userID!}){
+                        if let index = objUser.firstIndex(where: {$0.id == Int64(UserDefaults.standard.userID!)}){
                             objUser.remove(at: index)
                         }
                         self.userList = objUser
