@@ -18,16 +18,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "8BC02D10-5285-4408-9F56-B653F7662935"
+            uuid = "12400C5F-0780-47DA-9FFF-E0F893FAEA3A"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ChatDemo/Models/SocketManagerAPI.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "408"
-            endingLineNumber = "408"
-            landmarkName = "insertMessage(dict:)"
+            startingLineNumber = "129"
+            endingLineNumber = "129"
+            landmarkName = "getMessages()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

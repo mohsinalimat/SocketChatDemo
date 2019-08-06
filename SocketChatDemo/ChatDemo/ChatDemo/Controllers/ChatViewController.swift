@@ -184,7 +184,7 @@ class ChatViewController: UIViewController, UINavigationControllerDelegate, UIIm
                       "mediaurl" : mediaURL,
                       "name": chatObj!.channelType! == "1" ? chatObj!.channelName! : UserDefaults.standard.userName!,
                       "photo":chatObj!.channelType! == "1" ? chatObj!.channelPic! : UserDefaults.standard.userPhoto!,
-                      "senderName":UserDefaults.standard.userName!] as [String : Any]
+                      "name":UserDefaults.standard.userName!] as [String : Any]
         
         appdelegate.objAPI.sendMessage(params) { (response, error) in
             if let error = error {
@@ -355,16 +355,16 @@ extension ChatViewController : UITableViewDataSource,UITableViewDelegate{
         }
     }
     
-    func configureImageCell(_ chatObj:ChatMessages, index:Int) -> UITableViewCell {
-        if UserDefaults.standard.userID! == chatObj.sender{
+    func configureImageCell(_ chatObjMsg:ChatMessages, index:Int) -> UITableViewCell {
+        if UserDefaults.standard.userID! == chatObjMsg.sender{
             let senderCell = tableView.dequeueReusableCell(withIdentifier: "ChatSenderCellMedia") as! ChatSenderCell
             senderCell.btnShowPreview.tag = index
-            senderCell.lblTime.text = "\(chatObj.created_at)".timeStampToLocalDate().getLocalTime()
+            senderCell.lblTime.text = "\(chatObjMsg.created_at)".timeStampToLocalDate().getLocalTime()
             
             senderCell.btnShowPreview.setImage(nil, for: .normal)
-            let downloadURl = URL.init(string: chatObj.mediaurl?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")!
+            let downloadURl = URL.init(string: chatObjMsg.mediaurl?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")!
             
-            switch chatObj.msgtype {
+            switch chatObjMsg.msgtype {
             case 1:
                 senderCell.imgDownload.sd_setImage(with: downloadURl, placeholderImage: UIImage(named: "placeholder"))
                 senderCell.btnShowPreview.setImage(nil, for: .normal)
@@ -393,7 +393,7 @@ extension ChatViewController : UITableViewDataSource,UITableViewDelegate{
             }
             
             senderCell.btnShowPreview.addTarget(self, action: #selector(playVideo(_:)), for: .touchUpInside)
-            switch chatObj.is_read {
+            switch chatObjMsg.is_read {
             case "0":
                 senderCell.imgStatus.image = nil
                 break
@@ -417,16 +417,16 @@ extension ChatViewController : UITableViewDataSource,UITableViewDelegate{
         }else{
             
             let receiverCell = tableView.dequeueReusableCell(withIdentifier: "ChatReceiverCellMedia") as! ChatReceiverCell
-            receiverCell.lblTime.text = "\(chatObj.created_at)".timeStampToLocalDate().getLocalTime()
+            receiverCell.lblTime.text = "\(chatObjMsg.created_at)".timeStampToLocalDate().getLocalTime()
             
             receiverCell.btnShowPreview.tag = index
-            let downloadURl = URL.init(string: chatObj.mediaurl?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")!
+            let downloadURl = URL.init(string: chatObjMsg.mediaurl?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")!
             if self.chatObj?.channelType == "0" {
                 receiverCell.lblName.text = ""
             }else{
-                receiverCell.lblName.text = chatObj.name
+                receiverCell.lblName.text = chatObjMsg.name
             }
-            switch chatObj.msgtype {
+            switch chatObjMsg.msgtype {
             case 1:
                 receiverCell.imgDownload.sd_setImage(with: downloadURl, placeholderImage: UIImage(named: "placeholder"))
                 receiverCell.btnShowPreview.setImage(nil, for: .normal)
@@ -487,13 +487,13 @@ extension ChatViewController : UITableViewDataSource,UITableViewDelegate{
         }
     }
     
-    func configureTextCell(_ chatObj:ChatMessages,index:Int) -> UITableViewCell {
-        if UserDefaults.standard.userID! == chatObj.sender{
+    func configureTextCell(_ chatObjMsg:ChatMessages,index:Int) -> UITableViewCell {
+        if UserDefaults.standard.userID! == chatObjMsg.sender{
             let senderCell = tableView.dequeueReusableCell(withIdentifier: "ChatSenderCell") as! ChatSenderCell
-            senderCell.lblChatSenderMsg.text = chatObj.message
-            senderCell.lblTime.text = "\(chatObj.created_at)".timeStampToLocalDate().getLocalTime()
+            senderCell.lblChatSenderMsg.text = chatObjMsg.message
+            senderCell.lblTime.text = "\(chatObjMsg.created_at)".timeStampToLocalDate().getLocalTime()
             
-            switch chatObj.is_read {
+            switch chatObjMsg.is_read {
             case "0":
                 senderCell.imgStatus.image = nil
                 break
@@ -516,12 +516,12 @@ extension ChatViewController : UITableViewDataSource,UITableViewDelegate{
             return senderCell
         }else{
             let receiverCell = tableView.dequeueReusableCell(withIdentifier: "ChatReceiverCell") as! ChatReceiverCell
-            receiverCell.lblChatReceiverMsg.text = chatObj.message
-            receiverCell.lblTime.text = "\(chatObj.created_at)".timeStampToLocalDate().getLocalTime()
+            receiverCell.lblChatReceiverMsg.text = chatObjMsg.message
+            receiverCell.lblTime.text = "\(chatObjMsg.created_at)".timeStampToLocalDate().getLocalTime()
             if self.chatObj?.channelType == "0" {
                 receiverCell.lblName.text = ""
             }else{
-                receiverCell.lblName.text = chatObj.name
+                receiverCell.lblName.text = chatObjMsg.name
             }
             return receiverCell
         }
