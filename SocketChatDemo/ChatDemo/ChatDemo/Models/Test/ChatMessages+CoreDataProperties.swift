@@ -16,13 +16,13 @@ extension ChatMessages {
         return NSFetchRequest<ChatMessages>(entityName: "ChatMessages")
     }
     
-    @NSManaged public var chat_id: String?
+    @NSManaged public var chat_id: Int64
     @NSManaged public var created_at: Double
-    @NSManaged public var id: String?
+    @NSManaged public var id: Int64
     @NSManaged public var is_read: String?
     @NSManaged public var message: String?
     @NSManaged public var receiver: String?
-    @NSManaged public var sender: String?
+    @NSManaged public var sender: Int64
     @NSManaged public var updated_at: Double
     @NSManaged public var msgtype: Int16
     @NSManaged public var mediaurl : String?

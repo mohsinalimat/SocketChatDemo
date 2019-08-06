@@ -69,7 +69,7 @@ class UserListViewController: UIViewController, UITableViewDelegate, UITableView
     
     func getStartChatID(index : Int){
         
-        let params = ["UserIDs":"\(self.userList![index].id!),\(UserDefaults.standard.userID!)","channelType":"0"]
+        let params = ["UserIDs":"\(self.userList![index].id),\(UserDefaults.standard.userID!)","channelType":"0"]
         
         appdelegate.objAPI.getChatID(params) { (response, error) in
             if let error = error {
@@ -77,7 +77,8 @@ class UserListViewController: UIViewController, UITableViewDelegate, UITableView
             }else{
                 if let responseData = response {
                     do {
-                        if let objUsr = appdelegate.objAPI.checkGetExist(responseData["ChatId"] as! String) {
+                        let chatID = responseData["ChatId"] as! Int64
+                        if let objUsr = appdelegate.objAPI.checkGetExist(chatID) {
                             self.performSegue(withIdentifier: "ChatConversation", sender: objUsr)
                         }else{
                             let managedObjectContext = appdelegate.persistentContainer.viewContext
@@ -87,8 +88,8 @@ class UserListViewController: UIViewController, UITableViewDelegate, UITableView
                             }
                             
                             var obj = [String:Any]()
-                            obj["userIds"] = "\(self.userList![index].id!),\(UserDefaults.standard.userID!)"
-                            obj["chatid"] = responseData["ChatId"] as? String
+                            obj["userIds"] = "\(self.userList![index].id),\(UserDefaults.standard.userID!)"
+                            obj["chatid"] = chatID
                             obj["channelName"] = "\(self.userList![index].name!)"
                             obj["channelType"] = self.channelType
                             obj["channelPic"] = "\(self.userList![index].photo!)"

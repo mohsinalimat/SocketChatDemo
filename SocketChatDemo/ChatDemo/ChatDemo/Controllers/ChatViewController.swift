@@ -99,13 +99,13 @@ class ChatViewController: UIViewController, UINavigationControllerDelegate, UIIm
     func setUpUI(){
         self.tableView.tableFooterView = UIView.init()
         self.navigationItem.title = chatObj?.channelName
-        _ = appdelegate.objAPI.updateUnReadMsgCount(self.chatObj!.chatid!)
+        _ = appdelegate.objAPI.updateUnReadMsgCount(self.chatObj!.chatid)
         self.loadCurrentConversationMessages()
     }
     
     func loadCurrentConversationMessages() {
         let fetchRequest = NSFetchRequest<ChatMessages>(entityName: "ChatMessages")
-        fetchRequest.predicate = NSPredicate(format: "chat_id == '\(chatObj!.chatid!)'")
+        fetchRequest.predicate = NSPredicate(format: "chat_id == '\(chatObj!.chatid)'")
         fetchRequest.returnsObjectsAsFaults = false
         let sort = NSSortDescriptor(key: #keyPath(ChatMessages.created_at), ascending: true)
         fetchRequest.sortDescriptors = [sort]
@@ -121,7 +121,7 @@ class ChatViewController: UIViewController, UINavigationControllerDelegate, UIIm
             }
             for i in result {
                 if i.is_read != "3" && i.sender != UserDefaults.standard.userID! {
-                    let dict = ["is_read":"3","id":i.id!,"sender":i.sender!,"updated_at":Date().millisecondsSince1970] as [String:Any]
+                    let dict = ["is_read":"3","id":i.id,"sender":i.sender,"updated_at":Date().millisecondsSince1970] as [String:Any]
                     self.changeStatus(dict:dict)
                 }
             }
@@ -144,7 +144,7 @@ class ChatViewController: UIViewController, UINavigationControllerDelegate, UIIm
     }
     
     @IBAction func btnBackAction(_ sender: Any) {
-        _ = appdelegate.objAPI.updateUnReadMsgCount(self.chatObj!.chatid!)
+        _ = appdelegate.objAPI.updateUnReadMsgCount(self.chatObj!.chatid)
         for i in self.navigationController!.viewControllers{
             if i is ChatListViewController{
                 self.navigationController?.popToViewController(i, animated: true)
@@ -161,19 +161,19 @@ class ChatViewController: UIViewController, UINavigationControllerDelegate, UIIm
     func sendChatMsg(msg : String,msgType : Int, mediaURL : String = ""){
         
         var receiverArray = chatObj?.userIds?.components(separatedBy: ",")
-        if let currentIndex = receiverArray?.firstIndex(where: {$0.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) == UserDefaults.standard.userID!}){
+        if let currentIndex = receiverArray?.firstIndex(where: { Int64($0)! == UserDefaults.standard.userID!}){
             receiverArray?.remove(at: currentIndex)
         }
         
         let params = ["channelType" : chatObj!.channelType!,
                       "message": msg,
                       "is_read": "0",
-                      "chat_id": chatObj!.chatid!,
+                      "chat_id": chatObj!.chatid,
                       "sender": UserDefaults.standard.userID!,
                       "receiver" : receiverArray!.joined(separator: ","),
                       "created_at" : Date().millisecondsSince1970,
                       "updated_at" : Date().millisecondsSince1970,
-                      "id" : "\(Date().millisecondsSince1970)\(chatObj!.chatid!)",
+                      "id" : Date().millisecondsSince1970,
                       "msgtype" : msgType,
                       "mediaurl" : mediaURL,
                       "name": chatObj!.channelType! == "1" ? chatObj!.channelName! : UserDefaults.standard.userName!,
@@ -276,7 +276,7 @@ extension ChatViewController {
 extension ChatViewController : ReceiveMessage{
     
     func updateStatus(data: [String : Any]) {
-        if let index = self.chatMsgsArray.firstIndex(where: {$0.id == data["id"] as? String}){
+        if let index = self.chatMsgsArray.firstIndex(where: {$0.id == data["id"] as? Int64}){
             let obj = self.chatMsgsArray[index]
             if Int(obj.is_read!)! < Int(data["is_read"] as! String)!{
                 obj.is_read = data["is_read"] as? String
@@ -302,7 +302,7 @@ extension ChatViewController : ReceiveMessage{
             self.chatMsgsArray.append(msg)
             self.tableView.reloadData()
             self.tableView.scrollToBottom(index: self.chatMsgsArray.count - 1)
-            let dict = ["is_read":"3","id":msg.id!,"sender":msg.sender!,"updated_at":Date().millisecondsSince1970] as [String:Any]
+            let dict = ["is_read":"3","id":msg.id,"sender":msg.sender,"updated_at":Date().millisecondsSince1970] as [String:Any]
             DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
                 self.changeStatus(dict: dict)
             })
@@ -316,7 +316,7 @@ extension ChatViewController : ReceiveMessage{
     func getReceiverID() -> String {
         var receiverArray = chatObj?.userIds?.components(separatedBy: ",")
         
-        if let currentIndex = receiverArray?.firstIndex(where: {$0.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) == UserDefaults.standard.userID!}){
+        if let currentIndex = receiverArray?.firstIndex(where: { Int64($0)! == UserDefaults.standard.userID!}){
             receiverArray?.remove(at: currentIndex)
         }
         return receiverArray!.joined(separator: ",")
@@ -374,7 +374,7 @@ extension ChatViewController : UITableViewDataSource,UITableViewDelegate{
                         }
                     }
                 }else{
-                    senderCell.imgDownload.image = image as? UIImage
+                    senderCell.imgDownload.image = image
                 }
                 senderCell.btnShowPreview.setImage(#imageLiteral(resourceName: "play-button"), for: .normal)
             case 3:
@@ -432,7 +432,7 @@ extension ChatViewController : UITableViewDataSource,UITableViewDelegate{
                         }
                     }
                 }else{
-                    receiverCell.imgDownload.image = image as? UIImage
+                    receiverCell.imgDownload.image = image
                 }
                 receiverCell.btnShowPreview.setImage(#imageLiteral(resourceName: "play-button"), for: .normal)
             case 3:
@@ -521,10 +521,10 @@ extension ChatViewController : UITextViewDelegate {
     
     func textViewDidChange(_ textView: UITextView) {
         var receiverArray = chatObj?.userIds?.components(separatedBy: ",")
-        if let currentIndex = receiverArray?.firstIndex(where: {$0.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) == UserDefaults.standard.userID!}){
+        if let currentIndex = receiverArray?.firstIndex(where: {Int64($0)! == UserDefaults.standard.userID!}){
             receiverArray?.remove(at: currentIndex)
         }
-        let param = ["sender": UserDefaults.standard.userID!, "receiver": receiverArray!.joined(separator: ",")]
+        let param = ["sender": UserDefaults.standard.userID!, "receiver": receiverArray!.joined(separator: ",")] as [String : Any]
         if textView.text.trimmingCharacters(in: .whitespacesAndNewlines) != "" {
             lblPlaceHolder.isHidden = true
             appdelegate.objAPI.updateTyping(param)

@@ -126,7 +126,7 @@ class SocketManagerAPI: NSObject {
         socket.on("receiveMessage/\(UserDefaults.standard.userID!)") {data, ack in
             if let getData = data[0] as? [String:Any]{
                 if let msg =  self.insertMessage(dict: getData){
-                    let dict = ["is_read":"2","id":msg.id!,"sender":msg.sender!,"updated_at":Date().millisecondsSince1970] as [String:Any]
+                    let dict = ["is_read":"2","id":msg.id,"sender":msg.sender,"updated_at":Date().millisecondsSince1970] as [String:Any]
                     self.emitStatus(dict)
                     self.delegate?.receiveMsg(msg: msg)
                 }
@@ -136,7 +136,7 @@ class SocketManagerAPI: NSObject {
     }
     
     func getChatMessageHistory(_ completion : @escaping completionHandlerBool) -> Void {
-        let userID = UserDefaults.standard.userID ?? ""
+        let userID = UserDefaults.standard.userID!
         let params = ["id":userID,
                       "updated_at":getLastMessageUpdatedTime() ?? 0] as [String : Any]
         socket.emitWithAck("getMessageHistory", params).timingOut(after: 0) { data in
@@ -238,9 +238,9 @@ class SocketManagerAPI: NSObject {
         }
     }
     
-    func updateUnReadMsgCount(_ chatID : String , count : Int = 0) -> Bool{
+    func updateUnReadMsgCount(_ chatID : Int64, count : Int = 0) -> Bool{
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "ChatList")
-        fetchRequest.predicate = NSPredicate(format: "chatid = '\(chatID)'")
+        fetchRequest.predicate = NSPredicate(format: "chatid = \(chatID)")
         
         
         do {
@@ -274,7 +274,7 @@ class SocketManagerAPI: NSObject {
                 let updatedData = arrayData[0]
                 objResult.userIds = updatedData["userIds"] as? String
                 objResult.last_message = updatedData["last_message"] as? String
-                objResult.chatid = updatedData["chatid"] as? String
+                objResult.chatid = updatedData["chatid"] as! Int64
                 objResult.channelType = updatedData["channelType"] as? String
                 objResult.channelName = updatedData["channelName"] as? String
                 objResult.updated_at = updatedData["updated_at"] as? Double ?? 0.0
@@ -297,7 +297,7 @@ class SocketManagerAPI: NSObject {
     
     func checkChannelAvailable(_ objChatList : ChatList, isUpdatedUnread: Bool = true) -> Bool {
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "ChatList")
-        fetchRequest.predicate = NSPredicate(format: "chatid = '\(objChatList.chatid!)'")
+        fetchRequest.predicate = NSPredicate(format: "chatid = '\(objChatList.chatid)'")
         
         do {
             guard let result = try? appdelegate.persistentContainer.viewContext.fetch(fetchRequest)  as? [ChatList] else { return false }
@@ -321,9 +321,9 @@ class SocketManagerAPI: NSObject {
         }
     }
     
-    func checkGetExist(_ objChatID : String) -> ChatList? {
+    func checkGetExist(_ objChatID : Int64) -> ChatList? {
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "ChatList")
-        fetchRequest.predicate = NSPredicate(format: "chatid = '\(objChatID)'")
+        fetchRequest.predicate = NSPredicate(format: "chatid = \(objChatID)")
         
         do {
             guard let result = try? appdelegate.persistentContainer.viewContext.fetch(fetchRequest)  as? [ChatList] else { return nil }
@@ -348,12 +348,12 @@ class SocketManagerAPI: NSObject {
                 
                 let objResult = result[0]
                 let updatedData = arrayData
-                objResult.chat_id = updatedData["chat_id"] as? String
-                objResult.id = updatedData["id"] as? String
+                objResult.chat_id = updatedData["chat_id"] as! Int64
+                objResult.id = updatedData["id"] as! Int64
                 objResult.is_read = updatedData["is_read"] as? String
                 objResult.message = updatedData["message"] as? String
                 objResult.receiver = updatedData["receiver"] as? String
-                objResult.sender = updatedData["sender"] as? String
+                objResult.sender = updatedData["sender"] as! Int64
                 objResult.updated_at = updatedData["updated_at"] as? Double ?? 0.0
                 objResult.msgtype = Int16(updatedData["msgtype"] as? Int ?? 0)
                 objResult.mediaurl = updatedData["mediaurl"] as? String
@@ -363,8 +363,8 @@ class SocketManagerAPI: NSObject {
                 if let msg =  self.insertMessage(dict: arrayData) {
                     if msg.sender != UserDefaults.standard.userID! && Int(msg.is_read!)! <= 2 {
                         
-                        if updateUnReadMsgCount(msg.chat_id!, count: 1) {
-                            let dict = ["is_read":"2","id":msg.id!,"sender":msg.sender!,"updated_at":Date().millisecondsSince1970] as [String:Any]
+                        if updateUnReadMsgCount(msg.chat_id, count: 1) {
+                            let dict = ["is_read":"2","id":msg.id,"sender":msg.sender,"updated_at":Date().millisecondsSince1970] as [String:Any]
                             self.emitStatus(dict)
                         }
                     }
@@ -445,7 +445,7 @@ class SocketManagerAPI: NSObject {
     func getChatID(_ params : [String:Any], ackCallBack:@escaping completionHandler) -> Void {
         socket.emitWithAck("GetChatId", params).timingOut(after: 0) { data in
             print("got message")
-            guard let data1 = data[0] as? [String:String] else { ackCallBack(nil,"data Not availabel"); return }
+            guard let data1 = data[0] as? [String:Any] else { ackCallBack(nil,"data Not availabel"); return }
             ackCallBack(data1,nil)
         }
     }

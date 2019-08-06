@@ -248,9 +248,9 @@ extension String {
 
 
 extension UserDefaults {
-    var userID : String? {
+    var userID : Int? {
         get{
-            return self.value(forKey: "userID") as? String ?? nil
+            return self.value(forKey: "userID") as? Int ?? nil
         }
         set {
             self.set(newValue, forKey: "userID")

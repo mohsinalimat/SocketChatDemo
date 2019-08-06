@@ -23,11 +23,11 @@ public class ChatMessages: NSManagedObject, Codable {
         
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        self.chat_id = try container.decodeIfPresent(String.self, forKey: .chat_id)
+        self.chat_id = try (container.decodeIfPresent(Int64.self, forKey: .chat_id) ?? 0)
         self.is_read = try container.decodeIfPresent(String.self, forKey: .is_read)
         self.message = try container.decodeIfPresent(String.self, forKey: .message)
-        self.id = try container.decodeIfPresent(String.self, forKey: .id)
-        self.sender = try container.decodeIfPresent(String.self, forKey: .sender)
+        self.id = try (container.decodeIfPresent(Int64.self, forKey: .id) ?? 0)
+        self.sender = try (container.decodeIfPresent(Int64.self, forKey: .sender) ?? 0)
         self.updated_at = try (container.decodeIfPresent(Double.self, forKey: .updated_at) ?? 0.0)
         self.receiver = try container.decodeIfPresent(String.self, forKey: .receiver)
         self.created_at = try (container.decodeIfPresent(Double.self, forKey: .created_at) ?? 0.0)

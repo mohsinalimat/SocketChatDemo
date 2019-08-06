@@ -28,13 +28,13 @@ class CreateGroupViewController: UIViewController , UIImagePickerControllerDeleg
         }else if imagePath == ""{
             print("Please select group Pic")
         }else{
-            guard let tempIdArray = self.selectedUserList?.map({$0.id!}) else{
+            guard let tempIdArray = self.selectedUserList?.map({"\($0.id)"}) else{
                 return
             }
             callUploadMediaAPI(path: imagePath, completion: { (jsonData , error) in
                 if let mediaUrl = jsonData!["filename"] as? String{
                     let userIds = tempIdArray.joined(separator: ",")
-                    let ids = userIds + "," + UserDefaults.standard.userID!
+                    let ids = userIds + "," + "\(UserDefaults.standard.userID!)"
                     self.createGroup(ids: ids, mediaUrl: mediaUrl)
                 }
             })

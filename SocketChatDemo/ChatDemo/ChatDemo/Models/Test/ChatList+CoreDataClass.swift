@@ -27,7 +27,7 @@ public class ChatList: NSManagedObject,Codable {
         self.userIds = try container.decodeIfPresent(String.self, forKey: .userIds)
         self.last_message = try container.decodeIfPresent(String.self, forKey: .last_message)
         self.created_at = try (container.decodeIfPresent(Double.self, forKey: .created_at) ?? 0.0)
-        self.chatid = try container.decodeIfPresent(String.self, forKey: .chatid)
+        self.chatid = try (container.decodeIfPresent(Int64.self, forKey: .chatid) ?? 0)
         self.updated_at = try (container.decodeIfPresent(Double.self, forKey: .updated_at) ?? 0.0)
         self.channelType = try container.decodeIfPresent(String.self, forKey: .channelType)
         self.channelName = try container.decodeIfPresent(String.self, forKey: .channelName)

@@ -64,7 +64,7 @@ class ChatListViewController: UIViewController, UITableViewDelegate, UITableView
             self.clearAllCoreData()
             appdelegate.objAPI.socket.removeAllHandlers()
             UserDefaults.standard.userID = nil
-            self.navigationController?.popViewController(animated: true)
+            self.navigationController?.popToRootViewController(animated: true)
         }
     }
     

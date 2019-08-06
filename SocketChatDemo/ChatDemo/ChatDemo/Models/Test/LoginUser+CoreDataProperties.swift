@@ -17,7 +17,7 @@ extension LoginUser {
     }
     
     @NSManaged public var email: String?
-    @NSManaged public var id: String?
+    @NSManaged public var id: Int64
     @NSManaged public var name: String?
     @NSManaged public var photo: String?
     

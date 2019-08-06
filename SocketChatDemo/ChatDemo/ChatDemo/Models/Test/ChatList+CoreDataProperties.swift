@@ -18,7 +18,7 @@ extension ChatList {
     
     @NSManaged public var channelName: String?
     @NSManaged public var channelType: String?
-    @NSManaged public var chatid: String?
+    @NSManaged public var chatid: Int64
     @NSManaged public var created_at: Double
     @NSManaged public var last_message: String?
     @NSManaged public var updated_at: Double
