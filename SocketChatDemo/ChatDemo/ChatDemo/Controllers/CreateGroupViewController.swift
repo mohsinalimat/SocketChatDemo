@@ -89,6 +89,7 @@ class CreateGroupViewController: UIViewController , UIImagePickerControllerDeleg
     func createGroup(ids : String, mediaUrl:String){
         let channelData = ["userids":ids,
                            "channelName":txtGroupName.text ?? "",
+                           "createdBy":UserDefaults.standard.userID!,
                            "channelType":self.channelType!,
                            "channelPic":mediaUrl,
                            "created_at":Date().millisecondsSince1970] as [String : Any]
