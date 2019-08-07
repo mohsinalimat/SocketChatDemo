@@ -35,6 +35,7 @@ class ChatReceiverCell: UITableViewCell {
     @IBOutlet weak var btnShowPreview: UIButton!
     @IBOutlet weak var lblName: UILabel!
     
+    @IBOutlet weak var heightLabelNameConstraints: NSLayoutConstraint!
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = .none
@@ -423,8 +424,10 @@ extension ChatViewController : UITableViewDataSource,UITableViewDelegate{
             let downloadURl = URL.init(string: chatObjMsg.mediaurl?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")!
             if self.chatObj?.channelType == channelTypeCase.privateChat.rawValue {
                 receiverCell.lblName.text = ""
+                receiverCell.heightLabelNameConstraints.constant = 0
             }else{
                 receiverCell.lblName.text = chatObjMsg.senderName
+                receiverCell.heightLabelNameConstraints.constant = 30
             }
             switch chatObjMsg.msgtype {
             case 1:
@@ -520,8 +523,10 @@ extension ChatViewController : UITableViewDataSource,UITableViewDelegate{
             receiverCell.lblTime.text = "\(chatObjMsg.created_at)".timeStampToLocalDate().getLocalTime()
             if self.chatObj?.channelType == channelTypeCase.privateChat.rawValue {
                 receiverCell.lblName.text = ""
+                receiverCell.heightLabelNameConstraints.constant = 0
             }else{
                 receiverCell.lblName.text = chatObjMsg.senderName
+                receiverCell.heightLabelNameConstraints.constant = 30
             }
             return receiverCell
         }
