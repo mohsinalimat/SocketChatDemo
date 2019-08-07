@@ -48,15 +48,16 @@ class ChatListViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     @IBAction func btnOneToOneChatAction(_ sender: UIBarButtonItem) {
-        self.performSegue(withIdentifier: "segueUserList", sender: "0")
+        self.performSegue(withIdentifier: "segueUserList", sender: channelTypeCase.privateChat.rawValue)
     }
     
     
     @IBAction func btnGroupAction(_ sender: UIButton) {
-        self.performSegue(withIdentifier: "segueUserList", sender: "1")
+        self.performSegue(withIdentifier: "segueUserList", sender: channelTypeCase.group.rawValue)
     }
     
     @IBAction func btnBroadcastAction(_ sender: UIButton) {
+        self.performSegue(withIdentifier: "broadcastSegue", sender: channelTypeCase.broadcast.rawValue)
     }
     
     @IBAction func btnLogoutAction(_ sender: UIBarButtonItem) {
@@ -78,7 +79,9 @@ class ChatListViewController: UIViewController, UITableViewDelegate, UITableView
     func checkDataAvailable(){
         do{
             let context = appdelegate.persistentContainer.viewContext
+            
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ChatList")
+            fetchRequest.predicate = NSPredicate(format: "channelType != '\(channelTypeCase.broadcast.rawValue)'")
             if let dataArray = try context.fetch(fetchRequest) as? [ChatList]{
                 if dataArray.count == 0{
                     
@@ -122,7 +125,10 @@ class ChatListViewController: UIViewController, UITableViewDelegate, UITableView
             destination.chatObj = sender as? ChatList
         }else if let destination = segue.destination as? UserListViewController {
             destination.channelType = sender as? String
+        }else if let destination = segue.destination as? BroadcastListVC{
+            destination.channelType = sender as? String
         }
+        
     }
 }
 extension ChatListViewController : ReceiveChannel{

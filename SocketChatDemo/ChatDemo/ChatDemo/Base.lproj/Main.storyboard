@@ -251,6 +251,7 @@
                         <outlet property="chatListTable" destination="1me-L1-OTA" id="qQ6-72-ozs"/>
                         <segue destination="CyO-hw-kUg" kind="show" identifier="ChatConversation" id="S0h-IS-DHX"/>
                         <segue destination="Ahz-mS-oVt" kind="show" identifier="segueUserList" id="zAn-ES-hbO"/>
+                        <segue destination="VFY-hs-agS" kind="show" identifier="broadcastSegue" id="mrx-OQ-Y6A"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aG0-3P-qQu" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -628,7 +629,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hPo-Qd-ZLF" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="229" y="773"/>
+            <point key="canvasLocation" x="258" y="773"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="T7T-3b-ppF">
@@ -1090,6 +1091,91 @@
             </objects>
             <point key="canvasLocation" x="3436" y="773"/>
         </scene>
+        <!--Broadcast List-->
+        <scene sceneID="mUN-Ui-0bx">
+            <objects>
+                <viewController storyboardIdentifier="BroadcastListVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="VFY-hs-agS" customClass="BroadcastListVC" customModule="ChatDemo" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Wny-S6-dZ1">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="fav-rq-S92">
+                                <rect key="frame" x="0.0" y="88" width="414" height="774"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <inset key="separatorInset" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="BroadcastListCell" rowHeight="69" id="1k0-sw-5oh" customClass="BroadcastListCell" customModule="ChatDemo" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="414" height="69"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="1k0-sw-5oh" id="ktM-my-Edh">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="69"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BroadCast Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lX9-Sa-GHe">
+                                                    <rect key="frame" x="20" y="10" width="374" height="34.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="BroadCast Participants Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iHm-ac-wKx">
+                                                    <rect key="frame" x="20" y="44.5" width="374" height="14.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="lX9-Sa-GHe" firstAttribute="leading" secondItem="ktM-my-Edh" secondAttribute="leading" constant="20" id="Ijo-hz-ymF"/>
+                                                <constraint firstItem="lX9-Sa-GHe" firstAttribute="top" secondItem="ktM-my-Edh" secondAttribute="top" constant="10" id="InP-Ub-zgy"/>
+                                                <constraint firstItem="iHm-ac-wKx" firstAttribute="leading" secondItem="ktM-my-Edh" secondAttribute="leading" constant="20" id="OQo-Py-IGW"/>
+                                                <constraint firstAttribute="trailing" secondItem="iHm-ac-wKx" secondAttribute="trailing" constant="20" id="XKp-5M-nGg"/>
+                                                <constraint firstAttribute="trailing" secondItem="lX9-Sa-GHe" secondAttribute="trailing" constant="20" id="aXw-ke-1GB"/>
+                                                <constraint firstAttribute="bottom" secondItem="iHm-ac-wKx" secondAttribute="bottom" constant="10" id="o44-UQ-FTH"/>
+                                                <constraint firstItem="iHm-ac-wKx" firstAttribute="top" secondItem="lX9-Sa-GHe" secondAttribute="bottom" id="phk-OW-eZf"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="lblBroadcastName" destination="lX9-Sa-GHe" id="Ajs-Tr-x7p"/>
+                                            <outlet property="lblBroadcastRecepient" destination="iHm-ac-wKx" id="FXP-Ff-R9G"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="VFY-hs-agS" id="hoh-GP-bLk"/>
+                                    <outlet property="delegate" destination="VFY-hs-agS" id="s2C-57-I0q"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="whp-4d-x1J" firstAttribute="bottom" secondItem="fav-rq-S92" secondAttribute="bottom" id="456-8C-0RE"/>
+                            <constraint firstItem="whp-4d-x1J" firstAttribute="trailing" secondItem="fav-rq-S92" secondAttribute="trailing" id="KAS-5c-dRO"/>
+                            <constraint firstItem="fav-rq-S92" firstAttribute="leading" secondItem="Wny-S6-dZ1" secondAttribute="leading" id="OoI-bm-j8Q"/>
+                            <constraint firstItem="fav-rq-S92" firstAttribute="top" secondItem="whp-4d-x1J" secondAttribute="top" id="V8B-75-FfR"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="whp-4d-x1J"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Broadcast List" id="Iqg-th-QYl">
+                        <barButtonItem key="leftBarButtonItem" image="left-arrow" id="9D0-tU-pVv">
+                            <connections>
+                                <action selector="btnBackAction:" destination="VFY-hs-agS" id="I9d-KV-dAx"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="bpf-e0-SCF">
+                            <connections>
+                                <action selector="btnUserListAction:" destination="VFY-hs-agS" id="qvz-QN-iGX"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="broadcastTableView" destination="fav-rq-S92" id="LkK-3G-mnu"/>
+                        <segue destination="Ahz-mS-oVt" kind="show" identifier="BroadcastListSegue" id="eac-bk-5eM"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fYY-eP-rSv" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1961" y="23"/>
+        </scene>
     </scenes>
     <resources>
         <image name="attachment" width="16" height="16"/>
@@ -1101,7 +1187,8 @@
         <image name="user" width="128" height="128"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="7kH-0e-TQZ"/>
+        <segue reference="S0h-IS-DHX"/>
+        <segue reference="zAn-ES-hbO"/>
         <segue reference="v3g-32-WCc"/>
     </inferredMetricsTieBreakers>
 </document>

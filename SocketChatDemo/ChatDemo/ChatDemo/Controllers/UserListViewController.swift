@@ -23,6 +23,7 @@ class UserListViewController: UIViewController, UITableViewDelegate, UITableView
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.chatListTable.tableFooterView = UIView.init()
         getUserList()
     }
     
@@ -69,7 +70,7 @@ class UserListViewController: UIViewController, UITableViewDelegate, UITableView
     
     func getStartChatID(index : Int){
         
-        let params = ["UserIDs":"\(self.userList![index].id),\(UserDefaults.standard.userID!)","channelType":"0"]
+        let params = ["UserIDs":"\(self.userList![index].id),\(UserDefaults.standard.userID!)","channelType":channelType]
         
         appdelegate.objAPI.getChatID(params) { (response, error) in
             if let error = error {
@@ -114,6 +115,7 @@ class UserListViewController: UIViewController, UITableViewDelegate, UITableView
             destination.privateMsgSent = self.privateChat
         }else if let destination = segue.destination as? CreateGroupViewController {
             destination.selectedUserList = sender as? [LoginUser]
+            destination.channelType = self.channelType
         }
     }
     
@@ -136,7 +138,7 @@ class UserListViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if channelType == "1" {
+        if channelType != channelTypeCase.privateChat.rawValue {
             if selectedUserList.contains(self.userList![indexPath.row]) {
                 if let index = self.selectedUserList.firstIndex(where: {$0 == self.userList![indexPath.row]}) {
                     selectedUserList.remove(at: index)

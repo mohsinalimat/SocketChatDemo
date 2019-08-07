@@ -182,8 +182,8 @@ class ChatViewController: UIViewController, UINavigationControllerDelegate, UIIm
                       "id" : Date().millisecondsSince1970,
                       "msgtype" : msgType,
                       "mediaurl" : mediaURL,
-                      "name": chatObj!.channelType! == "1" ? chatObj!.channelName! : UserDefaults.standard.userName!,
-                      "photo":chatObj!.channelType! == "1" ? chatObj!.channelPic! : UserDefaults.standard.userPhoto!,
+                      "name": chatObj!.channelType! == channelTypeCase.privateChat.rawValue ? chatObj!.channelName! : UserDefaults.standard.userName!,
+                      "photo":chatObj!.channelType! == channelTypeCase.privateChat.rawValue ? chatObj!.channelPic! : UserDefaults.standard.userPhoto!,
                       "senderName":UserDefaults.standard.userName!] as [String : Any]
         
         appdelegate.objAPI.sendMessage(params) { (response, error) in
@@ -421,7 +421,7 @@ extension ChatViewController : UITableViewDataSource,UITableViewDelegate{
             
             receiverCell.btnShowPreview.tag = index
             let downloadURl = URL.init(string: chatObjMsg.mediaurl?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")!
-            if self.chatObj?.channelType == "0" {
+            if self.chatObj?.channelType == channelTypeCase.privateChat.rawValue {
                 receiverCell.lblName.text = ""
             }else{
                 receiverCell.lblName.text = chatObjMsg.senderName
@@ -518,7 +518,7 @@ extension ChatViewController : UITableViewDataSource,UITableViewDelegate{
             let receiverCell = tableView.dequeueReusableCell(withIdentifier: "ChatReceiverCell") as! ChatReceiverCell
             receiverCell.lblChatReceiverMsg.text = chatObjMsg.message
             receiverCell.lblTime.text = "\(chatObjMsg.created_at)".timeStampToLocalDate().getLocalTime()
-            if self.chatObj?.channelType == "0" {
+            if self.chatObj?.channelType == channelTypeCase.privateChat.rawValue {
                 receiverCell.lblName.text = ""
             }else{
                 receiverCell.lblName.text = chatObjMsg.senderName

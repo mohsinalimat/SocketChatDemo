@@ -17,9 +17,14 @@ class CreateGroupViewController: UIViewController , UIImagePickerControllerDeleg
     @IBOutlet weak var tableParticipants: UITableView!
     var selectedUserList : [LoginUser]?
     var imagePath : String = ""
+    var channelType : String?
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         lblNumbersOfParticipants.text = "     PARTICIPANTS: \(selectedUserList?.count ?? 0) OF 10"
+        self.navigationItem.title = self.channelType == channelTypeCase.group.rawValue ? "Create Group" : "Create Broadcast"
+        self.txtGroupName.placeholder = self.channelType == channelTypeCase.group.rawValue ? "Enter Group Name" : "Enter Broadcast Name"
     }
     
     @IBAction func btnDoneAction(_ sender: UIBarButtonItem) {
@@ -84,7 +89,7 @@ class CreateGroupViewController: UIViewController , UIImagePickerControllerDeleg
     func createGroup(ids : String, mediaUrl:String){
         let channelData = ["userids":ids,
                            "channelName":txtGroupName.text ?? "",
-                           "channelType":"1",
+                           "channelType":self.channelType!,
                            "channelPic":mediaUrl,
                            "created_at":Date().millisecondsSince1970] as [String : Any]
         appdelegate.objAPI.createGroup(channelData) { (response, error) in

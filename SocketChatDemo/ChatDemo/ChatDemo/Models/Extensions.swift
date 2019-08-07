@@ -356,3 +356,8 @@ func openImageViewPicker(isOpenGallery : UIImagePickerController.SourceType , vi
         viewController.present(imagePicker, animated: true, completion: nil)
     }
 }
+enum channelTypeCase : String{
+        case privateChat = "1"
+        case group = "2"
+        case broadcast = "3"
+}

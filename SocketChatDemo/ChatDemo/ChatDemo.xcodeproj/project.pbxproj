@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		042153B222E9D6080058A205 /* URLManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042153AF22E9D6080058A205 /* URLManager.swift */; };
 		042153B322E9D6080058A205 /* MTPLAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042153B022E9D6080058A205 /* MTPLAPIManager.swift */; };
+		04D3DC6D22FACF4600066745 /* BroadcastListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D3DC6C22FACF4600066745 /* BroadcastListVC.swift */; };
 		04E9670922DDDC48002E33CD /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E9670822DDDC48002E33CD /* SignUpViewController.swift */; };
 		04FC9DB922F44411006003B5 /* ImgDocumentOpenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FC9DB822F44411006003B5 /* ImgDocumentOpenViewController.swift */; };
 		04FD749822DF241700C0EE9B /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FD749722DF241700C0EE9B /* ChatViewController.swift */; };
@@ -37,6 +38,7 @@
 		042153AF22E9D6080058A205 /* URLManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLManager.swift; sourceTree = "<group>"; };
 		042153B022E9D6080058A205 /* MTPLAPIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MTPLAPIManager.swift; sourceTree = "<group>"; };
 		043A94CF22EB079B00CC2971 /* ChatDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ChatDemo.entitlements; sourceTree = "<group>"; };
+		04D3DC6C22FACF4600066745 /* BroadcastListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BroadcastListVC.swift; sourceTree = "<group>"; };
 		04E9670822DDDC48002E33CD /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		04FC9DB822F44411006003B5 /* ImgDocumentOpenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImgDocumentOpenViewController.swift; sourceTree = "<group>"; };
 		04FD749722DF241700C0EE9B /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
@@ -159,6 +161,7 @@
 				04FD749722DF241700C0EE9B /* ChatViewController.swift */,
 				04FC9DB822F44411006003B5 /* ImgDocumentOpenViewController.swift */,
 				C9B5E5F922F70DA500CCD4E5 /* CreateGroupViewController.swift */,
+				04D3DC6C22FACF4600066745 /* BroadcastListVC.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -296,6 +299,7 @@
 				ED9EA0F922DDD309001BDA5E /* UserListViewController.swift in Sources */,
 				C978E05222DB5A9100AA978D /* ChatListViewController.swift in Sources */,
 				C94B241422DB1A3B00DB0D78 /* AppDelegate.swift in Sources */,
+				04D3DC6D22FACF4600066745 /* BroadcastListVC.swift in Sources */,
 				04E9670922DDDC48002E33CD /* SignUpViewController.swift in Sources */,
 				ED3A1E9E22E6D5EB000C31C7 /* LoginUser+CoreDataClass.swift in Sources */,
 				C94B241E22DB1A3B00DB0D78 /* ChatDemo.xcdatamodeld in Sources */,
