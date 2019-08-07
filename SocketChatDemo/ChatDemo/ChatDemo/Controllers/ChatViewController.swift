@@ -183,8 +183,8 @@ class ChatViewController: UIViewController, UINavigationControllerDelegate, UIIm
                       "id" : Date().millisecondsSince1970,
                       "msgtype" : msgType,
                       "mediaurl" : mediaURL,
-                      "name": chatObj!.channelType! == channelTypeCase.privateChat.rawValue ? chatObj!.channelName! : UserDefaults.standard.userName!,
-                      "photo":chatObj!.channelType! == channelTypeCase.privateChat.rawValue ? chatObj!.channelPic! : UserDefaults.standard.userPhoto!,
+                      "name": chatObj!.channelType! != channelTypeCase.privateChat.rawValue ? chatObj!.channelName! : UserDefaults.standard.userName!,
+                      "photo":chatObj!.channelType! != channelTypeCase.privateChat.rawValue ? chatObj!.channelPic! : UserDefaults.standard.userPhoto!,
                       "senderName":UserDefaults.standard.userName!] as [String : Any]
         
         appdelegate.objAPI.sendMessage(params) { (response, error) in

@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import CoreData
 
 class BroadcastListCell : UITableViewCell{
     
@@ -24,10 +24,12 @@ class BroadcastListVC: UIViewController {
     @IBOutlet weak var broadcastTableView: UITableView!
     
     var channelType : String?
+    var broadcastList : [ChatList]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.broadcastTableView.tableFooterView = UIView.init()
+        self.checkDataAvailable()
     }
     @IBAction func btnBackAction(_ sender: UIBarButtonItem) {
         self.navigationController?.popViewController(animated: true)
@@ -38,9 +40,31 @@ class BroadcastListVC: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destination = segue.destination as? UserListViewController{
             destination.channelType = channelType
-        }
+            
+        }else if let destinatation = segue.destination as? ChatViewController{
+            destinatation.chatObj = sender as? ChatList
+        }else{}
         
     }
+    func checkDataAvailable(){
+        do{
+            let context = appdelegate.persistentContainer.viewContext
+            
+            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ChatList")
+            fetchRequest.predicate = NSPredicate(format: "channelType == '\(channelTypeCase.broadcast.rawValue)'")
+            if let dataArray = try context.fetch(fetchRequest) as? [ChatList]{
+                if dataArray.count == 0{
+                    
+                }else{
+                    self.broadcastList = dataArray
+                    self.broadcastTableView.reloadData()
+                }
+            }
+        }catch let error{
+            print(error.localizedDescription)
+        }
+    }
+    
 }
 extension BroadcastListVC : UITableViewDelegate, UITableViewDataSource{
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -48,15 +72,20 @@ extension BroadcastListVC : UITableViewDelegate, UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return broadcastList?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "BroadcastListCell") as! BroadcastListCell
+        let dictobj = self.broadcastList?[indexPath.row]
+        
+        cell.lblBroadcastName.text = dictobj?.channelName
+        cell.lblBroadcastRecepient.text = dictobj?.last_message
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+        let obj = broadcastList?[indexPath.row]
+        performSegue(withIdentifier: "ChatConversation", sender: obj)
     }
 }

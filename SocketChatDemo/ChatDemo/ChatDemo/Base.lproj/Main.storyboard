@@ -1178,6 +1178,7 @@
                     <connections>
                         <outlet property="broadcastTableView" destination="fav-rq-S92" id="LkK-3G-mnu"/>
                         <segue destination="Ahz-mS-oVt" kind="show" identifier="BroadcastListSegue" id="eac-bk-5eM"/>
+                        <segue destination="CyO-hw-kUg" kind="show" identifier="ChatConversation" id="o7w-zJ-uL9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fYY-eP-rSv" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -1195,8 +1196,8 @@
         <image name="user" width="128" height="128"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="S0h-IS-DHX"/>
-        <segue reference="zAn-ES-hbO"/>
+        <segue reference="o7w-zJ-uL9"/>
+        <segue reference="eac-bk-5eM"/>
         <segue reference="v3g-32-WCc"/>
     </inferredMetricsTieBreakers>
 </document>
