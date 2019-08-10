@@ -37,7 +37,7 @@ class CreateGroupViewController: UIViewController , UIImagePickerControllerDeleg
                 return
             }
             callUploadMediaAPI(path: imagePath, completion: { (jsonData , error) in
-                if let mediaUrl = jsonData!["filename"] as? String{
+                if let mediaUrl = jsonData?["filename"] as? String{
                     let userIds = tempIdArray.joined(separator: ",")
                     let ids = userIds + "," + "\(UserDefaults.standard.userID!)"
                     self.createGroup(ids: ids, mediaUrl: mediaUrl)

@@ -126,7 +126,7 @@ class SocketManagerAPI: NSObject {
         socket.on("receiveMessage/\(UserDefaults.standard.userID!)") {data, ack in
             if let getData = data[0] as? [String:Any]{
                 if let msg =  self.insertMessage(dict: getData){
-                    let dict = ["is_read":"2","id":msg.id,"sender":msg.sender,"updated_at":Date().millisecondsSince1970] as [String:Any]
+                    let dict = ["is_read":"2","id":msg.id,"sender":msg.sender] as [String:Any]
                     self.emitStatus(dict)
                     self.delegate?.receiveMsg(msg: msg)
                 }
@@ -367,7 +367,7 @@ class SocketManagerAPI: NSObject {
                     if msg.sender != UserDefaults.standard.userID! && Int(msg.is_read!)! <= 2 {
                         
                         if updateUnReadMsgCount(msg.chat_id, count: 1) {
-                            let dict = ["is_read":"2","id":msg.id,"sender":msg.sender,"updated_at":Date().millisecondsSince1970] as [String:Any]
+                            let dict = ["is_read":"2","id":msg.id,"sender":msg.sender] as [String:Any]
                             self.emitStatus(dict)
                         }
                     }

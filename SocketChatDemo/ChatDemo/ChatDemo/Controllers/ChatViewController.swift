@@ -125,7 +125,7 @@ class ChatViewController: UIViewController, UINavigationControllerDelegate, UIIm
             }
             for i in result {
                 if i.is_read != "3" && i.sender != UserDefaults.standard.userID! {
-                    let dict = ["is_read":"3","id":i.id,"sender":i.sender,"updated_at":Date().millisecondsSince1970] as [String:Any]
+                    let dict = ["is_read":"3","id":i.id,"sender":i.sender] as [String:Any]
                     self.changeStatus(dict:dict)
                 }
             }
@@ -178,8 +178,6 @@ class ChatViewController: UIViewController, UINavigationControllerDelegate, UIIm
                       "chat_id": chatObj!.chatid,
                       "sender": UserDefaults.standard.userID!,
                       "receiver" : receiverArray!.joined(separator: ","),
-                      "created_at" : Date().millisecondsSince1970,
-                      "updated_at" : Date().millisecondsSince1970,
                       "id" : Date().millisecondsSince1970,
                       "msgtype" : msgType,
                       "mediaurl" : mediaURL,
@@ -309,7 +307,7 @@ extension ChatViewController : ReceiveMessage{
             self.chatMsgsArray.append(msg)
             self.tableView.reloadData()
             self.tableView.scrollToBottom(index: self.chatMsgsArray.count - 1)
-            let dict = ["is_read":"3","id":msg.id,"sender":msg.sender,"updated_at":Date().millisecondsSince1970] as [String:Any]
+            let dict = ["is_read":"3","id":msg.id,"sender":msg.sender] as [String:Any]
             DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
                 self.changeStatus(dict: dict)
             })
