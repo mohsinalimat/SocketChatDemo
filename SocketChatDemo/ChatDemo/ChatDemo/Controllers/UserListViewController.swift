@@ -7,50 +7,38 @@
 //
 
 import UIKit
+import CoreData
 
 class UserListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
-    
     @IBOutlet var chatListTable: UITableView!
-    
     
     var userList : [LoginUser]?
     var channelType : String?
     var selectedUserList = [LoginUser]()
-    
     var privateChat = false
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.chatListTable.tableFooterView = UIView.init()
-        getUserList()
+        getUserListFromLocal { (usersData) in
+            DispatchQueue.main.async {
+                self.userList = usersData
+                if let index = self.userList?.firstIndex(where: {$0.id == Int64(UserDefaults.standard.userID!)}){
+                    self.userList?.remove(at: index)
+                }
+                self.chatListTable.reloadData()
+            }
+        }
     }
     
-    func getUserList() -> Void {
-        appdelegate.objAPI.getUserList { (objResponse, error) in
-            if let error = error {
-                print(error)
-            }else{
-                if let objresponse = objResponse {
-                    do {
-                        let managedObjectContext = appdelegate.persistentContainer.viewContext
-                        let decoder = JSONDecoder()
-                        if let context = CodingUserInfoKey.managedObjectContext {
-                            decoder.userInfo[context] = managedObjectContext
-                        }
-                        var objUser = try decoder.decode([LoginUser].self, from: objresponse.toData())
-                        if let index = objUser.firstIndex(where: {$0.id == Int64(UserDefaults.standard.userID!)}){
-                            objUser.remove(at: index)
-                        }
-                        self.userList = objUser
-                        self.chatListTable.reloadData()
-                        print("data saved")
-                    } catch {
-                        print(error.localizedDescription)
-                    }
-                }
-            }
+    func getUserListFromLocal(completion: @escaping ([LoginUser]?)->Void) -> Void {
+        let fetchRequest = NSFetchRequest<LoginUser>(entityName: "LoginUser")
+        do {
+            let result = try appdelegate.persistentContainer.viewContext.fetch(fetchRequest)
+            completion(result)
+        }catch{
+            completion(nil)
         }
     }
     
@@ -70,7 +58,8 @@ class UserListViewController: UIViewController, UITableViewDelegate, UITableView
     
     func getStartChatID(index : Int){
         
-        let params = ["UserIDs":"\(self.userList![index].id),\(UserDefaults.standard.userID!)","channelType":channelType]
+        let params = ["UserIDs":"\(self.userList![index].id),\(UserDefaults.standard.userID!)",
+            "channelType":channelType ?? ""] as [String : Any]
         
         appdelegate.objAPI.getChatID(params) { (response, error) in
             if let error = error {

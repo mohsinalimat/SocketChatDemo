@@ -8,9 +8,11 @@
 
 import UIKit
 import CoreData
+import SDWebImage
 
 class BroadcastListCell : UITableViewCell{
     
+    @IBOutlet weak var imgBroadcastList: UIImageView!
     @IBOutlet weak var lblBroadcastName : UILabel!
     @IBOutlet weak var lblBroadcastRecepient : UILabel!
     
@@ -81,11 +83,16 @@ extension BroadcastListVC : UITableViewDelegate, UITableViewDataSource{
         
         cell.lblBroadcastName.text = dictobj?.channelName
         cell.lblBroadcastRecepient.text = dictobj?.last_message
+        cell.imgBroadcastList.sd_setImage(with: URL.init(string: dictobj?.channelPic ?? ""), placeholderImage: #imageLiteral(resourceName: "user"))
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let obj = broadcastList?[indexPath.row]
         performSegue(withIdentifier: "ChatConversation", sender: obj)
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 80
     }
 }

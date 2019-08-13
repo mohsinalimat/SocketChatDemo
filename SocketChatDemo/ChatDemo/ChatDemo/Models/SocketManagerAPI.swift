@@ -76,7 +76,6 @@ class SocketManagerAPI: NSObject {
         socket.emitWithAck("UserList").timingOut(after: 0) { (data) in
             print("got data \(data)")
             guard let data = data[0] as? [[String:Any]] else { ackCallBack(nil,"data Not availabel"); return }
-            //            guard let data1 = data.toJSON() as? [[String:Any]] else { ackCallBack(nil,"data Not availabel"); return }
             ackCallBack(data,nil)
         }
     }
@@ -126,9 +125,11 @@ class SocketManagerAPI: NSObject {
         socket.on("receiveMessage/\(UserDefaults.standard.userID!)") {data, ack in
             if let getData = data[0] as? [String:Any]{
                 if let msg =  self.insertMessage(dict: getData){
-                    let dict = ["is_read":"2","id":msg.id,"sender":msg.sender] as [String:Any]
-                    self.emitStatus(dict)
-                    self.delegate?.receiveMsg(msg: msg)
+                    if msg.sender != UserDefaults.standard.userID {
+                        let dict = ["is_read":"2","id":msg.id,"sender":msg.sender] as [String:Any]
+                        self.emitStatus(dict)
+                        self.delegate?.receiveMsg(msg: msg)
+                    }
                 }
             }
             ack.with("got it")
@@ -219,11 +220,18 @@ class SocketManagerAPI: NSObject {
             print(data)
             
             guard let customData = data as? [[String:Any]] else { return }
-            
-            let updated = self.checkChannelAvailable(customData)
-            if updated {
-                self.chnlDelegate?.receiveChnl()
+            if (customData[0]["isBroadcast"] as? String) != nil && (customData[0]["isBroadcast"] as? String) == "1" && (customData[0]["createdBy"] as? Int64) == UserDefaults.standard.userID!{
+                let updated = self.checkChannelAvailable(customData,isUpdatedUnread: false)
+                if updated {
+                    self.chnlDelegate?.receiveChnl()
+                }
+            }else{
+                let updated = self.checkChannelAvailable(customData)
+                if updated {
+                    self.chnlDelegate?.receiveChnl()
+                }
             }
+            
             ack.with("Got your currentAmount", "dude")
         }
     }
@@ -440,6 +448,17 @@ class SocketManagerAPI: NSObject {
         }
         print(socket.sid)
     }
+    
+    func sendBroadcastMessage(_ params : [[String:Any]], ackCallBack:@escaping completionHandlerArray) -> Void {
+        socket.emitWithAck("sendbroadcastMessage", params).timingOut(after: 0) { data in
+            print("got message")
+            guard let data = data[0] as? [[String:Any]] else { ackCallBack(nil,"data Not availabel"); return }
+            ackCallBack(data,nil)
+        }
+        print(socket.sid)
+    }
+    
+    
     func updateTyping(_ params : [String:Any]) -> Void {
         socket.emit("UserTyping", params)
     }

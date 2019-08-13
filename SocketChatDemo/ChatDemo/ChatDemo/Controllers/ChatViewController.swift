@@ -166,12 +166,59 @@ class ChatViewController: UIViewController, UINavigationControllerDelegate, UIIm
     
     //MARK:- API Call
     func sendChatMsg(msg : String,msgType : Int, mediaURL : String = ""){
-        
         var receiverArray = chatObj?.userIds?.components(separatedBy: ",")
         if let currentIndex = receiverArray?.firstIndex(where: { Int64($0)! == UserDefaults.standard.userID!}){
             receiverArray?.remove(at: currentIndex)
         }
         
+        if chatObj?.channelType == "3" {
+            sendPrivateAndGroupMsg(msg: msg, msgType: msgType, mediaURL: mediaURL)
+            var broadCastMsg = [[String : Any]]()
+            for receiverid in receiverArray ?? [] {
+                
+                let params = ["channelType" : "1",
+                              "message": msg,
+                              "is_read": "0",
+                              "chat_id": "",
+                              "sender": UserDefaults.standard.userID!,
+                              "receiver" : receiverid,
+                              "id" : "",
+                              "msgtype" : msgType,
+                              "mediaurl" : mediaURL,
+                              "name": UserDefaults.standard.userName!,
+                              "photo": UserDefaults.standard.userPhoto!,
+                              "senderName":UserDefaults.standard.userName!,
+                              "created_at":""] as [String : Any]
+                broadCastMsg.append(params)
+            }
+            if broadCastMsg.count > 0{
+                sendBroadcastMsg(params: broadCastMsg)
+            }
+        }else{
+            sendPrivateAndGroupMsg(msg: msg, msgType: msgType, mediaURL: mediaURL)
+        }
+    }
+    
+    func fetchUserData(userID:String) -> LoginUser?{
+        let fetchRequest = NSFetchRequest<LoginUser>(entityName: "LoginUser")
+        fetchRequest.predicate = NSPredicate(format: "id = \(userID)")
+        do {
+            let result = try appdelegate.persistentContainer.viewContext.fetch(fetchRequest)
+            if result.count == 1 {
+                return result [0]
+            }else{
+                return nil
+            }
+        }catch{
+            return nil
+        }
+    }
+    
+    func sendPrivateAndGroupMsg(msg : String,msgType : Int, mediaURL : String = "") -> Void {
+        var receiverArray = chatObj?.userIds?.components(separatedBy: ",")
+        if let currentIndex = receiverArray?.firstIndex(where: { Int64($0)! == UserDefaults.standard.userID!}){
+            receiverArray?.remove(at: currentIndex)
+        }
         let params = ["channelType" : chatObj!.channelType!,
                       "message": msg,
                       "is_read": "0",
@@ -183,7 +230,8 @@ class ChatViewController: UIViewController, UINavigationControllerDelegate, UIIm
                       "mediaurl" : mediaURL,
                       "name": chatObj!.channelType! != channelTypeCase.privateChat.rawValue ? chatObj!.channelName! : UserDefaults.standard.userName!,
                       "photo":chatObj!.channelType! != channelTypeCase.privateChat.rawValue ? chatObj!.channelPic! : UserDefaults.standard.userPhoto!,
-                      "senderName":UserDefaults.standard.userName!] as [String : Any]
+                      "senderName":UserDefaults.standard.userName!,
+                      "created_at":""] as [String : Any]
         
         appdelegate.objAPI.sendMessage(params) { (response, error) in
             if let error = error {
@@ -205,6 +253,41 @@ class ChatViewController: UIViewController, UINavigationControllerDelegate, UIIm
                             self.textViewSenderChat.text = ""
                         }
                     }
+                }
+            }
+        }
+    }
+    
+    func sendBroadcastMsg(params:[[String:Any]]) -> Void {
+        
+        appdelegate.objAPI.sendBroadcastMessage(params) { (response, error) in
+            if let error = error {
+                print(error)
+            }else{
+                if let responseData = response {
+                    print(responseData)
+                    for data in responseData{
+                        if let objMsg = appdelegate.objAPI.insertMessage(dict: data){
+                            guard let user = self.fetchUserData(userID: data["receiver"] as! String) else { return }
+                            let params = ["channelName":user.name!,
+                                          "channelPic":user.photo!,
+                                          "channelType":"1",
+                                          "chatid":objMsg.chat_id,
+                                          "created_at":objMsg.created_at,
+                                          "last_message":objMsg.message!,
+                                          "unreadcount":0,
+                                          "updated_at":objMsg.created_at,
+                                          "userIds": "\(objMsg.sender),\(objMsg.receiver!)"] as [String : Any]
+                            
+                            let channel = appdelegate.objAPI.checkChannelAvailable([params], isUpdatedUnread: false)
+
+
+                            if channel {
+                                print("inserted")
+                            }
+                        }
+                    }
+                    print("broadcast process done")
                 }
             }
         }
@@ -261,7 +344,7 @@ class ChatViewController: UIViewController, UINavigationControllerDelegate, UIIm
         picker.dismiss(animated: true, completion: nil)
     }
     
-
+    
     
 }
 
@@ -626,8 +709,8 @@ func callUploadMediaAPI(path : String, completion : @escaping completionHandler)
             guard let data = objData else { return }
             do{
                 if let jsonData = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String:Any]{
-//                    let fileManager = FileManager.default
-//                    fileManager.clearDocumentDirectory()
+                    //                    let fileManager = FileManager.default
+                    //                    fileManager.clearDocumentDirectory()
                     completion(jsonData,nil)
                 }else{
                     completion(nil,"wrongJson")

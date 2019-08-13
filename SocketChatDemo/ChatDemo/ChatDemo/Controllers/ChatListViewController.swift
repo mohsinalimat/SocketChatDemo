@@ -38,6 +38,36 @@ class ChatListViewController: UIViewController, UITableViewDelegate, UITableView
         super.viewDidLoad()
         
         chatListTable.tableFooterView = UIView.init()
+        DispatchQueue.main.async {
+            self.getUserList()
+        }
+    }
+    
+    func getUserList() -> Void {
+        do{
+            try clearDeepObjectEntity("LoginUser")
+            appdelegate.objAPI.getUserList { (objResponse, error) in
+                if let error = error {
+                    print(error)
+                }else{
+                    if let objresponse = objResponse {
+                        do {
+                            let managedObjectContext = appdelegate.persistentContainer.viewContext
+                            let decoder = JSONDecoder()
+                            if let context = CodingUserInfoKey.managedObjectContext {
+                                decoder.userInfo[context] = managedObjectContext
+                            }
+                            _ = try decoder.decode([LoginUser].self, from: objresponse.toData())
+                            appdelegate.saveContext() 
+                        } catch {
+                            print(error.localizedDescription)
+                        }
+                    }
+                }
+            }
+        }catch{
+                
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
