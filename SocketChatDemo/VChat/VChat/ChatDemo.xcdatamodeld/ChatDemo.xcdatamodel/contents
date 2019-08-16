@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14886.2" systemVersion="19A526h" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="ChatList" representedClassName=".ChatList" syncable="YES">
+        <attribute name="channelName" optional="YES" attributeType="String"/>
+        <attribute name="channelPic" optional="YES" attributeType="String"/>
+        <attribute name="channelType" optional="YES" attributeType="String"/>
+        <attribute name="chatid" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="created_at" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="last_message" optional="YES" attributeType="String"/>
+        <attribute name="unreadcount" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="updated_at" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="userIds" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="ChatMessages" representedClassName=".ChatMessages" syncable="YES">
+        <attribute name="chat_id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="created_at" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="is_read" optional="YES" attributeType="String"/>
+        <attribute name="mediaurl" optional="YES" attributeType="String"/>
+        <attribute name="message" optional="YES" attributeType="String"/>
+        <attribute name="msgtype" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="receiver" optional="YES" attributeType="String"/>
+        <attribute name="sender" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="senderName" optional="YES" attributeType="String"/>
+        <attribute name="updated_at" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+    </entity>
+    <entity name="LoginUser" representedClassName=".LoginUser" syncable="YES">
+        <attribute name="email" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="photo" optional="YES" attributeType="String"/>
+    </entity>
+    <elements>
+        <element name="ChatList" positionX="-63" positionY="-18" width="128" height="178"/>
+        <element name="ChatMessages" positionX="-54" positionY="-9" width="128" height="208"/>
+        <element name="LoginUser" positionX="-54" positionY="36" width="128" height="103"/>
+    </elements>
+</model>

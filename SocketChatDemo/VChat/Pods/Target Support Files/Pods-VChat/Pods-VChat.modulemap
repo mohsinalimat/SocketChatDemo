@@ -1,0 +1,6 @@
+framework module Pods_VChat {
+  umbrella header "Pods-VChat-umbrella.h"
+
+  export *
+  module * { export * }
+}

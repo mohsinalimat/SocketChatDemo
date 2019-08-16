@@ -3,26 +3,52 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		985C4BBB6C272F6E3E0E03BF /* Pods_VChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BAC7167BBAA5B612063DA7B /* Pods_VChat.framework */; };
 		C9347E2823070742008568AF /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9347E2723070742008568AF /* SignUpViewController.swift */; };
 		C9347E2B23070AE6008568AF /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9347E2923070AE6008568AF /* LoginViewController.swift */; };
 		C9347E2E2307219B008568AF /* DashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9347E2D2307219B008568AF /* DashboardViewController.swift */; };
 		C9347E302307227D008568AF /* DashboardSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9347E2F2307227D008568AF /* DashboardSplitViewController.swift */; };
 		C9347E3223072431008568AF /* ConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9347E3123072431008568AF /* ConversationViewController.swift */; };
+		C957B8F82307425B00F0A767 /* ChatList+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C957B8EB2307425B00F0A767 /* ChatList+CoreDataProperties.swift */; };
+		C957B8F92307425B00F0A767 /* ChatList+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C957B8EC2307425B00F0A767 /* ChatList+CoreDataClass.swift */; };
+		C957B8FA2307425B00F0A767 /* LoginUser+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C957B8ED2307425B00F0A767 /* LoginUser+CoreDataProperties.swift */; };
+		C957B8FB2307425B00F0A767 /* ChatMessages+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C957B8EE2307425B00F0A767 /* ChatMessages+CoreDataClass.swift */; };
+		C957B8FC2307425B00F0A767 /* LoginUser+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C957B8EF2307425B00F0A767 /* LoginUser+CoreDataClass.swift */; };
+		C957B8FD2307425B00F0A767 /* ChatMessages+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C957B8F02307425B00F0A767 /* ChatMessages+CoreDataProperties.swift */; };
+		C957B8FE2307425B00F0A767 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C957B8F12307425B00F0A767 /* Extensions.swift */; };
+		C957B9002307425B00F0A767 /* URLManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C957B8F52307425B00F0A767 /* URLManager.swift */; };
+		C957B9012307425B00F0A767 /* MTPLAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C957B8F62307425B00F0A767 /* MTPLAPIManager.swift */; };
+		C957B9022307425B00F0A767 /* SocketManagerAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C957B8F72307425B00F0A767 /* SocketManagerAPI.swift */; };
+		C957B9052307432A00F0A767 /* ChatDemo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C957B9032307432A00F0A767 /* ChatDemo.xcdatamodeld */; };
 		C9EE63EB230690C8002D569B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9EE63EA230690C8002D569B /* AppDelegate.swift */; };
 		C9EE63EF230690CB002D569B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C9EE63EE230690CB002D569B /* Assets.xcassets */; };
 		C9EE63F2230690CB002D569B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C9EE63F0230690CB002D569B /* Main.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		11D7351C230C172447877794 /* Pods-VChat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VChat.debug.xcconfig"; path = "Target Support Files/Pods-VChat/Pods-VChat.debug.xcconfig"; sourceTree = "<group>"; };
+		8BAC7167BBAA5B612063DA7B /* Pods_VChat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_VChat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B12C91BF98BD2A5C869EEC0C /* Pods-VChat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VChat.release.xcconfig"; path = "Target Support Files/Pods-VChat/Pods-VChat.release.xcconfig"; sourceTree = "<group>"; };
 		C9347E2723070742008568AF /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		C9347E2923070AE6008568AF /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		C9347E2D2307219B008568AF /* DashboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewController.swift; sourceTree = "<group>"; };
 		C9347E2F2307227D008568AF /* DashboardSplitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardSplitViewController.swift; sourceTree = "<group>"; };
 		C9347E3123072431008568AF /* ConversationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationViewController.swift; sourceTree = "<group>"; };
+		C957B8EB2307425B00F0A767 /* ChatList+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ChatList+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		C957B8EC2307425B00F0A767 /* ChatList+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ChatList+CoreDataClass.swift"; sourceTree = "<group>"; };
+		C957B8ED2307425B00F0A767 /* LoginUser+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LoginUser+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		C957B8EE2307425B00F0A767 /* ChatMessages+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ChatMessages+CoreDataClass.swift"; sourceTree = "<group>"; };
+		C957B8EF2307425B00F0A767 /* LoginUser+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LoginUser+CoreDataClass.swift"; sourceTree = "<group>"; };
+		C957B8F02307425B00F0A767 /* ChatMessages+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ChatMessages+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		C957B8F12307425B00F0A767 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		C957B8F52307425B00F0A767 /* URLManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLManager.swift; sourceTree = "<group>"; };
+		C957B8F62307425B00F0A767 /* MTPLAPIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MTPLAPIManager.swift; sourceTree = "<group>"; };
+		C957B8F72307425B00F0A767 /* SocketManagerAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketManagerAPI.swift; sourceTree = "<group>"; };
+		C957B9042307432A00F0A767 /* ChatDemo.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ChatDemo.xcdatamodel; sourceTree = "<group>"; };
 		C9EE63E7230690C8002D569B /* VChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9EE63EA230690C8002D569B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C9EE63EE230690CB002D569B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -36,12 +62,30 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				985C4BBB6C272F6E3E0E03BF /* Pods_VChat.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		06AD18D1E0D7C3CBF5962F67 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				11D7351C230C172447877794 /* Pods-VChat.debug.xcconfig */,
+				B12C91BF98BD2A5C869EEC0C /* Pods-VChat.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		C480928F5FEFC6F728FF9288 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				8BAC7167BBAA5B612063DA7B /* Pods_VChat.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		C9347E26230706BD008568AF /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -54,11 +98,46 @@
 			path = ViewControllers;
 			sourceTree = "<group>";
 		};
+		C957B8E92307425B00F0A767 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				C957B8EA2307425B00F0A767 /* Test */,
+				C957B8F12307425B00F0A767 /* Extensions.swift */,
+				C957B8F22307425B00F0A767 /* APIManager */,
+				C957B8F72307425B00F0A767 /* SocketManagerAPI.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		C957B8EA2307425B00F0A767 /* Test */ = {
+			isa = PBXGroup;
+			children = (
+				C957B8EB2307425B00F0A767 /* ChatList+CoreDataProperties.swift */,
+				C957B8EC2307425B00F0A767 /* ChatList+CoreDataClass.swift */,
+				C957B8ED2307425B00F0A767 /* LoginUser+CoreDataProperties.swift */,
+				C957B8EE2307425B00F0A767 /* ChatMessages+CoreDataClass.swift */,
+				C957B8EF2307425B00F0A767 /* LoginUser+CoreDataClass.swift */,
+				C957B8F02307425B00F0A767 /* ChatMessages+CoreDataProperties.swift */,
+			);
+			path = Test;
+			sourceTree = "<group>";
+		};
+		C957B8F22307425B00F0A767 /* APIManager */ = {
+			isa = PBXGroup;
+			children = (
+				C957B8F52307425B00F0A767 /* URLManager.swift */,
+				C957B8F62307425B00F0A767 /* MTPLAPIManager.swift */,
+			);
+			path = APIManager;
+			sourceTree = "<group>";
+		};
 		C9EE63DE230690C8002D569B = {
 			isa = PBXGroup;
 			children = (
 				C9EE63E9230690C8002D569B /* VChat */,
 				C9EE63E8230690C8002D569B /* Products */,
+				06AD18D1E0D7C3CBF5962F67 /* Pods */,
+				C480928F5FEFC6F728FF9288 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -74,10 +153,12 @@
 			isa = PBXGroup;
 			children = (
 				C9EE63EA230690C8002D569B /* AppDelegate.swift */,
+				C957B8E92307425B00F0A767 /* Models */,
 				C9347E26230706BD008568AF /* ViewControllers */,
 				C9EE63EE230690CB002D569B /* Assets.xcassets */,
 				C9EE63F0230690CB002D569B /* Main.storyboard */,
 				C9EE63F3230690CB002D569B /* Info.plist */,
+				C957B9032307432A00F0A767 /* ChatDemo.xcdatamodeld */,
 				C9EE63F4230690CB002D569B /* ChatDemo.entitlements */,
 			);
 			path = VChat;
@@ -90,9 +171,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C9EE63F7230690CB002D569B /* Build configuration list for PBXNativeTarget "VChat" */;
 			buildPhases = (
+				DA8A8134339C4BD124B36692 /* [CP] Check Pods Manifest.lock */,
 				C9EE63E3230690C8002D569B /* Sources */,
 				C9EE63E4230690C8002D569B /* Frameworks */,
 				C9EE63E5230690C8002D569B /* Resources */,
+				62981D83F446F140B10FC07E /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -148,17 +231,70 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		62981D83F446F140B10FC07E /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-VChat/Pods-VChat-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-VChat/Pods-VChat-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-VChat/Pods-VChat-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DA8A8134339C4BD124B36692 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-VChat-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		C9EE63E3230690C8002D569B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C957B9022307425B00F0A767 /* SocketManagerAPI.swift in Sources */,
+				C957B9012307425B00F0A767 /* MTPLAPIManager.swift in Sources */,
 				C9347E2B23070AE6008568AF /* LoginViewController.swift in Sources */,
 				C9347E2823070742008568AF /* SignUpViewController.swift in Sources */,
+				C957B8FA2307425B00F0A767 /* LoginUser+CoreDataProperties.swift in Sources */,
+				C957B8FD2307425B00F0A767 /* ChatMessages+CoreDataProperties.swift in Sources */,
+				C957B9052307432A00F0A767 /* ChatDemo.xcdatamodeld in Sources */,
+				C957B8F82307425B00F0A767 /* ChatList+CoreDataProperties.swift in Sources */,
 				C9347E3223072431008568AF /* ConversationViewController.swift in Sources */,
 				C9EE63EB230690C8002D569B /* AppDelegate.swift in Sources */,
+				C957B9002307425B00F0A767 /* URLManager.swift in Sources */,
+				C957B8FC2307425B00F0A767 /* LoginUser+CoreDataClass.swift in Sources */,
+				C957B8FE2307425B00F0A767 /* Extensions.swift in Sources */,
 				C9347E2E2307219B008568AF /* DashboardViewController.swift in Sources */,
 				C9347E302307227D008568AF /* DashboardSplitViewController.swift in Sources */,
+				C957B8FB2307425B00F0A767 /* ChatMessages+CoreDataClass.swift in Sources */,
+				C957B8F92307425B00F0A767 /* ChatList+CoreDataClass.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -291,6 +427,7 @@
 		};
 		C9EE63F8230690CB002D569B /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 11D7351C230C172447877794 /* Pods-VChat.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = ChatDemo/ChatDemo.entitlements;
@@ -312,6 +449,7 @@
 		};
 		C9EE63F9230690CB002D569B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B12C91BF98BD2A5C869EEC0C /* Pods-VChat.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = ChatDemo/ChatDemo.entitlements;
@@ -353,6 +491,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		C957B9032307432A00F0A767 /* ChatDemo.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				C957B9042307432A00F0A767 /* ChatDemo.xcdatamodel */,
+			);
+			currentVersion = C957B9042307432A00F0A767 /* ChatDemo.xcdatamodel */;
+			path = ChatDemo.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = C9EE63DF230690C8002D569B /* Project object */;
 }
