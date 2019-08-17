@@ -142,12 +142,12 @@ class SocketManagerAPI: NSObject {
             let arrayData = data[0] as? [[String:Any]]
             if arrayData?.count ?? 0 > 0 {
                 if self.insertUpdateMsgArray(array: arrayData!){
-                    completion(true , nil)
+                    completion(true, nil)
                 }else{
-                    completion(false , nil)
+                    completion(false, nil)
                 }
             }else{
-                completion(false , nil)
+                completion(true, nil)
             }
         }
     }
@@ -496,7 +496,7 @@ class SocketManagerAPI: NSObject {
                 //mbProgress?.hide(animated: true)
             }else{
                 do {
-                    //try clearDeepObjectEntity("ChatList")
+                    try clearDeepObjectEntity("ChatList")
                     if let chatlist = chatList, chatlist.count > 0 {
                         if self.checkChannelAvailable(chatlist,isUpdatedUnread: false) {
                             self.getChatMessageHistory { (success, error) in

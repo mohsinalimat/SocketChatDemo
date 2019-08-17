@@ -197,13 +197,13 @@ extension Dictionary {
 //    }
 //}
 
-//func clearDeepObjectEntity(_ entity: String) throws {
-//    let context = appdelegate.persistentContainer.viewContext
-//    let deleteFetch = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
-//    let deleteRequest = NSBatchDeleteRequest(fetchRequest: deleteFetch)
-//    try context.execute(deleteRequest)
-//    appdelegate.saveContext()
-//}
+func clearDeepObjectEntity(_ entity: String) throws {
+    let context = appdelegate.persistentContainer.viewContext
+    let deleteFetch = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
+    let deleteRequest = NSBatchDeleteRequest(fetchRequest: deleteFetch)
+    try context.execute(deleteRequest)
+    appdelegate.saveContext()
+}
 
 func getCurrentDateTime() -> String{
     let dateFormatter : DateFormatter = DateFormatter()

@@ -343,13 +343,9 @@ class ChatViewController: UIViewController, UINavigationControllerDelegate, UIIm
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true, completion: nil)
     }
-    
-    
-    
 }
 
 extension ChatViewController {
-    
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
         controller.dismiss(animated: true) {
             if let urlFile = moveFile(filepath: url) {

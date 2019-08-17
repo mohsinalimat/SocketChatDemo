@@ -61,9 +61,9 @@ class LoginViewController: NSViewController {
                         UserDefaults.standard.userPhoto = objUser.photo
                         self.performSegue(withIdentifier: "segueDashboard", sender: nil)
                         self.view.window?.close()
-//                        DispatchQueue.main.async {
-//                            appdelegate.objAPI.getData()
-//                        }
+                        DispatchQueue.main.async {
+                            appdelegate.objAPI.getData()
+                        }
                     } catch {
                         print(error.localizedDescription)
                     }

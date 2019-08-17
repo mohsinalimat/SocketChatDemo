@@ -12,9 +12,9 @@ class CreateGroupViewController: UIViewController , UIImagePickerControllerDeleg
     
     @IBOutlet weak var txtGroupName: UITextField!
     @IBOutlet weak var ImgGroupPic: UIImageView!
-    
     @IBOutlet weak var lblNumbersOfParticipants: UILabel!
     @IBOutlet weak var tableParticipants: UITableView!
+    
     var selectedUserList : [LoginUser]?
     var imagePath : String = ""
     var channelType : String?

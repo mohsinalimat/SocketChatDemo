@@ -24,6 +24,8 @@
 		C957B9012307425B00F0A767 /* MTPLAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C957B8F62307425B00F0A767 /* MTPLAPIManager.swift */; };
 		C957B9022307425B00F0A767 /* SocketManagerAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C957B8F72307425B00F0A767 /* SocketManagerAPI.swift */; };
 		C957B9052307432A00F0A767 /* ChatDemo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C957B9032307432A00F0A767 /* ChatDemo.xcdatamodeld */; };
+		C9AAC6DF23080EC20044EDCD /* UserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AAC6DE23080EC20044EDCD /* UserViewController.swift */; };
+		C9AAC6E1230833770044EDCD /* CreateGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AAC6E0230833770044EDCD /* CreateGroupViewController.swift */; };
 		C9EE63EB230690C8002D569B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9EE63EA230690C8002D569B /* AppDelegate.swift */; };
 		C9EE63EF230690CB002D569B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C9EE63EE230690CB002D569B /* Assets.xcassets */; };
 		C9EE63F2230690CB002D569B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C9EE63F0230690CB002D569B /* Main.storyboard */; };
@@ -49,6 +51,8 @@
 		C957B8F62307425B00F0A767 /* MTPLAPIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MTPLAPIManager.swift; sourceTree = "<group>"; };
 		C957B8F72307425B00F0A767 /* SocketManagerAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketManagerAPI.swift; sourceTree = "<group>"; };
 		C957B9042307432A00F0A767 /* ChatDemo.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ChatDemo.xcdatamodel; sourceTree = "<group>"; };
+		C9AAC6DE23080EC20044EDCD /* UserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewController.swift; sourceTree = "<group>"; };
+		C9AAC6E0230833770044EDCD /* CreateGroupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGroupViewController.swift; sourceTree = "<group>"; };
 		C9EE63E7230690C8002D569B /* VChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9EE63EA230690C8002D569B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C9EE63EE230690CB002D569B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -94,6 +98,8 @@
 				C9347E2923070AE6008568AF /* LoginViewController.swift */,
 				C9347E2F2307227D008568AF /* DashboardSplitViewController.swift */,
 				C9347E3123072431008568AF /* ConversationViewController.swift */,
+				C9AAC6DE23080EC20044EDCD /* UserViewController.swift */,
+				C9AAC6E0230833770044EDCD /* CreateGroupViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -279,6 +285,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C957B9022307425B00F0A767 /* SocketManagerAPI.swift in Sources */,
+				C9AAC6DF23080EC20044EDCD /* UserViewController.swift in Sources */,
 				C957B9012307425B00F0A767 /* MTPLAPIManager.swift in Sources */,
 				C9347E2B23070AE6008568AF /* LoginViewController.swift in Sources */,
 				C9347E2823070742008568AF /* SignUpViewController.swift in Sources */,
@@ -294,6 +301,7 @@
 				C9347E2E2307219B008568AF /* DashboardViewController.swift in Sources */,
 				C9347E302307227D008568AF /* DashboardSplitViewController.swift in Sources */,
 				C957B8FB2307425B00F0A767 /* ChatMessages+CoreDataClass.swift in Sources */,
+				C9AAC6E1230833770044EDCD /* CreateGroupViewController.swift in Sources */,
 				C957B8F92307425B00F0A767 /* ChatList+CoreDataClass.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
