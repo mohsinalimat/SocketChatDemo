@@ -8,4 +8,5 @@ target 'VChat' do
   # Pods for VChat
 pod 'Socket.IO-Client-Swift', '~> 15.1.0'
 pod 'ReachabilitySwift'
+pod 'SDWebImage'
 end

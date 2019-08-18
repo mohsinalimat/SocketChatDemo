@@ -31,6 +31,7 @@ class SocketManagerAPI: NSObject {
     
     var delegate : ReceiveMessage?
     var chnlDelegate : ReceiveChannel?
+    var selectedChannelId : Int64?
     
     static var shared : SocketManagerAPI {
         return SocketManagerAPI()
@@ -218,8 +219,8 @@ class SocketManagerAPI: NSObject {
             print(data)
             
             guard let customData = data as? [[String:Any]] else { return }
-            if (customData[0]["isBroadcast"] as? String) != nil && (customData[0]["isBroadcast"] as? String) == "1" && (customData[0]["createdBy"] as? Int64) == UserDefaults.standard.userID!{
-                let updated = self.checkChannelAvailable(customData,isUpdatedUnread: false)
+            if appdelegate.objAPI.selectedChannelId == customData[0]["chatid"] as! Int64 {
+               let updated = self.checkChannelAvailable(customData,isUpdatedUnread: false)
                 if updated {
                     self.chnlDelegate?.receiveChnl()
                 }
@@ -229,7 +230,6 @@ class SocketManagerAPI: NSObject {
                     self.chnlDelegate?.receiveChnl()
                 }
             }
-            
             ack.with("Got your currentAmount", "dude")
         }
     }
@@ -317,6 +317,8 @@ class SocketManagerAPI: NSObject {
                 objResult.updated_at = objChatList.updated_at
                 if isUpdatedUnread {
                     objResult.unreadcount += 1
+                }else{
+                    objResult.unreadcount = 0
                 }
                 appdelegate.saveContext()
                 return true

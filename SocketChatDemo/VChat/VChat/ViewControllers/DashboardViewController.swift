@@ -18,22 +18,26 @@ class DashboardViewController: NSViewController, NSTableViewDelegate, NSTableVie
     
 
     @IBOutlet weak var ChatListTableView: NSTableView!
+    @IBOutlet weak var imguserProfile: NSImageView!
     
     var chatListArray : [ChatList]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         ChatListTableView.selectionHighlightStyle = .none
+        let downloadURl = URL.init(string: UserDefaults.standard.userPhoto!.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")!
+        imguserProfile.sd_setImage(with: downloadURl, placeholderImage: NSImage(named:"NSUser"))
         DispatchQueue.main.async {
+            self.imguserProfile.layer?.cornerRadius = self.imguserProfile.frame.size.height/2
             self.getUserList()
         }
+        self.chatListArray?.removeAll()
+        appdelegate.objAPI.chnlDelegate = self
+        self.checkDataAvailable()
     }
     
     override func viewWillAppear() {
         super.viewWillAppear()
-        self.chatListArray?.removeAll()
-        appdelegate.objAPI.chnlDelegate = self
-        self.checkDataAvailable()
     }
     
     public func clearAllCoreData() {
@@ -69,11 +73,12 @@ class DashboardViewController: NSViewController, NSTableViewDelegate, NSTableVie
     func checkDataAvailable(){
         do{
             let context = appdelegate.persistentContainer.viewContext
-            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ChatList")
+            let fetchRequest = NSFetchRequest<ChatList>(entityName: "ChatList")
             fetchRequest.predicate = NSPredicate(format: "channelType != '\(channelTypeCase.broadcast.rawValue)'")
-            if let dataArray = try context.fetch(fetchRequest) as? [ChatList]{
-                    self.chatListArray = dataArray
-                    self.ChatListTableView.reloadData()
+            let dataArray = try context.fetch(fetchRequest)
+            if dataArray.count > 0 {
+                self.chatListArray = dataArray
+                self.ChatListTableView.reloadData()
             }
         }catch let error{
             print(error.localizedDescription)
@@ -114,7 +119,11 @@ class DashboardViewController: NSViewController, NSTableViewDelegate, NSTableVie
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView?{
         let result:ChatListTableCellView = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "ChatListTableCellView"), owner: self) as! ChatListTableCellView
         let objChannel = self.chatListArray?[row]
-        result.imgView.image = NSImage(named:"NSUser")
+        let downloadURl = URL.init(string: objChannel?.channelPic?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")!
+        result.imgView.sd_setImage(with: downloadURl, placeholderImage: NSImage(named:"NSUser"))
+        DispatchQueue.main.async {
+            result.imgView.layer?.cornerRadius = result.imgView.frame.size.height/2
+        }
         result.nameTextField.stringValue = objChannel?.channelName ?? ""
         result.lastMessageTextField.stringValue = objChannel?.last_message ?? ""
         result.dateTextField.stringValue = "\(objChannel!.created_at)".timeStampToLocalDate()
@@ -122,9 +131,23 @@ class DashboardViewController: NSViewController, NSTableViewDelegate, NSTableVie
         result.unreadCountBox.isHidden = objChannel!.unreadcount <= 0
         
         return result
-     }
+    }
+    
     func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
         return 67
+    }
+    
+    func tableViewSelectionDidChange(_ notification: Notification) {
+        guard let table = notification.object as? NSTableView else {
+            return
+        }
+        let row = table.selectedRow
+        if row >= 0 {
+            if let objChannel = self.chatListArray?[row] {
+                appdelegate.objAPI.selectedChannelId = objChannel.chatid
+                (self.parent?.children[1] as! ConversationViewController).initiateChat(objChannel, isFirstTimePrivateChat: false)
+            }
+        }
     }
     
     func openCreateGroupBroadcastView(_ objUsers: [LoginUser], channelType: String) {

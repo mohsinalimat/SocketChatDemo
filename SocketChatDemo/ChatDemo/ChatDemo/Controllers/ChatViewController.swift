@@ -34,8 +34,8 @@ class ChatReceiverCell: UITableViewCell {
     @IBOutlet weak var imgDownload: UIImageView!
     @IBOutlet weak var btnShowPreview: UIButton!
     @IBOutlet weak var lblName: UILabel!
-    
     @IBOutlet weak var heightLabelNameConstraints: NSLayoutConstraint!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = .none
@@ -358,6 +358,7 @@ extension ChatViewController {
         }
     }
 }
+
 
 extension ChatViewController : ReceiveMessage{
     

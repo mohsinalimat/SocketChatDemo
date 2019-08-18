@@ -179,23 +179,23 @@ extension Dictionary {
         return try JSONSerialization.data(withJSONObject: self, options: JSONSerialization.WritingOptions(rawValue: 0))
     }
 }
-//extension AVAsset {
-//    func generateThumbnail(completion: @escaping (UIImage?) -> Void) {
-//        DispatchQueue.global().async {
-//            let imageGenerator = AVAssetImageGenerator(asset: self)
-//            imageGenerator.appliesPreferredTrackTransform = true
-//            let time = CMTime(seconds: 0.0, preferredTimescale: 600)
-//            let times = [NSValue(time: time)]
-//            imageGenerator.generateCGImagesAsynchronously(forTimes: times, completionHandler: { _, image, _, _, _ in
-//                if let image = image {
-//                    completion(UIImage(cgImage: image))
-//                } else {
-//                    completion(nil)
-//                }
-//            })
-//        }
-//    }
-//}
+extension AVAsset {
+    func generateThumbnail(completion: @escaping (NSImage?) -> Void) {
+        DispatchQueue.global().async {
+            let imageGenerator = AVAssetImageGenerator(asset: self)
+            imageGenerator.appliesPreferredTrackTransform = true
+            let time = CMTime(seconds: 0.0, preferredTimescale: 600)
+            let times = [NSValue(time: time)]
+            imageGenerator.generateCGImagesAsynchronously(forTimes: times, completionHandler: { _, image, _, _, _ in
+                if let image = image {
+                    completion(NSImage.init(cgImage: image, size: NSSize.init(width: 200, height: 200)))
+                } else {
+                    completion(nil)
+                }
+            })
+        }
+    }
+}
 
 func clearDeepObjectEntity(_ entity: String) throws {
     let context = appdelegate.persistentContainer.viewContext
@@ -236,4 +236,28 @@ enum channelTypeCase : String{
         case privateChat = "1"
         case group = "2"
         case broadcast = "3"
+}
+
+extension NSTableView{
+    func scrollToBottom(index : Int){
+        DispatchQueue.main.async {
+            if index > 0{
+                self.scrollRowToVisible(index)
+            }
+        }
+    }
+}
+
+
+extension NSBox {
+    @IBInspectable
+    var cornerRadiusView: CGFloat {
+        get {
+            return self.layer?.cornerRadius ?? 5.0
+        }
+        set {
+            self.layer?.cornerRadius = newValue
+            self.layer?.masksToBounds = newValue > 0
+        }
+    }
 }
