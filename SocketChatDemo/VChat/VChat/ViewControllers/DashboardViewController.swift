@@ -7,6 +7,7 @@
 //
 
 import Cocoa
+import QuartzCore
 
 protocol GroupBroadcastOpenProtocol {
     func openCreateGroupBroadcastView(_ objUsers:[LoginUser], channelType:String) -> Void
@@ -16,17 +17,18 @@ protocol GroupBroadcastOpenProtocol {
 let screen = NSScreen.main
 class DashboardViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSource, GroupBroadcastOpenProtocol {
     
-
+    @IBOutlet weak var scrollTableDropDown: NSScrollView!
+    @IBOutlet weak var dropDownMainView: NSTableView!
     @IBOutlet weak var ChatListTableView: NSTableView!
     @IBOutlet weak var imguserProfile: NSImageView!
     
     var chatListArray : [ChatList]?
-    
+    var dropDownList = ["Create Group","Create Broadcast","Logout"]
     override func viewDidLoad() {
         super.viewDidLoad()
         ChatListTableView.selectionHighlightStyle = .none
         let downloadURl = URL.init(string: UserDefaults.standard.userPhoto!.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")!
-        imguserProfile.sd_setImage(with: downloadURl, placeholderImage: NSImage(named:"NSUser"))
+        imguserProfile.sd_setImage(with: downloadURl, placeholderImage: #imageLiteral(resourceName: "user"))
         DispatchQueue.main.async {
             self.imguserProfile.layer?.cornerRadius = self.imguserProfile.frame.size.height/2
             self.getUserList()
@@ -36,8 +38,21 @@ class DashboardViewController: NSViewController, NSTableViewDelegate, NSTableVie
         self.checkDataAvailable()
     }
     
+    override func mouseDown(with theEvent: NSEvent) {
+        self.scrollTableDropDown.isHidden = true
+    }
+    
     override func viewWillAppear() {
         super.viewWillAppear()
+        self.scrollTableDropDown.wantsLayer = true
+        self.scrollTableDropDown.shadow = NSShadow()
+        self.scrollTableDropDown.layer?.backgroundColor = NSColor.red.cgColor
+        self.scrollTableDropDown.layer?.cornerRadius = 5.0
+        self.scrollTableDropDown.layer?.shadowOpacity = 1.0
+        self.scrollTableDropDown.layer?.shadowColor = NSColor.black.cgColor
+        self.scrollTableDropDown.layer?.shadowOffset = NSMakeSize(0, 0)
+        self.scrollTableDropDown.layer?.shadowRadius = 20
+        self.scrollTableDropDown.isHidden = true
     }
     
     public func clearAllCoreData() {
@@ -47,17 +62,12 @@ class DashboardViewController: NSViewController, NSTableViewDelegate, NSTableVie
         }catch{}
     }
     
-    
     @IBAction func btnPrivateChatAction(_ sender: NSButton) {
         self.performSegue(withIdentifier: "segueUserList", sender: channelTypeCase.privateChat.rawValue)
     }
     
-    @IBAction func btnGroupAction(_ sender: NSButton) {
-        self.performSegue(withIdentifier: "segueUserList", sender: channelTypeCase.group.rawValue)
-    }
-    
-    @IBAction func btnBroadcastAction(_ sender: NSButton) {
-        self.performSegue(withIdentifier: "segueUserList", sender: channelTypeCase.broadcast.rawValue)
+    @IBAction func btnDropDownAction(_ sender: NSButton) {
+        self.scrollTableDropDown.isHidden = !self.scrollTableDropDown.isHidden
     }
     
     override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
@@ -74,7 +84,10 @@ class DashboardViewController: NSViewController, NSTableViewDelegate, NSTableVie
         do{
             let context = appdelegate.persistentContainer.viewContext
             let fetchRequest = NSFetchRequest<ChatList>(entityName: "ChatList")
-            fetchRequest.predicate = NSPredicate(format: "channelType != '\(channelTypeCase.broadcast.rawValue)'")
+            //fetchRequest.predicate = NSPredicate(format: "channelType != '\(channelTypeCase.broadcast.rawValue)'")
+            fetchRequest.returnsObjectsAsFaults = false
+            let sort = NSSortDescriptor(key: #keyPath(ChatList.updated_at), ascending: false)
+            fetchRequest.sortDescriptors = [sort]
             let dataArray = try context.fetch(fetchRequest)
             if dataArray.count > 0 {
                 self.chatListArray = dataArray
@@ -113,14 +126,28 @@ class DashboardViewController: NSViewController, NSTableViewDelegate, NSTableVie
     }
     
     func numberOfRows(in tableView: NSTableView) -> Int {
-        return self.chatListArray?.count ?? 0
+        return ChatListTableView == tableView ? (self.chatListArray?.count ?? 0) : dropDownList.count
     }
     
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView?{
+        if ChatListTableView == tableView {
+            return configureChatList(tableView, row: row)
+        }else {
+            return configureDropDown(tableView, row: row)
+        }
+    }
+    
+    func configureDropDown(_ tableView:NSTableView,row:Int) -> NSView? {
+        let cellView = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "DataCell"), owner: self) as! DropDownTableCellView
+        cellView.nameTextField.stringValue = dropDownList[row]
+        return cellView
+    }
+    
+    func configureChatList(_ tableView:NSTableView,row:Int) -> NSView? {
         let result:ChatListTableCellView = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "ChatListTableCellView"), owner: self) as! ChatListTableCellView
         let objChannel = self.chatListArray?[row]
         let downloadURl = URL.init(string: objChannel?.channelPic?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")!
-        result.imgView.sd_setImage(with: downloadURl, placeholderImage: NSImage(named:"NSUser"))
+        result.imgView.sd_setImage(with: downloadURl, placeholderImage: #imageLiteral(resourceName: "user"))
         DispatchQueue.main.async {
             result.imgView.layer?.cornerRadius = result.imgView.frame.size.height/2
         }
@@ -133,20 +160,36 @@ class DashboardViewController: NSViewController, NSTableViewDelegate, NSTableVie
         return result
     }
     
-    func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
-        return 67
-    }
-    
     func tableViewSelectionDidChange(_ notification: Notification) {
         guard let table = notification.object as? NSTableView else {
             return
         }
-        let row = table.selectedRow
-        if row >= 0 {
-            if let objChannel = self.chatListArray?[row] {
-                appdelegate.objAPI.selectedChannelId = objChannel.chatid
-                (self.parent?.children[1] as! ConversationViewController).initiateChat(objChannel, isFirstTimePrivateChat: false)
+        if table == ChatListTableView {
+            let row = table.selectedRow
+            if row >= 0 {
+                if let objChannel = self.chatListArray?[row] {
+                    appdelegate.objAPI.selectedChannelId = objChannel.chatid
+                    (self.parent?.children[1] as! ConversationViewController).initiateChat(objChannel, isFirstTimePrivateChat: false)
+                }
             }
+        }else{
+            let row = table.selectedRow
+            self.scrollTableDropDown.isHidden = true
+            switch row {
+            case 0:
+                self.performSegue(withIdentifier: "segueUserList", sender: channelTypeCase.group.rawValue)
+                break
+            case 1:
+                self.performSegue(withIdentifier: "segueUserList", sender: channelTypeCase.broadcast.rawValue)
+                break
+            case 2:
+                clearAllCoreData()
+                self.view.window?.contentViewController = NSStoryboard.loginViewController()
+                break
+            default:
+                break
+            }
+            table.deselectRow(row)
         }
     }
     
@@ -171,4 +214,8 @@ class ChatListTableCellView: NSTableCellView {
     @IBOutlet weak var dateTextField: NSTextField!
     @IBOutlet weak var countTextField: NSTextField!
     @IBOutlet weak var unreadCountBox: NSBox!
+}
+
+class DropDownTableCellView: NSTableCellView {
+    @IBOutlet weak var nameTextField: NSTextField!
 }

@@ -60,7 +60,11 @@ class UserViewController: NSViewController,NSTableViewDelegate,NSTableViewDataSo
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView?{
         let result:UserDataTableCellView = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "UserDataTableCellView"), owner: self) as! UserDataTableCellView
         let objUser = self.userList?[row]
-        result.imgUserProfile.image = NSImage(named:"NSUser")
+        let downloadURl = URL.init(string: objUser?.photo?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")!
+        result.imgUserProfile.sd_setImage(with: downloadURl, placeholderImage: #imageLiteral(resourceName: "user"))
+        DispatchQueue.main.async {
+            result.imgUserProfile.layer?.cornerRadius = result.imgUserProfile.frame.size.height/2
+        }
         result.lblUserName.stringValue = objUser?.name ?? ""
         result.tickImage.isHidden = !selectedUserList.contains(objUser!)
         result.tickImage.image = NSImage.init(named: "NSMenuOnStateTemplate")

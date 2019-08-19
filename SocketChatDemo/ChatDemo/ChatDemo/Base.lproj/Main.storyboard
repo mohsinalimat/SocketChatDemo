@@ -91,7 +91,7 @@
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="1me-L1-OTA">
                                 <rect key="frame" x="0.0" y="138" width="414" height="724"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <inset key="separatorInset" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ChatListCell" rowHeight="102" id="ngF-zm-6cD" customClass="ChatListCell" customModule="ChatDemo" customModuleProvider="target">
@@ -110,7 +110,7 @@
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cyn-HX-rpI">
                                                     <rect key="frame" x="80" y="51" width="234" height="26"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                    <nil key="textColor"/>
+                                                    <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DZ4-a2-Vhb">
@@ -166,6 +166,7 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </imageView>
                                             </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstItem="Opk-kC-fKx" firstAttribute="top" relation="greaterThanOrEqual" secondItem="YsH-EM-shS" secondAttribute="top" constant="10" id="0Kb-7W-Eb0"/>
                                                 <constraint firstItem="cyn-HX-rpI" firstAttribute="centerY" secondItem="DZ4-a2-Vhb" secondAttribute="centerY" id="1Pj-bj-T4t"/>
@@ -188,6 +189,7 @@
                                                 <constraint firstItem="DZ4-a2-Vhb" firstAttribute="top" secondItem="w4p-EL-F0D" secondAttribute="bottom" id="xZQ-97-dh9"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <outlet property="lblChatDate" destination="SXJ-1f-gV8" id="ZAg-bZ-880"/>
                                             <outlet property="lblChatMsg" destination="cyn-HX-rpI" id="TyQ-L1-dEa"/>
@@ -310,9 +312,11 @@
                             </view>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Group Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="E6j-dq-xhk">
                                 <rect key="frame" x="125" y="146" width="269" height="34"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="34" id="Clh-1g-TDy"/>
                                 </constraints>
+                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
@@ -326,9 +330,9 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="qvT-5g-tup">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="qvT-5g-tup">
                                 <rect key="frame" x="0.0" y="278" width="414" height="584"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <color key="backgroundColor" red="1" green="1" blue="0.99607843137254903" alpha="1" colorSpace="calibratedRGB"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ChatListCell" rowHeight="102" id="cui-rW-Iys" customClass="ChatListCell" customModule="ChatDemo" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="414" height="102"/>
@@ -340,7 +344,7 @@
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a2Q-uw-a2C">
                                                     <rect key="frame" x="80" y="0.0" width="334" height="102"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
+                                                    <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="2yd-xD-8Yr">
@@ -367,6 +371,7 @@
                                                 <constraint firstItem="2yd-xD-8Yr" firstAttribute="centerY" secondItem="a2Q-uw-a2C" secondAttribute="centerY" id="su9-Am-itQ"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <outlet property="lblChatName" destination="a2Q-uw-a2C" id="zMf-nR-WGf"/>
                                             <outlet property="userProfilePic" destination="2yd-xD-8Yr" id="tD3-uf-xv6"/>
@@ -379,7 +384,7 @@
                                 </connections>
                             </tableView>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="tlZ-uS-SmO" firstAttribute="top" secondItem="ifh-IP-Yz2" secondAttribute="top" constant="30" id="2nq-MN-ood"/>
                             <constraint firstItem="E6j-dq-xhk" firstAttribute="leading" secondItem="tlZ-uS-SmO" secondAttribute="trailing" constant="15" id="8xK-EQ-SkP"/>
@@ -538,7 +543,7 @@
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="N8L-BE-ucR">
                                 <rect key="frame" x="0.0" y="88" width="414" height="774"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" red="1" green="1" blue="0.99607843137254903" alpha="1" colorSpace="calibratedRGB"/>
                                 <inset key="separatorInset" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ChatListCell" rowHeight="102" id="3nl-jO-nrs" customClass="ChatListCell" customModule="ChatDemo" customModuleProvider="target">
@@ -551,7 +556,7 @@
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Wh-5e-bw7">
                                                     <rect key="frame" x="80" y="0.0" width="294" height="102"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
+                                                    <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="HLH-qH-Nne">
@@ -587,6 +592,7 @@
                                                 <constraint firstItem="3Wh-5e-bw7" firstAttribute="leading" secondItem="gJt-u2-8Zr" secondAttribute="trailing" constant="10" id="iK2-No-Ato"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <outlet property="ImageViewSelection" destination="HLH-qH-Nne" id="4f6-if-Shx"/>
                                             <outlet property="lblChatName" destination="3Wh-5e-bw7" id="sDe-Sv-fu6"/>
@@ -736,10 +742,10 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MPS-lE-6wX">
-                                                    <rect key="frame" x="10" y="10" width="75.5" height="97"/>
+                                                    <rect key="frame" x="10" y="10" width="79.5" height="97"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dr7-UT-qdQ">
-                                                            <rect key="frame" x="8" y="0.0" width="59.5" height="30"/>
+                                                            <rect key="frame" x="8" y="2" width="63.5" height="30"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="30" id="aaT-L8-4B8"/>
                                                             </constraints>
@@ -747,14 +753,14 @@
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Receiver" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HFm-6b-hQF">
-                                                            <rect key="frame" x="8" y="35" width="59.5" height="42"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Receiver " lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HFm-6b-hQF">
+                                                            <rect key="frame" x="8" y="34" width="63.5" height="43"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hMZ-Ng-wD5">
-                                                            <rect key="frame" x="46.5" y="81" width="24" height="11"/>
+                                                            <rect key="frame" x="50.5" y="81" width="24" height="11"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="9"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
@@ -765,12 +771,12 @@
                                                         <constraint firstAttribute="trailing" secondItem="HFm-6b-hQF" secondAttribute="trailing" constant="8" id="9ta-4y-7yV"/>
                                                         <constraint firstAttribute="bottom" secondItem="hMZ-Ng-wD5" secondAttribute="bottom" constant="5" id="JYv-jY-OCj"/>
                                                         <constraint firstAttribute="bottom" secondItem="HFm-6b-hQF" secondAttribute="bottom" constant="20" id="Kj2-WI-cTV"/>
-                                                        <constraint firstItem="HFm-6b-hQF" firstAttribute="top" secondItem="Dr7-UT-qdQ" secondAttribute="bottom" constant="5" id="Lb9-Yx-vqS"/>
+                                                        <constraint firstItem="HFm-6b-hQF" firstAttribute="top" secondItem="Dr7-UT-qdQ" secondAttribute="bottom" constant="2" id="Lb9-Yx-vqS"/>
                                                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="MnN-t6-VmB"/>
                                                         <constraint firstItem="Dr7-UT-qdQ" firstAttribute="leading" secondItem="MPS-lE-6wX" secondAttribute="leading" constant="8" id="W37-eE-WWZ"/>
                                                         <constraint firstItem="HFm-6b-hQF" firstAttribute="leading" secondItem="MPS-lE-6wX" secondAttribute="leading" constant="8" id="boi-CK-vhW"/>
                                                         <constraint firstItem="hMZ-Ng-wD5" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="MPS-lE-6wX" secondAttribute="leading" constant="20" id="fBF-BD-qCS"/>
-                                                        <constraint firstItem="Dr7-UT-qdQ" firstAttribute="top" secondItem="MPS-lE-6wX" secondAttribute="top" id="hRH-fB-aPV"/>
+                                                        <constraint firstItem="Dr7-UT-qdQ" firstAttribute="top" secondItem="MPS-lE-6wX" secondAttribute="top" constant="2" id="hRH-fB-aPV"/>
                                                         <constraint firstAttribute="trailing" secondItem="hMZ-Ng-wD5" secondAttribute="trailing" constant="5" id="kYK-M3-ezw"/>
                                                         <constraint firstAttribute="trailing" secondItem="Dr7-UT-qdQ" secondAttribute="trailing" constant="8" id="z6L-95-YKK"/>
                                                     </constraints>
@@ -1107,10 +1113,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="fav-rq-S92">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="fav-rq-S92">
                                 <rect key="frame" x="0.0" y="88" width="414" height="774"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" red="1" green="1" blue="0.99607843137254903" alpha="1" colorSpace="calibratedRGB"/>
                                 <inset key="separatorInset" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <color key="sectionIndexBackgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="BroadcastListCell" rowHeight="80" id="1k0-sw-5oh" customClass="BroadcastListCell" customModule="ChatDemo" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="414" height="80"/>
@@ -1122,7 +1129,7 @@
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BroadCast Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lX9-Sa-GHe">
                                                     <rect key="frame" x="90" y="13.5" width="304" height="24"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                                    <nil key="textColor"/>
+                                                    <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="BroadCast Participants Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iHm-ac-wKx">
@@ -1169,6 +1176,7 @@
                                                 <constraint firstItem="lX9-Sa-GHe" firstAttribute="top" relation="greaterThanOrEqual" secondItem="0n8-cL-YzK" secondAttribute="top" id="tiH-tV-0j8"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <outlet property="imgBroadcastList" destination="0n8-cL-YzK" id="yjp-lL-s2X"/>
                                             <outlet property="lblBroadcastName" destination="lX9-Sa-GHe" id="Ajs-Tr-x7p"/>
@@ -1224,7 +1232,7 @@
         <image name="user" width="128" height="128"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="o7w-zJ-uL9"/>
+        <segue reference="ypF-KD-GfU"/>
         <segue reference="eac-bk-5eM"/>
         <segue reference="v3g-32-WCc"/>
     </inferredMetricsTieBreakers>

@@ -112,6 +112,9 @@ class ChatListViewController: UIViewController, UITableViewDelegate, UITableView
             
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ChatList")
             fetchRequest.predicate = NSPredicate(format: "channelType != '\(channelTypeCase.broadcast.rawValue)'")
+            fetchRequest.returnsObjectsAsFaults = false
+            let sort = NSSortDescriptor(key: #keyPath(ChatList.updated_at), ascending: false)
+            fetchRequest.sortDescriptors = [sort]
             if let dataArray = try context.fetch(fetchRequest) as? [ChatList]{
                 if dataArray.count == 0{
                     

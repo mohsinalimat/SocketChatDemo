@@ -82,9 +82,9 @@ class SocketManagerAPI: NSObject {
     func getChatList(_ data:[String:Any], ackCallBack:@escaping completionHandlerArray) -> Void {
         socket.emitWithAck("channelList" , data).timingOut(after: 0) { (data) in
             print("got data \(data)")
-            guard let data = data[0] as? [[String:Any]] else { ackCallBack(nil,"data Not availabel"); return }
+            guard let dataCustom = data[0] as? [[String:Any]] else { ackCallBack(nil,"data Not availabel"); return }
             
-            ackCallBack(data,nil)
+            ackCallBack(dataCustom,nil)
         }
     }
     
@@ -247,8 +247,6 @@ class SocketManagerAPI: NSObject {
     func updateUnReadMsgCount(_ chatID : Int64, count : Int = 0) -> Bool{
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "ChatList")
         fetchRequest.predicate = NSPredicate(format: "chatid = \(chatID)")
-        
-        
         do {
             guard let result = try? appdelegate.persistentContainer.viewContext.fetch(fetchRequest)  as? [ChatList] else { return false }
             if result.count > 0 {
@@ -258,7 +256,6 @@ class SocketManagerAPI: NSObject {
                 }else{
                     objResult.unreadcount = Int16(count)
                 }
-                
                 appdelegate.saveContext()
             }
             return true
@@ -271,7 +268,7 @@ class SocketManagerAPI: NSObject {
     
     func checkChannelAvailable(_ arrayData : [[String:Any]], isUpdatedUnread: Bool = true) -> Bool {
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "ChatList")
-        fetchRequest.predicate = NSPredicate(format: "chatid = '\(arrayData[0]["chatid"] ?? "")'")
+        fetchRequest.predicate = NSPredicate(format: "chatid = \(arrayData[0]["chatid"] ?? "")")
         
         do {
             guard let result = try? appdelegate.persistentContainer.viewContext.fetch(fetchRequest)  as? [ChatList] else { return false }
@@ -286,6 +283,8 @@ class SocketManagerAPI: NSObject {
                 objResult.updated_at = updatedData["updated_at"] as? Double ?? 0.0
                 if isUpdatedUnread {
                     objResult.unreadcount += 1
+                }else{
+                    objResult.unreadcount = 0
                 }
                 if let createdAt = updatedData["created_at"] as? Double {
                     objResult.created_at = createdAt
@@ -301,7 +300,7 @@ class SocketManagerAPI: NSObject {
         }
     }
     
-    func checkChannelAvailable(_ objChatList : ChatList, isUpdatedUnread: Bool = true) -> Bool {
+    func checkChannelAvailableInModel(_ objChatList : ChatList, isUpdatedUnread: Bool = true) -> Bool {
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "ChatList")
         fetchRequest.predicate = NSPredicate(format: "chatid = \(objChatList.chatid)")
         
@@ -372,8 +371,7 @@ class SocketManagerAPI: NSObject {
                 appdelegate.saveContext()
             }else{
                 if let msg =  self.insertMessage(dict: arrayData) {
-                    if msg.sender != UserDefaults.standard.userID! && Int(msg.is_read!)! <= 2 {
-                        
+                    if msg.sender != UserDefaults.standard.userID! && Int(msg.is_read!)! < 3 {
                         if updateUnReadMsgCount(msg.chat_id, count: 1) {
                             let dict = ["is_read":"2","id":msg.id,"sender":msg.sender] as [String:Any]
                             self.emitStatus(dict)
@@ -498,8 +496,8 @@ class SocketManagerAPI: NSObject {
                 //mbProgress?.hide(animated: true)
             }else{
                 do {
-                    try clearDeepObjectEntity("ChatList")
                     if let chatlist = chatList, chatlist.count > 0 {
+                        //try clearDeepObjectEntity("ChatList")
                         if self.checkChannelAvailable(chatlist,isUpdatedUnread: false) {
                             self.getChatMessageHistory { (success, error) in
                                 if success ?? false{

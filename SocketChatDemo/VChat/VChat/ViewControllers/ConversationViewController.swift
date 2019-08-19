@@ -35,7 +35,7 @@ class ReceiverTableCellView: NSTableCellView {
 }
 
 
-class ConversationViewController: NSViewController,InitiateChatDelegate {
+class ConversationViewController: NSViewController,InitiateChatDelegate,NSWindowDelegate {
     
     var chatObj : ChatList?
     var chatMsgsArray = [ChatMessages]()
@@ -57,6 +57,36 @@ class ConversationViewController: NSViewController,InitiateChatDelegate {
         tableConversation.selectionHighlightStyle = .none
     }
     
+    override func viewDidAppear() {
+        super.viewDidAppear()
+        self.view.window?.delegate = self
+    }
+    
+    func windowWillResize(_ sender: NSWindow, to frameSize: NSSize) -> NSSize {
+        DispatchQueue.main.async {
+            self.columnTabl.width = self.view.frame.size.width
+            self.columnTabl.minWidth = self.view.frame.size.width
+            self.columnTabl.maxWidth = self.view.frame.size.width
+            self.tableConversation.reloadData()
+        }
+        DispatchQueue.main.async {
+            self.tableConversation.scrollRowToVisible(self.chatMsgsArray.count-1)
+        }
+        return frameSize
+    }
+    
+    func windowDidResize(_ notification: Notification) {
+        DispatchQueue.main.async {
+            self.columnTabl.width = self.view.frame.size.width
+            self.columnTabl.minWidth = self.view.frame.size.width
+            self.columnTabl.maxWidth = self.view.frame.size.width
+            self.tableConversation.reloadData()
+        }
+        DispatchQueue.main.async {
+            self.tableConversation.scrollRowToVisible(self.chatMsgsArray.count-1)
+        }
+    }
+    
     func initiateChat(_ objChat: ChatList, isFirstTimePrivateChat: Bool) {
         chatObj = objChat
         privateMsgSent = isFirstTimePrivateChat
@@ -69,6 +99,10 @@ class ConversationViewController: NSViewController,InitiateChatDelegate {
         DispatchQueue.main.async {
             self.setUpUI()
         }
+    }
+    
+    override func mouseDown(with theEvent: NSEvent) {
+        (self.parent?.children[0] as! DashboardViewController).scrollTableDropDown.isHidden = true
     }
     
     func setUpUI(){
@@ -110,9 +144,12 @@ class ConversationViewController: NSViewController,InitiateChatDelegate {
                 }
             }
             self.chatMsgsArray += result
-            self.tableConversation.reloadData()
             self.tableConversation.isHidden = false
-            self.tableConversation.scrollRowToVisible(self.chatMsgsArray.count-1)
+            self.tableConversation.reloadData()
+            DispatchQueue.main.async {
+                let point = NSPoint(x: 0, y: self.tableConversation.frame.height)
+                self.tableConversation.scroll(point)
+            }
         } catch {
             print("error executing fetch request: \(error.localizedDescription)")
             return
@@ -196,7 +233,8 @@ class ConversationViewController: NSViewController,InitiateChatDelegate {
                       "name": chatObj!.channelType! != channelTypeCase.privateChat.rawValue ? chatObj!.channelName! : UserDefaults.standard.userName!,
                       "photo":chatObj!.channelType! != channelTypeCase.privateChat.rawValue ? chatObj!.channelPic! : UserDefaults.standard.userPhoto!,
                       "senderName":UserDefaults.standard.userName!,
-                      "created_at":""] as [String : Any]
+                      "created_at":"",
+                      "updated_at":""] as [String : Any]
         
         appdelegate.objAPI.sendMessage(params) { (response, error) in
             if let error = error {
@@ -204,18 +242,26 @@ class ConversationViewController: NSViewController,InitiateChatDelegate {
             }else{
                 if let responseData = response {
                     if let objMsg = appdelegate.objAPI.insertMessage(dict: responseData){
-                        self.chatObj!.created_at = objMsg.created_at
+                        if self.chatObj!.created_at == 0.0 {
+                            self.chatObj!.created_at = objMsg.created_at
+                        }
                         self.chatObj!.last_message = objMsg.message!
-                        self.chatObj!.updated_at = objMsg.updated_at
+                        self.chatObj!.updated_at = objMsg.created_at
                         
-                        let updated = appdelegate.objAPI.checkChannelAvailable(self.chatObj!)
+                        let updated = appdelegate.objAPI.checkChannelAvailableInModel(self.chatObj!,isUpdatedUnread: false)
                         if updated {
+                            
                             self.privateMsgSent = false
                             self.chatMsgsArray.append(objMsg)
-                            self.tableConversation.reloadData()
-                            
-                            self.tableConversation.scrollToBottom(index: self.chatMsgsArray.count - 1)
-                             self.txtMessage.stringValue = ""
+                            self.tableConversation.insertRows(at: IndexSet.init(integer: self.chatMsgsArray.count-1), withAnimation: .effectFade)
+                            let indexset = IndexSet.init(integer: self.chatMsgsArray.count-1)
+                            let indexset1 = IndexSet(integer: 0)
+                            self.tableConversation.reloadData(forRowIndexes: indexset, columnIndexes: indexset1)
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3, execute: {
+                                self.tableConversation.scrollToBottom(index: self.chatMsgsArray.count-1)
+                            })
+                            self.txtMessage.stringValue = ""
+                            (self.parent?.children[0] as! DashboardViewController).checkDataAvailable()
                         }
                     }
                 }
@@ -234,22 +280,24 @@ class ConversationViewController: NSViewController,InitiateChatDelegate {
                     for data in responseData{
                         if let objMsg = appdelegate.objAPI.insertMessage(dict: data){
                             guard let user = self.fetchUserData(userID: data["receiver"] as! String) else { return }
-                            let params = ["channelName":user.name!,
+                            var params = ["channelName":user.name!,
                                           "channelPic":user.photo!,
                                           "channelType":"1",
                                           "chatid":objMsg.chat_id,
-                                          "created_at":objMsg.created_at,
                                           "last_message":objMsg.message!,
                                           "unreadcount":0,
                                           "updated_at":objMsg.created_at,
                                           "userIds": "\(objMsg.sender),\(objMsg.receiver!)"] as [String : Any]
-                            
+                            if appdelegate.objAPI.checkGetExist(objMsg.chat_id) == nil {
+                                params["created_at"] = objMsg.created_at
+                            }
                             let channel = appdelegate.objAPI.checkChannelAvailable([params], isUpdatedUnread: false)
                             if channel {
                                 print("inserted")
                             }
                         }
                     }
+                    (self.parent?.children[0] as! DashboardViewController).checkDataAvailable()
                     print("broadcast process done")
                 }
             }
@@ -266,28 +314,36 @@ extension ConversationViewController : ReceiveMessage{
                 obj.is_read = data["is_read"] as? String
                 self.chatMsgsArray[index] = obj
             }
-            self.tableConversation.reloadData()
+            let indexset = IndexSet(integer: index)
+            let indexset1 = IndexSet(integer: 0)
+            self.tableConversation.reloadData(forRowIndexes: indexset, columnIndexes: indexset1)
         }
     }
     
     func typingMsg(data: [String : Any]) {
 //        if (data["sender"] as? String == self.getReceiverID()){
-////            self.navigationItem.title = "Typing..."
-////            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-////                self.navigationItem.title = self.chatObj?.channelName
-////            }
+//            self.navigationItem.title = "Typing..."
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+//                self.navigationItem.title = self.chatObj?.channelName
+//            }
 //        }
     }
     
     func receiveMsg(msg: ChatMessages) {
         if (msg.chat_id == chatObj?.chatid){
             self.chatMsgsArray.append(msg)
-            self.tableConversation.reloadData()
-            self.tableConversation.scrollRowToVisible(self.chatMsgsArray.count-1)
+            self.tableConversation.insertRows(at: IndexSet.init(integer: self.chatMsgsArray.count-1), withAnimation: .effectFade)
+            let indexset = IndexSet.init(integer: self.chatMsgsArray.count-1)
+            let indexset1 = IndexSet(integer: 0)
+            self.tableConversation.reloadData(forRowIndexes: indexset, columnIndexes: indexset1)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3, execute: {
+                self.tableConversation.scrollToBottom(index: self.chatMsgsArray.count-1)
+            })
             let dict = ["is_read":"3","id":msg.id,"sender":msg.sender] as [String:Any]
             DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
                 self.changeStatus(dict: dict)
             })
+            
         }
     }
     
