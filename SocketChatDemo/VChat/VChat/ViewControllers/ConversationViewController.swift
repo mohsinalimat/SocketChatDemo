@@ -46,6 +46,9 @@ class ConversationViewController: NSViewController,InitiateChatDelegate,NSWindow
     var privateMsgSent = false
     @IBOutlet weak var txtMessage: NSTextField!
     
+    @IBOutlet weak var tableScrollView: NSScrollView!
+    @IBOutlet weak var BottomBox: NSBox!
+    @IBOutlet weak var btnAttachment: NSButton!
     @IBOutlet weak var columnTabl: NSTableColumn!
     @IBOutlet weak var tableConversation: NSTableView!
     @IBOutlet weak var imgReceiverProfile: NSImageView!
@@ -53,6 +56,9 @@ class ConversationViewController: NSViewController,InitiateChatDelegate,NSWindow
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.btnAttachment.isHidden = true
+        self.BottomBox.isHidden = true
+        self.tableScrollView.isHidden = true
         appdelegate.objAPI.delegate = self
         tableConversation.selectionHighlightStyle = .none
     }
@@ -96,6 +102,9 @@ class ConversationViewController: NSViewController,InitiateChatDelegate,NSWindow
         self.page = 0
         self.tableConversation.reloadData()
         self.tableConversation.isHidden = true
+        self.btnAttachment.isHidden = false
+        self.BottomBox.isHidden = false
+        self.tableScrollView.isHidden = false
         DispatchQueue.main.async {
             self.setUpUI()
         }
@@ -104,6 +113,48 @@ class ConversationViewController: NSViewController,InitiateChatDelegate,NSWindow
     override func mouseDown(with theEvent: NSEvent) {
         (self.parent?.children[0] as! DashboardViewController).scrollTableDropDown.isHidden = true
     }
+    
+    @IBAction func btnAttachment(_ sender: NSButton) {
+        let dialog = NSOpenPanel()
+        dialog.title                   = "Choose file";
+        dialog.showsResizeIndicator    = true;
+        dialog.showsHiddenFiles        = false;
+        dialog.canChooseDirectories    = true;
+        dialog.canCreateDirectories    = true;
+        dialog.allowsMultipleSelection = false;
+        dialog.allowedFileTypes        = ["jpeg","png","jpg","pdf","mov","mp4"];
+
+        if (dialog.runModal() == .OK) {
+            let result = dialog.url // Pathname of the file
+            
+            if (result != nil) {
+                let path = result!.path
+                callUploadMediaAPI(path: path) { (jsonData, error) in
+                    if let error = error {
+                        print(error)
+                    }else{
+                        if let mediaUrl = jsonData!["filename"] as? String{
+                            var index = 0
+                            if ["jpeg","png","jpg"].contains(result?.pathExtension){
+                                index = 1
+                            }else if ["mov","mp4"].contains(result?.pathExtension){
+                                index = 2
+                            }else if result?.pathExtension == "pdf"{
+                                index = 3
+                            }
+                            if index > 0{
+                                self.sendChatMsg(msg: "", msgType: index, mediaURL: mediaUrl)
+                            }
+                        }
+                    }
+                }
+            }
+        } else {
+            // User clicked on "Cancel"
+            return
+        }
+    }
+    
     
     func setUpUI(){
         self.lblReceiverName.stringValue = chatObj?.channelName ?? ""

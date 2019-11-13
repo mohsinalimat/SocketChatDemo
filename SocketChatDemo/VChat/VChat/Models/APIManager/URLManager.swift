@@ -9,6 +9,6 @@
 import Foundation
 
 struct ChatURLManager {
-    static let SocketUrl = "http://192.168.1.5:3000"
+    static let SocketUrl = "http://192.168.1.14:3000"
     static let file_upload = ChatURLManager.SocketUrl + "/file_upload"    
 }

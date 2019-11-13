@@ -183,8 +183,12 @@ class DashboardViewController: NSViewController, NSTableViewDelegate, NSTableVie
                 self.performSegue(withIdentifier: "segueUserList", sender: channelTypeCase.broadcast.rawValue)
                 break
             case 2:
-                clearAllCoreData()
-                self.view.window?.contentViewController = NSStoryboard.loginViewController()
+                appdelegate.objAPI.socketDisconnect { (success, error) in
+                    self.clearAllCoreData()
+                    appdelegate.objAPI.socket.removeAllHandlers()
+                    UserDefaults.standard.userID = nil
+                    self.view.window?.contentViewController = NSStoryboard.loginViewController()
+                }
                 break
             default:
                 break

@@ -13,7 +13,6 @@ class LoginViewController: UIViewController {
     @IBOutlet var emailID: UITextField!
     @IBOutlet var password: UITextField!
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
     }

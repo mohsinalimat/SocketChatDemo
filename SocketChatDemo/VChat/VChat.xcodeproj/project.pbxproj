@@ -124,8 +124,8 @@
 				C957B8EB2307425B00F0A767 /* ChatList+CoreDataProperties.swift */,
 				C957B8EC2307425B00F0A767 /* ChatList+CoreDataClass.swift */,
 				C957B8ED2307425B00F0A767 /* LoginUser+CoreDataProperties.swift */,
-				C957B8EE2307425B00F0A767 /* ChatMessages+CoreDataClass.swift */,
 				C957B8EF2307425B00F0A767 /* LoginUser+CoreDataClass.swift */,
+				C957B8EE2307425B00F0A767 /* ChatMessages+CoreDataClass.swift */,
 				C957B8F02307425B00F0A767 /* ChatMessages+CoreDataProperties.swift */,
 			);
 			path = Test;

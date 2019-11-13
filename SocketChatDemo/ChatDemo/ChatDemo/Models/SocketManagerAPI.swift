@@ -355,7 +355,6 @@ class SocketManagerAPI: NSObject {
         do {
             let result = try appdelegate.persistentContainer.viewContext.fetch(fetchRequest)
             if result.count > 0 {
-                
                 let objResult = result[0]
                 let updatedData = arrayData
                 objResult.chat_id = updatedData["chat_id"] as! Int64
@@ -423,10 +422,10 @@ class SocketManagerAPI: NSObject {
                 if let arrayData = Maindata as? [[String:Any]],arrayData.count > 0 {
                     let dataDict = arrayData[0]
                     completion(dataDict,nil)
-                }else{
+                } else {
                     completion(nil,"data Not availabel")
                 }
-            }else{
+            } else {
                 completion(nil,"data Not availabel")
             }
         }
@@ -471,6 +470,7 @@ class SocketManagerAPI: NSObject {
             ackCallBack(data1,nil)
         }
     }
+    
     func createGroup(_ params : [String:Any], ackCallBack:@escaping completionHandler) -> Void {
         socket.emitWithAck("CreateGroup", params).timingOut(after: 0) { data in
             print("got message")
